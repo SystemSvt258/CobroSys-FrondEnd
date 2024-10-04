@@ -99,7 +99,6 @@ export class ApiService {
           );
         }
 
-        // this.alerta.PeticionModificada();
         throw error;
       })
     );
