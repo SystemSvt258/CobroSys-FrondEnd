@@ -1,0 +1,583 @@
+<app-header></app-header>
+<app-sidebar></app-sidebar>
+<div class="content-wrapper">
+    <div class="container-fluid">
+        <h4 class="NombrePage">{{PaginaNombre}}</h4>
+        <!-- master datail page -->
+        <section class="content">
+            <div class="container-fluid">
+
+                <div class="row">
+                    <div class="col-lg-3 col-6">
+
+                        <div class="small-box bg-info">
+                            <div class="inner">
+                                <h3>{{this.getGestionesDiarias(this.ListaUltimaGestion)}}</h3>
+                                <p>Gestiones Diarias</p>
+                            </div>
+                            <div class="icon">
+                                <i class="ion ion-bag"></i>
+                            </div>
+                            <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-3 col-6">
+
+                        <div class="small-box bg-success">
+                            <div class="inner">
+                                <h3>{{this.getGestionesMes(this.ListaUltimaGestion)}}</h3>
+                                <p>Gestiones Mensuales</p>
+                            </div>
+                            <div class="icon">
+                                <i class="ion ion-stats-bars"></i>
+                            </div>
+                            <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-3 col-6">
+
+                        <div class="small-box bg-warning">
+                            <div class="inner">
+                                <h3>{{this.getGestionesYear(this.ListaUltimaGestion)}}</h3>
+                                <p>Gestiones Anuales</p>
+                            </div>
+                            <div class="icon">
+                                <i class="ion ion-person-add"></i>
+                            </div>
+                            <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-3 col-6">
+
+                        <div class="small-box bg-danger">
+                            <div class="inner">
+                                <h3>{{this.valor}}</h3>
+                                <p>Sin Gestionar</p>
+                            </div>
+                            <div class="icon">
+                                <i class="ion ion-pie-graph"></i>
+                            </div>
+                            <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+        <section class="content">
+            <div class="container-fluid">
+                <div class="card card-default">
+                    <!-- BARRA DE INICIO Y PARA FILTROS DE BUSQUEDA -->
+                    <section class="horizontal-center">
+                        <div class="card-header" style="background-color: var(--color-formulario-primario);">
+                            <div class="btn-group" role="group">
+                                <button class="btnHome" (click)="ListarElementos(1)"><i
+                                        class="fa-solid fa-house"></i></button>
+                            </div>
+                            <div class="btn-group float-right" role="group">
+                                <section>
+                                    <button *ngIf="banderaDescargar" class="float-right btnImprimir ml-2" data-toggle="dropdown" ><i
+                                        class="bi bi-printer"></i></button>
+                                    <div class="dropdown-menu" role="menu1">
+                                        <a class="dropdown-item col-md-4" (click)="GetDescargaPor(d)"
+                                            *ngFor="let d of ParametrosDeDescarga">{{d}}</a>
+                                    </div>
+                                </section>
+                            </div>
+                        </div>
+                    </section>
+                    <section class="horizontal-center">
+                        <form [formGroup]="BuscarForms">
+                                    <div class="container-fluid">
+                                                <div class="row">
+                                                    <div class="col-md-1 col-3">
+                                                        <button type="button" class="btnBuscar ml-2"
+                                                        (click)="buscarFiltro(BuscarForms.value)">
+                                                            <i class="bi bi-search"></i>
+                                                        </button>
+                                                    </div>
+                                                    <div class="col-md-2 col-9">
+                                                        <div class="form-floating">
+                                                            <input type="text" class="form-control" id="identificacion"
+                                                                placeholder="" formControlName="identificacion">
+                                                            <label class="truncate-text"
+                                                                for="identificacion">Identificación</label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-3 col-12">
+                                                        <div class="form-floating">
+                                                            <input type="text" class="form-control" id="nombres_cliente"
+                                                                placeholder="" formControlName="nombres_cliente">
+                                                            <label class="truncate-text"
+                                                                for="nombres_cliente">Nombres</label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-3 col-6">
+                                                        <div class="form-group">
+                                                            <span title="Cantidad de meses sin gestión">Cartera</span>
+
+                                                            <select style="height: 35px;" class="form-select"
+                                                                formControlName="cartera">
+                                                                <option *ngIf="CarteraGestor.length == 0" disabled>
+                                                                    Cargando
+                                                                    ...
+                                                                </option>
+                                                                <option [value]="0">Todas</option>
+                                                                <option *ngFor="let s of CarteraGestor"
+                                                                    [value]="s.cart_id">
+                                                                    {{s.cart_descripcion+' '+s.cart_tip_descripcion}}
+                                                                </option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-3 col-6">
+                                                        <div class="form-group">
+                                                            <span title="Cantidad de meses sin gestión">Gestor</span>
+
+                                                            <select style="height: 35px;" class="form-select"
+                                                                (click)="ListaGestores.length == 0?ListarGestores():null"
+                                                                formControlName="gestor">
+                                                                <option *ngIf="ListaGestores.length == 0" disabled>
+                                                                    Cargando...
+                                                                </option>
+                                                                <option [value]="0">Todos</option>
+                                                                <option *ngFor="let s of ListaGestores"
+                                                                    [value]="s.id_gestor">
+                                                                    {{s.ges_nombres+' '+s.ges_apellidos}}
+                                                                </option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-3 col-6">
+                                                        <div class="form-group">
+                                                            <span
+                                                                title="Cantidad de meses sin gestión">Contactabilidad</span>
+
+                                                            <select style="height: 35px;" class="form-select"
+                                                                formControlName="contactabilidad">
+                                                                <option *ngIf="contac.length == 0"
+                                                                    disabled>
+                                                                    Cargando...
+                                                                </option>
+                                                                <option [value]="0">Todas</option>
+                                                                <option *ngFor="let s of contac"
+                                                                    [value]="s.id_contactabilidad">
+                                                                    {{s.contac_descripcion}}
+                                                                </option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-3 col-6">
+                                                        <div class="form-floating mb-3">
+                                                            <input type="date" class="form-control small"
+                                                                id="fecha_inicial_pp" placeholder=""
+                                                                formControlName="fecha_inicial_pp">
+                                                            <label class="truncate-text" for="fecha_inicial_pp">Fecha Proximo Pago
+                                                                Inicial</label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-3 col-6">
+                                                        <div class="form-floating mb-3">
+                                                            <input type="date" class="form-control small"
+                                                                id="fecha_final_pp" placeholder=""
+                                                                formControlName="fecha_final_pp">
+                                                            <label class="truncate-text" for="fecha_final_pp">Fecha Proximo Pago
+                                                                Final</label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-3 col-6">
+                                                        <div class="btn-group ml-2" role="group"
+                                                            aria-label="Basic example">
+                                                            <div class="custom-control custom-checkbox">
+                                                                <input class="custom-control-input" type="checkbox"
+                                                                    formControlName="ultima_gestion"
+                                                                    id="chkUltimaGestion" value="0">
+                                                                <label class="truncate-text" for="chkUltimaGestion"
+                                                                    class="custom-control-label">Ultima gestion</label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-3 col-3">
+                                                        <div class="form-group">
+                                                            <div class="form-floating mb-3">
+                                                                <input type="date" class="form-control small" id="fecha_inicial_gestion" placeholder=""
+                                                                    formControlName="fecha_inicial_gestion">
+                                                                <label class="truncate-text" for="fecha_inicial_gestion">Gestion Inicial</label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-3 col-3">
+                                                        <div class="form-group">
+                                                            <div class="form-floating mb-3">
+                                                                <input type="date" class="form-control small" id="fecha_final_gestion" placeholder=""
+                                                                    formControlName="fecha_final_gestion">
+                                                                <label class="truncate-text" for="fecha_final_gestion">Gestion Final</label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+                            </div>
+                        </form>
+                    </section>
+                    <section class="expand-bottom" *ngIf="banderaTodas">
+                        <div class="card-body" style="background-color: var(--color-formulario-secundario);"
+                            *ngIf="!loading ;else loadingOrError">
+                            <div class="card-footer" style="background-color: var(--color-formulario-terciario);"
+                                *ngIf="ListaUltimaGestion.length != 0">
+                                <div class="float-left">
+                                    <h3 class="card-title"><strong>Vista Previa</strong></h3>
+                                </div>
+                                <div class="float-right clearfix">
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <button type="button" class="btn btnOk btn-sm dropdown-toggle"
+                                                data-toggle="dropdown" aria-expanded="false">
+                                                {{ FirltroPor}}
+                                            </button>
+                                            <ul class="dropdown-menu" x-placement="top-start">
+                                                <li class="dropdown-item" style="cursor: pointer;"
+                                                    (click)="FiltrarPor('Nombres')">
+                                                    <a>Nombre</a>
+                                                </li>
+                                                <li class="dropdown-item" style="cursor: pointer;"
+                                                    (click)="FiltrarPor('Gestor')">
+                                                    <a>Gestor</a>
+                                                </li>
+                                                <li class="dropdown-item" style="cursor: pointer;"
+                                                    (click)="FiltrarPor('TipoGestion')">
+                                                    <a>Tipo-Gestion</a>
+                                                </li>
+
+                                            </ul>
+                                        </div>
+
+                                        <input type="text" id="TxtFiltro" (keyup)="FiltrarLista(0)"
+                                            [formControl]="TextoFiltro" class="form-control form-control-sm">
+
+                                        <div class="input-group-append">
+                                            <button type="button" class="btn btnOk btn-sm" (click)="VaciarFiltro()">
+                                                <i class="bi bi-trash"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <table class="table table-bordered table-responsive   table-auto small" *ngIf="ListaUltimaGestion.length != 0" id="contenido">
+                                <thead>
+                                    <tr>
+                                        <th style="width: 10px">#</th>
+                                        <th id="ThGestionId">Id Cartera</th>
+                                        <th id="ThCartera">Cartera</th>
+                                        <th id="ThCedula">Cedula</th>
+                                        <th id="ThCXC">Id CxC</th>
+                                        <th id="ThDescripcion">Descripcion</th>
+                                        <th id="ThProducto">Producto</th>
+                                        <th id="ThNombres">Nombres</th>
+                                        <th id="ThTipoGestion">Tipo-Gestion</th>
+                                        <th id="ThEstado">Estado</th>
+                                        <th id="ThConectividad">Conectividad</th>
+                                        <th id="ThNumeroContacto">Numero</th>
+                                        <th id="ThSumaSaldo">Suma-Saldo-CXC</th>
+                                        <th id="ThDiasMora">DiasMora</th>
+                                        <th id="ThGastsoCobranzas">Gastos-Cobranzas</th>
+                                        <th id="ThInteresdeMora">Interes-Mora</th>
+                                        <th id="ThLiquidar">Liquidar</th>
+                                        <th id="ThSaldo">Saldo-CxC</th>
+                                        <th id="ThFechaOrigen">Fecha-Origen</th>
+                                        <th id="ThFechaGestion">Fecha-Gestion</th>
+                                        <th id="ThFechaCompromiso">Fecha-Compromiso</th>
+                                        <th id="ThValor">Valor-Cobrar</th>
+                                        <th id="ThCouta">Couta</th>
+                                        <th id="ThFechaProxima">Fecha-Proximo-Pago</th>
+                                        <th id="ThFechaIncumplido">Fecha-Incumplido</th>
+                                        <th id="ThValorIncumplido">Valor-Incumplido</th>
+                                        <th id="ThGestor">Gestor</th>
+                                        <th id="ThFechaVolverLlamar">Fecha-Volver-Llamar</th>
+                                        <th id="ThHoraVolverLlamar">Hora-Volver-Llamar</th>
+                                        <th id="ThContactabilidad">Contactabilidad</th>
+                                        <th id="ThGestorAsignado">Asignado</th>
+                                        <th id="ThIdUltimaGestion">Ultima-Gestion</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let datos of DatosCargaMasiva; let i = index">
+                                        <th>{{InicioPaginacion + i + 1}}</th>
+                                        <th>{{datos.gest_id_cartera}}</th>
+                                        <th>{{datos.cart_descripcion}}</th>
+                                        <th>{{datos.cli_identificacion}}</th>
+                                        <th>{{datos.ope_cod_credito}}</th>
+                                        <th>{{datos.ope_descripcion}}</th>
+                                        <th>{{datos.ope_producto}}</th>
+                                        <th>{{datos.cli_nombres}}</th>
+                                        <th>{{datos.gestion_tip_descripcion}}</th>
+                                        <th>{{datos.cli_estado_contacta}}</th>
+                                        <th>{{datos.conec_descripcion}}</th>
+                                        <th>{{datos.gest_num_contacto}}</th>
+                                        <th>{{datos.ope_saldo_cxc_actual}}</th>
+                                        <th>{{datos.ope_dias_mora}}</th>
+                                        <th>{{datos.ope_gastos_cobranzas}}</th>
+                                        <th>{{datos.ope_interes_mora}}</th>
+                                        <th>{{datos.ope_liquidar}}</th>
+                                        <th>{{datos.ope_saldo_cxc_actual}}</th>
+                                        <th>{{this.Fechas.fechaCorta(datos.gest_fecha_in)}}</th>
+                                        <th>{{this.Fechas.fechaCorta(datos.gest_fecha_gestion)}}</th>
+                                        <th>{{this.Fechas.fechaCorta(datos.gest_fecha_compromiso)==='31-12-1969' ? ' ' :this.Fechas.fechaCorta(datos.gest_fecha_compromiso)}}</th>
+                                        <th>{{datos.gest_valor_a_cobrar}}</th>
+                                        <th>{{datos.gest_couta}}</th>
+                                        <th>{{this.Fechas.fechaCorta(datos.gest_fecha_prox_pago)==='31-12-1969' ? ' ' :this.Fechas.fechaCorta(datos.gest_fecha_prox_pago)}}</th>
+                                        <th>{{this.Fechas.fechaCorta(datos.gest_fecha_incumplido)==='31-12-1969' ? ' ' :this.Fechas.fechaCorta(datos.gest_fecha_incumplido)}}</th>
+                                        <th>{{datos.gest_valor_incumplido}}</th>
+                                        <th>{{datos.nombreGest}}
+                                        <th>{{this.Fechas.fechaCorta(datos.gest_fecha_volver_llamar)==='31-12-1969' ? ' ' :this.Fechas.fechaCorta(datos.gest_fecha_volver_llamar)}}</th>
+                                        <th>{{datos.gest_hora_volver_llamar}}</th>
+                                        <th>{{datos.contac_descripcion}}</th>
+                                        <th>{{datos.nombreGestorAsig}}</th>
+                                        <th>{{datos.ope_id_ultima_gestion}}</th>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div class="card-footer" style="background-color: var(--color-formulario-terciario);"
+                            *ngIf="ListaUltimaGestion.length != 0 ">
+                            <div class="row">
+                                <div class="col-lg-2 col-6">
+                                    <p>Total<strong>&nbsp;{{ContadorDatosGeneral}}</strong></p>
+                                </div>
+                                <div class="col-lg-2 col-6">
+                                    <div *ngIf="ContadorDatosGeneral != ContadorDatos">
+                                        <p>Resultado Filtro<strong>&nbsp;{{ContadorDatos}}</strong></p>
+                                    </div>
+
+                                </div>
+                                <div class="col-lg-2 col-6">
+                                    <div>
+                                        <p>Elementos<strong>&nbsp;{{InicioPaginacion+1}}</strong>-<strong>&nbsp;{{InicioPaginacion
+                                                + RangoPaginacion}}</strong></p>
+                                    </div>
+                                </div>
+                                <div class="col-lg-2 col-6">
+                                    <!-- <p>Grupo<strong>&nbsp;1</strong>-<strong>&nbsp;10</strong></p> -->
+
+                                </div>
+                                <div class="col-lg-4 col-12">
+                                    <div class="form-group">
+                                        <div class="float-right">
+                                            <small>
+                                                <button
+                                                    (click)="InicioPaginacion == 0?BtnPreviousUser(1):BtnPreviousUser()"
+                                                    *ngIf="FraccionDatos !== 0||InicioPaginacion !==0" type="button"
+                                                    class="BtnNextPrevious" aria-label=""
+                                                    style="display: inline-block;"><i
+                                                        class="bi bi-arrow-left-circle"></i>
+                                                    Anterior</button>
+
+                                                <button
+                                                    *ngIf="(InicioPaginacion + RangoPaginacion) < ContadorDatos||ContadorDatos == RangoDatos"
+                                                    (click)="(InicioPaginacion + RangoPaginacion) == ContadorDatos?BtnNextUser(1):BtnNextUser()"
+                                                    type="button" class="BtnNextPrevious ml-2 " aria-label=""
+                                                    style="display: inline-block;">Siguiente <i
+                                                        class="bi bi-arrow-right-circle"></i></button>
+                                            </small>
+
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </section>
+                    <section class="expand-bottom" *ngIf="banderaFiltro">
+                        <div class="card-body" style="background-color: var(--color-formulario-secundario);"
+                            *ngIf="!loading ;else loadingOrError">
+                            <div class="card-footer" style="background-color: var(--color-formulario-terciario);"
+                                *ngIf="ListaUltimaGestion.length != 0">
+                                <div class="float-left">
+                                    <h3 class="card-title"><strong>Vista Previa</strong></h3>
+                                </div>
+                                <div class="float-right clearfix">
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <button type="button" class="btn btnOk btn-sm dropdown-toggle"
+                                                data-toggle="dropdown" aria-expanded="false">
+                                                {{ FirltroPor}}
+                                            </button>
+                                            <ul class="dropdown-menu" x-placement="top-start">
+                                                <li class="dropdown-item" style="cursor: pointer;"
+                                                    (click)="FiltrarPor('Nombres')">
+                                                    <a>Nombre</a>
+                                                </li>
+                                                <li class="dropdown-item" style="cursor: pointer;"
+                                                    (click)="FiltrarPor('Gestor')">
+                                                    <a>Gestor</a>
+                                                </li>
+                                                <li class="dropdown-item" style="cursor: pointer;"
+                                                    (click)="FiltrarPor('TipoGestion')">
+                                                    <a>Tipo-Gestion</a>
+                                                </li>
+
+                                            </ul>
+                                        </div>
+
+                                        <input type="text" id="TxtFiltro" (keyup)="FiltrarLista(0)"
+                                            [formControl]="TextoFiltro" class="form-control form-control-sm">
+
+                                        <div class="input-group-append">
+                                            <button type="button" class="btn btnOk btn-sm" (click)="VaciarFiltro()">
+                                                <i class="bi bi-trash"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <table class="table table-bordered table-responsive   table-auto small" *ngIf="ListaUltimaGestion.length != 0" id="contenido">
+                                <thead>
+                                    <tr>
+                                        <th style="width: 10px">#</th>
+                                        <th id="ThGestionId">Id Cartera</th>
+                                        <th id="ThCartera">Cartera</th>
+                                        <th id="ThCedula">Cedula</th>
+                                        <th id="ThCXC">Id CxC</th>
+                                        <th id="ThDescripcion">Descripcion</th>
+                                        <th id="ThProducto">Producto</th>
+                                        <th id="ThNombres">Nombres</th>
+                                        <th id="ThTipoGestion">Tipo-Gestion</th>
+                                        <th id="ThEstado">Estado</th>
+                                        <th id="ThConectividad">Conectividad</th>
+                                        <th id="ThNumeroContacto">Numero</th>
+                                        <th id="ThSumaSaldo">Suma-Saldo-CXC</th>
+                                        <th id="ThDiasMora">DiasMora</th>
+                                        <th id="ThGastsoCobranzas">Gastos-Cobranzas</th>
+                                        <th id="ThInteresdeMora">Interes-Mora</th>
+                                        <th id="ThLiquidar">Liquidar</th>
+                                        <th id="ThSaldo">Saldo-CxC</th>
+                                        <th id="ThFechaOrigen">Fecha-Origen</th>
+                                        <th id="ThFechaGestion">Fecha-Gestion</th>
+                                        <th id="ThFechaCompromiso">Fecha-Compromiso</th>
+                                        <th id="ThValor">Valor-Cobrar</th>
+                                        <th id="ThCouta">Couta</th>
+                                        <th id="ThFechaProxima">Fecha-Proximo-Pago</th>
+                                        <th id="ThFechaIncumplido">Fecha-Incumplido</th>
+                                        <th id="ThValorIncumplido">Valor-Incumplido</th>
+                                        <th id="ThGestor">Gestor</th>
+                                        <th id="ThFechaVolverLlamar">Fecha-Volver-Llamar</th>
+                                        <th id="ThHoraVolverLlamar">Hora-Volver-Llamar</th>
+                                        <th id="ThContactabilidad">Contactabilidad</th>
+                                        <th id="ThGestorAsignado">Asignado</th>
+                                        <th id="ThIdUltimaGestion">Ultima-Gestion</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let datos of DatosCargaMasiva; let i = index">
+                                        <th>{{InicioPaginacion + i + 1}}</th>
+                                        <th>{{datos.Gestion.gest_id_cartera}}</th>
+                                        <th>{{datos.Cartera}}</th>
+                                        <th>{{datos.Gestion.Cliente.cli_identificacion}}</th>
+                                        <th>{{datos.Credito.ope_cod_credito}}</th>
+                                        <th>{{datos.Credito.ope_descripcion}}</th>
+                                        <th>{{datos.Credito.ope_producto}}</th>
+                                        <th>{{datos.Gestion.Cliente.cli_nombres}}</th>
+                                        <th>{{datos.TipoGestion}}</th>
+                                        <th>{{datos.Gestion.Cliente.cli_estado_contacta}}</th>
+                                        <th>{{datos.Conectividad}}</th>
+                                        <th>{{datos.Gestion.gest_num_contacto}}</th>
+                                        <th>{{datos.Credito.ope_saldo_cxc_actual}}</th>
+                                        <th>{{datos.Credito.ope_dias_mora}}</th>
+                                        <th>{{datos.Credito.ope_gastos_cobranzas}}</th>
+                                        <th>{{datos.Credito.ope_interes_mora}}</th>
+                                        <th>{{datos.Credito.ope_liquidar}}</th>
+                                        <th>{{datos.Credito.ope_saldo_cxc_actual}}</th>
+                                        <th>{{this.Fechas.fechaCorta(datos.Gestion.gest_fecha_in)}}</th>
+                                        <th>{{this.Fechas.fechaCorta(datos.Gestion.gest_fecha_gestion)}}</th>
+                                        <th>{{this.Fechas.fechaCorta(datos.Gestion.gest_fecha_compromiso)==='31-12-1969' ? ' ' :this.Fechas.fechaCorta(datos.Gestion.gest_fecha_compromiso)}}</th>
+                                        <th>{{datos.Gestion.gest_valor_a_cobrar}}</th>
+                                        <th>{{datos.Gestion.gest_couta}}</th>
+                                        <th>{{this.Fechas.fechaCorta(datos.Gestion.gest_fecha_prox_pago)}}</th>
+                                        <th>{{this.Fechas.fechaCorta(datos.Gestion.gest_fecha_incumplido)==='31-12-1969' ? ' ' :this.Fechas.fechaCorta(datos.Gestion.gest_fecha_incumplido)}}</th>
+                                        <th>{{datos.Gestion.gest_valor_incumplido}}</th>
+                                        <th>{{datos.Gestion.Gestor.ges_nombres+' '+datos.Gestion.Gestor.ges_apellidos}}
+                                        <th>{{this.Fechas.fechaCorta(datos.Gestion.gest_fecha_volver_llamar)==='31-12-1969' ? ' ' :this.Fechas.fechaCorta(datos.Gestion.gest_fecha_volver_llamar)}}</th>
+                                        <th>{{datos.Gestion.gest_hora_volver_llamar}}</th>
+                                        <th>{{datos.Contactabilidad.contac_descripcion}}</th>
+                                        <th>{{datos.GestorAsignado}}</th>
+                                        <th>{{datos.Credito.ope_id_ultima_gestion}}</th>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div class="card-footer" style="background-color: var(--color-formulario-terciario);"
+                            *ngIf="ListaUltimaGestion.length != 0 ">
+                            <div class="row">
+                                <div class="col-lg-2 col-6">
+                                    <p>Total<strong>&nbsp;{{ContadorDatosGeneral}}</strong></p>
+                                </div>
+                                <div class="col-lg-2 col-6">
+                                    <div *ngIf="ContadorDatosGeneral != ContadorDatos">
+                                        <p>Resultado Filtro<strong>&nbsp;{{ContadorDatos}}</strong></p>
+                                    </div>
+
+                                </div>
+                                <div class="col-lg-2 col-6">
+                                    <div>
+                                        <p>Elementos<strong>&nbsp;{{InicioPaginacion+1}}</strong>-<strong>&nbsp;{{InicioPaginacion
+                                                + RangoPaginacion}}</strong></p>
+                                    </div>
+                                </div>
+                                <div class="col-lg-2 col-6">
+                                    <!-- <p>Grupo<strong>&nbsp;1</strong>-<strong>&nbsp;10</strong></p> -->
+
+                                </div>
+                                <div class="col-lg-4 col-12">
+                                    <div class="form-group">
+                                        <div class="float-right">
+                                            <small>
+                                                <button
+                                                    (click)="InicioPaginacion == 0?BtnPreviousUser(1):BtnPreviousUser()"
+                                                    *ngIf="FraccionDatos !== 0||InicioPaginacion !==0" type="button"
+                                                    class="BtnNextPrevious" aria-label=""
+                                                    style="display: inline-block;"><i
+                                                        class="bi bi-arrow-left-circle"></i>
+                                                    Anterior</button>
+
+                                                <button
+                                                    *ngIf="(InicioPaginacion + RangoPaginacion) < ContadorDatos||ContadorDatos == RangoDatos"
+                                                    (click)="(InicioPaginacion + RangoPaginacion) == ContadorDatos?BtnNextUser(1):BtnNextUser()"
+                                                    type="button" class="BtnNextPrevious ml-2 " aria-label=""
+                                                    style="display: inline-block;">Siguiente <i
+                                                        class="bi bi-arrow-right-circle"></i></button>
+                                            </small>
+
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </section>
+
+                   
+                </div>
+            </div>
+        </section>
+        <!-- master datail page -->
+
+        <router-outlet></router-outlet>
+    </div>
+</div>
+<app-footer></app-footer>
+<ng-template #loadingOrError>
+    <section>
+        <div class="ContenidoCentrado">
+            <div class="loader"></div>
+        </div>
+    </section>
+</ng-template>

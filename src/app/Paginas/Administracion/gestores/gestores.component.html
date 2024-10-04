@@ -1,0 +1,513 @@
+<app-header></app-header>
+<app-sidebar></app-sidebar>
+<div class="content-wrapper">
+    <div class="container-fluid">
+        <h4 class="NombrePage">{{PaginaNombre}}</h4>
+
+        <section class="content">
+            <div class="container-fluid">
+                <div class="card card-default">
+                    <!-- Barra -->
+                    <section class="horizontal-center" *ngIf="TituloFormulario == ''">
+                        <div class="card-header" style="background-color: var(--color-formulario-primario);">
+                            <div class="btn-group" role="group">
+                                <button class="btnHome" (click)="ListarElementos(1)"><i
+                                        class="fa-solid fa-house"></i></button>
+
+                            </div>
+                            <div class="btn-group float-right" role="group">
+
+                                <label type="text-info" class="formControl CenterItemColorSecundario center ml-1"
+                                    style="width: 50%;" *ngIf="itemBusqueda.value !== ''">{{itemBusqueda.value}}</label>
+
+                                <button type="button" class="btnFilter ml-1" data-toggle="dropdown"><i
+                                        class="bi bi-funnel"></i></button>
+
+                                <div class="OcultarMax450px" style="width: 50%;">
+                                    <input
+                                        *ngIf="itemBusqueda.value !== '' && (itemBusqueda.value === 'Descripción' ||itemBusqueda.value === 'Descripción Incompleta')"
+                                        id="txtValorBusqueda" [formControl]="txtBusqueda"
+                                        (keydown.enter)="FiltrarElemento()" (keyup)="ConvertirMayusculas()"
+                                        class="form-control ml-2" type="text" placeholder="Buscar" autofocus>
+                                </div>
+                                <div class="ml-2  OcultarMax450px">
+                                    <select class="form-select"
+                                        *ngIf="itemBusqueda.value !== '' && itemBusqueda.value === 'Estado'"
+                                        [formControl]="txtBusqueda" [spellcheck]="false" style="width: 150px;">
+                                        <option *ngFor="let estado of ParametrosEstado" [value]="estado.value">
+                                            {{estado.name}}
+                                        </option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <button type="button" class="btnBuscar ml-2 OcultarMax450px"
+                                        *ngIf="txtBusqueda.value !== ''" (click)="FiltrarElemento()"><i
+                                            class="bi bi-search"></i></button>
+                                </div>
+
+                                <button *ngIf="LecturaEscritura != 0" type="button" class="btnAgregar ml-2"
+                                    (click)="AgregarEditarElemento(1)"><i class="bi bi-plus-circle-dotted"></i></button>
+
+                                <button *ngIf="LecturaEscritura != 0" type="button" class="btnConfiguracion ml-2"
+                                    (click)="AgregarEditarElemento(4)"><i class="fa-solid fa-gear"></i></button>
+
+                                <div class="dropdown-menu" role="menu">
+                                    <a class="dropdown-item" (click)="GetBusquedaPor(item)"
+                                        *ngFor="let item of ParametrosDeBusqueda">{{item}}</a>
+                                </div>
+                                <section>
+                                    <button *ngIf="this.ListaGestores.length>0" class="btnImprimir ml-2" data-toggle="dropdown" ><i
+                                        class="bi bi-printer"></i></button>
+                                    <div class="dropdown-menu" role="menu1">
+                                        <a class="dropdown-item col-md-4" (click)="GetDescargaPor(d)"
+                                            *ngFor="let d of ParametrosDeDescarga">{{d}}</a>
+                                    </div> 
+                                </section>
+                            </div>
+                        </div>
+                        <div class="card-header OcultarMin450px"
+                            style="background-color: var(--color-formulario-primario);">
+
+                            <div class="btn-group float-right" role="group">
+                                <input
+                                    *ngIf="itemBusqueda.value !== '' && (itemBusqueda.value === 'Descripción' ||itemBusqueda.value === 'Descripción Incompleta')"
+                                    id="txtValorBusqueda" style="width: 80%;" [formControl]="txtBusqueda"
+                                    (keydown.enter)="FiltrarElemento()" (keyup)="ConvertirMayusculas()"
+                                    class="form-control ml-2" type="text" placeholder="Buscar" autofocus>
+
+                                <select class="form-select"
+                                    *ngIf="itemBusqueda.value !== '' && itemBusqueda.value === 'Estado'"
+                                    [formControl]="txtBusqueda" [spellcheck]="false" style="width: 150px;">
+                                    <option *ngFor="let estado of ParametrosEstado" [value]="estado.value">
+                                        {{estado.name}}
+                                    </option>
+                                </select>
+
+                                <button type="button" class="btnBuscar ml-2" *ngIf="txtBusqueda.value !== ''"
+                                    (click)="FiltrarElemento()"><i class="bi bi-search"></i></button>
+
+                            </div>
+                        </div>
+
+                    </section>
+                    <!-- FORMULARIO PARA AGREGAR ELEMENTOS -->
+                    <section class="vertical-center"
+                        *ngIf="TituloFormulario != '' && TituloFormulario != 'CONFIGURACION'">
+                        <div class="card-body" style="background-color: var(--color-formulario-secundario);">
+                            <div class="card-header" style="background-color: var(--color-formulario-primario);">
+                                <button type="button" (click)="CerrarAgregarEditarElemento()"
+                                    class="btn btn-close float-right"></button>
+                                <h2 class="Centrar">{{TituloFormulario}} {{PaginaNombre.toLocaleLowerCase()}}</h2>
+                            </div>
+                            <div class="card-body" style="background-color: var(--color-formulario-secundario);">
+                                <form [formGroup]="GestorForms">
+                                    <div class="row">
+                                        <div class="col-lg-4 col-12" *ngIf="TituloFormulario != 'Agregar'">
+                                            <div class="form-floating mb-3">
+                                                <input type="text" class="form-control" id="id_gestor" placeholder=""
+                                                    formControlName="id_gestor">
+                                                <label class="truncate-text" for="id_gestor">Id Gestor</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-4 col-12">
+                                            <div class="form-floating mb-3">
+                                                <input type="text" class="form-control" id="ges_nombres" placeholder=""
+                                                    formControlName="ges_nombres">
+                                                <label class="truncate-text" for="ges_nombres">Nombre</label>
+                                                <Section>
+                                                    <div class="error-message" *ngIf="GestorForms.get('ges_nombres')?.hasError('required') 
+                                                    && GestorForms.get('ges_nombres')?.touched">
+                                                        <span style="color: brown;">*Este campo es
+                                                            obligatorio.</span>
+                                                    </div>
+                                                </Section>
+                                            </div>
+
+                                        </div>
+                                        <div class="col-lg-4 col-12">
+                                            <div class="form-floating mb-3">
+                                                <input type="text" class="form-control" id="ges_apellidos"
+                                                    placeholder="" formControlName="ges_apellidos">
+                                                <label class="truncate-text" for="ges_apellidos">Apellido</label>
+                                                <Section>
+                                                    <div class="error-message" *ngIf="GestorForms.get('ges_apellidos')?.hasError('required') 
+                                                    && GestorForms.get('ges_apellidos')?.touched">
+                                                        <span style="color: brown;">*Este campo es
+                                                            obligatorio.</span>
+                                                    </div>
+                                                </Section>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-4 col-12">
+                                            <div class="Centrar">
+                                                <div class="btn-group">
+                                                    <div class="form-group">
+                                                        <label class="truncate-text" for="ges_esgestor">Es
+                                                            gestor</label>&nbsp;
+                                                        <div class="custom-control custom-switch Centrar"
+                                                            title="Gestor">
+                                                            <input type="checkbox" class="custom-control-input"
+                                                                formControlName="ges_esgestor" name="estado"
+                                                                id="ges_esgestor">
+                                                            <label class="custom-control-label"
+                                                                for="ges_esgestor">{{GestorForms.get('ges_esgestor')!.value
+                                                                == false ?
+                                                                'No' : 'Si'}}</label>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                        <div class="col-lg-4 col-12">
+                                            <div class="form-floating mb-3">
+                                                <input type="text" class="form-control" id="ges_observacion"
+                                                    placeholder="" formControlName="ges_observacion">
+                                                <label class="truncate-text" for="ges_observacion">observación</label>
+                                            </div>
+
+                                        </div>
+                                        <div class="col-lg-4 col-12">
+                                            <div class="form-floating mb-3">
+                                                <input type="text" class="form-control" id="ges_meta" placeholder=""
+                                                    formControlName="ges_meta">
+                                                <label class="truncate-text" for="ges_meta">Meta</label>
+                                                <Section>
+                                                    <div class="error-message"
+                                                        *ngIf="GestorForms.get('ges_meta')?.value != ''
+                                            ? validar.V_NumerosDesimales(GestorForms.get('ges_meta')?.value!)  === false:null ">
+                                                        <span style="color: brown;">*contiene caracteres
+                                                            no permitidos en este campo.</span>
+                                                    </div>
+                                                </Section>
+                                            </div>
+
+                                        </div>
+
+                                        <div class="col-lg-4 col-12">
+                                            <div class="form-floating mb-3">
+                                                <input type="date" class="form-control" id="ges_fecha_entrada"
+                                                    placeholder="" formControlName="ges_fecha_entrada">
+                                                <label class="truncate-text" for="ges_fecha_entrada">Fecha de
+                                                    Ingreso</label>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-lg-4 col-12">
+                                            <div class="form-floating mb-3">
+                                                <input type="date" class="form-control" id="ges_fecha_salida"
+                                                    placeholder="" formControlName="ges_fecha_salida">
+                                                <label class="truncate-text" for="ges_fecha_salida">Fecha de
+                                                    Egreso</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-4 col-12" *ngIf="TituloFormulario != 'Agregar'">
+                                            <div class="form-floating mb-3">
+                                                <input type="text" class="form-control" id="ges_fecha_act"
+                                                    placeholder="" formControlName="ges_fecha_act">
+                                                <label class="truncate-text" for="ges_fecha_act">Fecha de
+                                                    Activación</label>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-lg-4 col-12" *ngIf="TituloFormulario != 'Agregar'">
+                                            <div class="form-floating mb-3">
+                                                <input type="text" class="form-control" id="ges_fecha_desact"
+                                                    placeholder="" formControlName="ges_fecha_desact">
+                                                <label class="truncate-text" for="ges_fecha_desact">Fecha de
+                                                    Desactivación</label>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-lg-4 col-12" *ngIf="TituloFormulario != 'Agregar'">
+                                            <div class="form-floating mb-3">
+                                                <input type="text" class="form-control" id="ges_fecha_in" placeholder=""
+                                                    formControlName="ges_fecha_in">
+                                                <label class="truncate-text" for="ges_fecha_in">Fecha de Ingreso</label>
+                                            </div>
+
+                                        </div>
+                                        <div class="col-lg-4 col-12" *ngIf="TituloFormulario != 'Agregar'">
+                                            <div class="form-floating mb-3">
+                                                <input type="text" class="form-control" id="ges_fecha_up" placeholder=""
+                                                    formControlName="ges_fecha_up">
+                                                <label class="truncate-text" for="ges_fecha_up">Fecha de
+                                                    Actualización</label>
+                                            </div>
+
+                                        </div>
+                                        <div class="col-lg-4 col-12">
+                                            <div class="Centrar">
+                                                <div class="btn-group">
+                                                    <div class="form-group">
+                                                        <label class="truncate-text"
+                                                            for="ges_esactivo">Estado</label>&nbsp;
+                                                        <div class="custom-control custom-switch Centrar"
+                                                            title="Estado">
+                                                            <input type="checkbox" class="custom-control-input"
+                                                                formControlName="ges_esactivo" name="estado"
+                                                                id="ges_esactivo">
+                                                            <label class="custom-control-label"
+                                                                for="ges_esactivo">{{GestorForms.get('ges_esactivo')!.value
+                                                                == false ?
+                                                                'Inactivo' : 'Activo'}}</label>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="card-footer" style="background-color: var(--color-formulario-terciario);">
+                                <div class="row Centrar ">
+                                    <small>
+                                        <button class="btnAceptar" [disabled]="GestorForms.invalid"
+                                            *ngIf="TituloFormulario != 'Visualizar'" id="btnAgregar"
+                                            (click)="ActDesControles(1);GuardarObjeto(GestorForms.value);ActDesControles(0)">Guardar</button>
+                                        <button class="btnCancelar ml-3"
+                                            (click)="CerrarAgregarEditarElemento()">Cancelar</button>
+                                    </small>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- FORMULARIO PARA LISTAR ELEMENTOS -->
+                    <section class="expand-bottom" *ngIf="TituloFormulario == ''">
+                        <div class="card-body" style="background-color: var(--color-formulario-secundario);"
+                            *ngIf="!loading ;else loadingOrError">
+                            <div class="card-footer" style="background-color: var(--color-formulario-terciario);"
+                                *ngIf="ListaGestores.length != 0">
+                                <div class="float-right clearfix">
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <button type="button" class="btn btnOk btn-sm dropdown-toggle"
+                                                data-toggle="dropdown" aria-expanded="false">
+                                                {{ FirltroPor}}
+                                            </button>
+                                            <ul class="dropdown-menu" x-placement="top-start">
+                                                <li class="dropdown-item" style="cursor: pointer;"
+                                                    (click)="FiltrarPor('Nombre')">
+                                                    <a>Nombre</a>
+                                                </li>
+                                                <li class="dropdown-item" style="cursor: pointer;"
+                                                    (click)="FiltrarPor('Apellido')">
+                                                    <a>Apellido</a>
+                                                </li>
+
+                                            </ul>
+                                        </div>
+
+                                        <input type="text" id="TxtFiltro" (keyup)="FiltrarLista(0)"
+                                            [formControl]="TextoFiltro" class="form-control form-control-sm">
+
+                                        <div class="input-group-append">
+                                            <button type="button" class="btn btnOk btn-sm" (click)="VaciarFiltro()">
+                                                <i class="bi bi-trash"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <table class="table table-bordered table-responsive-md" *ngIf="ListaGestores.length != 0">
+                                <thead>
+                                    <tr>
+                                        <th style="width: 10px">#</th>
+                                        <th id="ThDescripcion">Nombre</th>
+                                        <th id="ThApellido">Apellido</th>
+                                        <th class="OcultarMax450px">Ingreso</th>
+                                        <th class="OcultarMax450px">Actualización</th>
+                                        <th class="OcultarMax450px" *ngIf="LecturaEscritura != 0">Estado</th>
+                                        <th>Acciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let datos of DatosCargaMasiva; let i = index">
+                                        <th>{{InicioPaginacion + i + 1}}</th>
+                                        <th>{{datos.ges_nombres}}</th>
+                                        <th>{{datos.ges_apellidos}}</th>
+                                        <th class="OcultarMax450px">{{datos.ges_fecha_in == null
+                                            ?'':Fechas.fechaCortaAbt(datos.ges_fecha_in)}}</th>
+                                        <th class="OcultarMax450px">{{datos.ges_fecha_up == null
+                                            ?'':Fechas.fechaCortaAbt(datos.ges_fecha_up)}}</th>
+                                        <th class="OcultarMax450px ContenidoCentrado" *ngIf="LecturaEscritura != 0">
+                                            <div class="custom-switch">
+                                                <input type="checkbox" class="custom-control-input"
+                                                    id="idEstado_{{datos.id_gestor}}"
+                                                    [checked]="datos.ges_esactivo==='1'?true:false" name="estado"
+                                                    (change)="ActualizaEstado(datos)">
+                                                <label class="custom-control-label"
+                                                    for="idEstado_{{datos.id_gestor}}"></label>
+                                            </div>
+                                        </th>
+                                        <th>
+                                            <div class="btn-group" role="group">
+                                                <button class="btnVer" (click)="CargarElemento(datos,3)">
+                                                    <i class="fa-regular fa-eye"></i></button>
+                                                <button *ngIf="LecturaEscritura != 0" class="ml-2 btnEditar"
+                                                    (click)="CargarElemento(datos,2)">
+                                                    <i class="bi bi-pencil-fill"></i></button>
+                                                <button *ngIf="LecturaEscritura != 0" class="ml-2 btnEliminar"
+                                                    (click)="EliminarElemento(datos)">
+                                                    <i class="bi bi-trash"></i></button>
+
+                                            </div>
+                                        </th>
+
+                                    </tr>
+                                </tbody>
+                            </table>
+
+                        </div>
+
+                        <div class="card-footer" style="background-color: var(--color-formulario-terciario);"
+                            *ngIf="ListaGestores.length != 0 ">
+                            <div class="row">
+                                <div class="col-lg-2 col-6">
+                                    <p>Total<strong>&nbsp;{{ContadorDatosGeneral}}</strong></p>
+                                </div>
+                                <div class="col-lg-2 col-6">
+                                    <div *ngIf="ContadorDatosGeneral != ContadorDatos">
+                                        <p>Resultado Filtro<strong>&nbsp;{{ContadorDatos}}</strong></p>
+                                    </div>
+
+                                </div>
+                                <div class="col-lg-2 col-6">
+                                    <div>
+                                        <p>Elementos<strong>&nbsp;{{InicioPaginacion+1}}</strong>-<strong>&nbsp;{{InicioPaginacion
+                                                + RangoPaginacion}}</strong></p>
+                                    </div>
+                                </div>
+                                <div class="col-lg-2 col-6">
+                                    <!-- <p>Grupo<strong>&nbsp;1</strong>-<strong>&nbsp;10</strong></p> -->
+
+                                </div>
+                                <div class="col-lg-4 col-12">
+                                    <div class="form-group">
+                                        <div class="float-right">
+                                            <small>
+                                                <button
+                                                    (click)="InicioPaginacion == 0?BtnPreviousUser(1):BtnPreviousUser()"
+                                                    *ngIf="FraccionDatos !== 0||InicioPaginacion !==0" type="button"
+                                                    class="BtnNextPrevious" aria-label=""
+                                                    style="display: inline-block;"><i
+                                                        class="bi bi-arrow-left-circle"></i>
+                                                    Anterior</button>
+
+                                                <button
+                                                    *ngIf="(InicioPaginacion + RangoPaginacion) < ContadorDatos||ContadorDatos == RangoDatos"
+                                                    (click)="(InicioPaginacion + RangoPaginacion) == ContadorDatos?BtnNextUser(1):BtnNextUser()"
+                                                    type="button" class="BtnNextPrevious ml-2 " aria-label=""
+                                                    style="display: inline-block;">Siguiente <i
+                                                        class="bi bi-arrow-right-circle"></i></button>
+                                            </small>
+
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                        </div>
+                    </section>
+                    <!-- CAMBIOS MASIVOS -->
+                    <section class="vertical-center" *ngIf="TituloFormulario == 'CONFIGURACION'">
+                        <div class="card-body" style="background-color: var(--color-formulario-secundario);">
+                            <div class="card-header" style="background-color: var(--color-formulario-primario);">
+                                <button type="button" (click)="CerrarAgregarEditarElemento();ResetGestorMetaForms()"
+                                    class="btn btn-close float-right"></button>
+                                <h2 class="Centrar">Configuracion global de {{PaginaNombre.toLocaleLowerCase()}}</h2>
+                            </div>
+                            <div class="card-body" style="background-color: var(--color-formulario-secundario);">
+                                <form [formGroup]="GestorMetaForms">
+                                    <div class="row">
+                                        <div class="col-md-4 col-12">
+                                            <div class="form-group">
+                                                <span><small>*</small>Cartera</span>
+                                                <select class="form-select" 
+                                                (ngModelChange)="GestorMetaForms.get('id_cartera')?.value != 0?ContarGestores():null"
+                                                    (click)="CarterasList.length != 0?null:ListarCarteras()"
+                                                    formControlName="id_cartera">
+                                                    <option value="0" disabled selected>
+                                                        Seleccione ...
+                                                    </option>
+                                                    <option *ngIf="CarterasList.length == 0" disabled>Cargando ...
+                                                    </option>
+                                                    <option *ngFor="let s of CarterasList" [value]="s.id_cartera">
+                                                        {{s.cart_descripcion+' '+s.cart_tip_descripcion}}
+                                                    </option>
+                                                </select>
+                                                <Section>
+                                                    <div class="error-message" *ngIf="GestorMetaForms.get('id_cartera')?.touched 
+                                && GestorMetaForms.get('id_cartera')?.value == 0">
+                                                        <span style="color: brown;">*Campo obligatorio.</span>
+                                                    </div>
+                                                </Section>
+
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-4 col-12">
+                                            <div class="form-floating mb-3">
+                                                <input type="text" class="form-control" id="ges_meta" placeholder=""
+                                                    formControlName="ges_meta">
+                                                <label class="truncate-text" for="ges_meta">Meta</label>
+                                                <Section>
+                                                    <div class="error-message" *ngIf="GestorMetaForms.get('ges_meta')?.touched 
+                                && GestorMetaForms.get('ges_meta')?.value == ''">
+                                                        <span style="color: brown;">*Campo obligatorio.</span>
+                                                    </div>
+                                                    <div class="error-message" *ngIf="GestorMetaForms.get('ges_meta')?.value != ''
+                        ? validar.V_NumerosDesimales(GestorMetaForms.get('ges_meta')?.value!)  === false:null ">
+                                                        <span style="color: brown;">*contiene caracteres
+                                                            no permitidos en este campo.</span>
+                                                    </div>
+                                                </Section>
+                                            </div>
+
+                                        </div>
+                                        <div class="col-lg-3 col-12 d-flex align-items-center">
+                                                    <div class="btn-group" role="group" aria-label="Basic example">
+                                                        <label class="truncate-text" for="ges_meta">N°&nbsp;Gestores:&nbsp;{{GestoresList.length}}</label>
+                                                    </div>
+                                                </div>
+
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="card-footer" style="background-color: var(--color-formulario-terciario);">
+                                <div class="row Centrar ">
+                                    <small>
+                                        <button class="btnAceptar" [disabled]="GestorMetaForms.invalid" id="btnAgregar"
+                                            (click)="CambiarMetaGlobal(GestorMetaForms.value)">Guardar</button>
+                                        <button class="btnCancelar ml-3"
+                                            (click)="CerrarAgregarEditarElemento();ResetGestorMetaForms()">Cancelar</button>
+                                    </small>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+
+                </div>
+            </div>
+        </section>
+
+
+        <router-outlet></router-outlet>
+    </div>
+</div>
+<app-footer></app-footer>
+
+
+<ng-template #loadingOrError>
+    <section>
+        <div class="ContenidoCentrado">
+            <div class="loader"></div>
+        </div>
+    </section>
+</ng-template>

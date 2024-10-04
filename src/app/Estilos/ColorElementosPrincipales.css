@@ -1,0 +1,14 @@
+thead{
+    color: var(--color-secundario);
+    background-color: var(--color-terciario);
+  }
+/* comportamiento de las columnas de la tabla */
+.table-auto {
+  width: auto !important;
+}
+
+.table-auto th,
+.table-auto td {
+  width: auto !important;
+  white-space: nowrap;
+}

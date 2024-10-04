@@ -1,0 +1,38 @@
+.ContenidoCentrado{
+    display: grid;
+    place-items: center;
+}
+.ContenidoDerecha{
+    display: grid;
+    place-items: end;
+}
+.ContenidoIzquierda{
+    display: grid;
+    place-items: start;
+}
+.Centrar{   
+    text-align: center;
+    margin: 0 auto;
+}
+
+.CentroSobrepuesto {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+.ContenidoVertical {
+    display: flex;
+    justify-content: center; /* Centra horizontalmente */
+    align-items: center; /* Centra verticalmente */
+  }
+  
+  /* .ContenidoCentrado {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: center;
+    width: auto;
+    min-height: auto;
+    padding: auto;
+  } */

@@ -1,0 +1,435 @@
+<app-header></app-header>
+<app-sidebar></app-sidebar>
+<div class="content-wrapper">
+    <div class="container-fluid">
+        <h4 class="NombrePage">{{PaginaActual.Menu_Act.men_descripcion}}</h4>
+        <section class="content">
+            <div class="container-fluid">
+                <div class="card card-default">
+                      <!-- BARRA HOME, AGREGAR, FILTRAR  -->
+                    <section class="horizontal-center" *ngIf="TituloFormulario == ''">
+                        <div class="card-header" style="background-color: var(--color-formulario-primario);">
+                            <div class="btn-group" role="group">
+                                <button class="btnHome" (click)="ListarElementos(1)"><i
+                                        class="fa-solid fa-house"></i></button>
+
+                            </div>
+                            <div class="btn-group float-right" role="group">
+
+                                <label type="text-info"
+                                    class="formControl d-flex justify-content-center align-items-center"
+                                    style="width: 50%;" *ngIf="itemBusqueda.value !== ''">{{itemBusqueda.value}}</label>
+
+                                <button type="button" class="btnFilter ml-1" data-toggle="dropdown"><i
+                                        class="bi bi-funnel"></i></button>
+
+                                <div class="OcultarMax450px" style="width: 50%;">
+                                    <input
+                                        *ngIf="itemBusqueda.value !== '' && (itemBusqueda.value != 'Estado')"
+                                        id="txtValorBusqueda" [formControl]="txtBusqueda"
+                                        (keydown.enter)="FiltrarElemento()" (keyup)="ConvertirMayusculas()"
+                                        class="form-control ml-2" type="text" placeholder="Buscar" autofocus>
+                                </div>
+                                <div class="ml-2  OcultarMax450px">
+                                    <select class="form-select"
+                                        *ngIf="itemBusqueda.value !== '' && itemBusqueda.value === 'Estado'"
+                                        [formControl]="txtBusqueda" [spellcheck]="false" style="width: 150px;">
+                                        <option *ngFor="let estado of ParametrosEstado" [value]="estado.value">
+                                            {{estado.name}}
+                                        </option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <button type="button" class="btnBuscar ml-2 OcultarMax450px"
+                                        *ngIf="txtBusqueda.value !== ''" (click)="FiltrarElemento()"><i
+                                            class="bi bi-search"></i></button>
+                                </div>
+
+
+                                <button *ngIf="PaginaActual.Menu_Act.men_lectura != 0" type="button"
+                                    class="btnAgregar ml-2" (click)="AgregarEditarElemento(1)"><i
+                                        class="bi bi-plus-circle-dotted"></i></button>
+
+                                <div class="dropdown-menu" role="menu">
+                                    <a class="dropdown-item" (click)="GetBusquedaPor(item)"
+                                        *ngFor="let item of ParametrosDeBusqueda">{{item}}</a>
+                                </div>
+                                <section>
+                                    <button *ngIf="this.ListaTG_conec_Conta.length>0" class="btnImprimir ml-2" data-toggle="dropdown" ><i
+                                        class="bi bi-printer"></i></button>
+                                    <div class="dropdown-menu" role="menu1">
+                                        <a class="dropdown-item col-md-4" (click)="GetDescargaPor(d)"
+                                            *ngFor="let d of ParametrosDeDescarga">{{d}}</a>
+                                    </div> 
+                                </section>
+                            </div>
+                        </div>
+                        <div class="card-header OcultarMin450px"
+                            style="background-color: var(--color-formulario-primario);">
+
+                            <!-- <div class="btn-group float-right" role="group">
+                                <input
+                                    *ngIf="itemBusqueda.value !== '' && (itemBusqueda.value === 'Descripción' ||itemBusqueda.value === 'Descripción Incompleta')"
+                                    id="txtValorBusqueda" style="width: 80%;" [formControl]="txtBusqueda"
+                                    (keydown.enter)="FiltrarElemento()" (keyup)="ConvertirMayusculas()"
+                                    class="form-control ml-2" type="text" placeholder="Buscar" autofocus>
+
+                                <select class="form-select"
+                                    *ngIf="itemBusqueda.value !== '' && itemBusqueda.value === 'Estado'"
+                                    [formControl]="txtBusqueda" [spellcheck]="false" style="width: 150px;">
+                                    <option *ngFor="let estado of ParametrosEstado" [value]="estado.value">
+                                        {{estado.name}}
+                                    </option>
+                                </select>
+
+                                <button type="button" class="btnBuscar ml-2" *ngIf="txtBusqueda.value !== ''"
+                                    (click)="FiltrarElemento()"><i class="bi bi-search"></i></button>
+
+                            </div> -->
+                        </div>
+
+                    </section>
+                    <!-- FORMULARIO PARA AGREGAR ELEMENTOS -->
+                    <section class="vertical-center" *ngIf="TituloFormulario != ''">
+                        <div class="card-body" style="background-color: var(--color-formulario-secundario);">
+                            <div class="card-header" style="background-color: var(--color-formulario-primario);">
+                                <button type="button" (click)="CerrarAgregarEditarElemento()"
+                                    class="btn btn-close float-right"></button>
+                                <h2 class="Centrar">{{TituloFormulario}}
+                                    {{PaginaActual.Menu_Act.men_descripcion.toLocaleLowerCase()}}</h2>
+                            </div>
+                            <div class="card-body" style="background-color: var(--color-formulario-secundario);">
+                                <form [formGroup]="TG_conec_ContaForms">
+                                    <div class="row">
+                                        <div class="col-lg-4 col-12 d-flex justify-content-center align-items-center"
+                                            *ngIf="TituloFormulario != 'Agregar'">
+                                            <label class="truncate-text">Id
+                                                Cuenta:&nbsp;{{TG_conec_ContaForms.get('id_tipges_conect_contac')!.value}}</label>
+                                        </div>
+                                        <div class="col-md-4 col-12">
+                                            <div class="form-group">
+                                                <span><small>*</small>Tipo de Gestion</span>
+                                                <select style="height: 35px;" class="form-select"
+                                                    (click)="TipoGestionList.length != 0?null:ListarTipoGestion()"
+                                                    formControlName="id_tipo_gestion">
+                                                    <option value="" disabled selected>
+                                                        Seleccione ...
+                                                    </option>
+                                                    <option *ngIf="TipoGestionList.length == 0" disabled>Cargando ...
+                                                    </option>
+                                                    <option *ngFor="let s of TipoGestionList" [value]="s.id_tipo_gestion">
+                                                        {{s.gestion_tip_descripcion}}
+                                                    </option>
+                                                </select>
+                                                <Section>
+                                                    <div class="error-message" *ngIf="TG_conec_ContaForms.get('id_tipo_gestion')?.hasError('required') 
+                                                    && TG_conec_ContaForms.get('id_tipo_gestion')?.touched">
+                                                        <span style="color: brown;">*Campo obligatorio.</span>
+                                                    </div>
+                                                </Section>
+
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4 col-12">
+                                            <div class="form-group">
+                                                <span><small>*</small>Conectividad</span>
+                                                <select style="height: 35px;" class="form-select"
+                                                    (click)="ConectividadList.length != 0?null:ListarConectividad()"
+                                                    formControlName="id_conectividad">
+                                                    <option value="" disabled selected>
+                                                        Seleccione ...
+                                                    </option>
+                                                    <option *ngIf="ConectividadList.length == 0" disabled>Cargando ...
+                                                    </option>
+                                                    <option *ngFor="let s of ConectividadList" [value]="s.id_conectividad">
+                                                        {{s.conec_descripcion}}
+                                                    </option>
+                                                </select>
+                                                <Section>
+                                                    <div class="error-message" *ngIf="TG_conec_ContaForms.get('id_conectividad')?.hasError('required') 
+                                                    && TG_conec_ContaForms.get('id_conectividad')?.touched">
+                                                        <span style="color: brown;">*Campo obligatorio.</span>
+                                                    </div>
+                                                </Section>
+
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4 col-12">
+                                            <div class="form-group">
+                                                <span><small>*</small>Contactabilidad</span>
+                                                <select style="height: 35px;" class="form-select"
+                                                    (click)="ContactabilidadList.length != 0?null:ListarContactabilidad()"
+                                                    formControlName="id_contactabilidad">
+                                                    <option value="" disabled selected>
+                                                        Seleccione ...
+                                                    </option>
+                                                    <option *ngIf="ContactabilidadList.length == 0" disabled>Cargando ...
+                                                    </option>
+                                                    <option *ngFor="let s of ContactabilidadList" [value]="s.id_contactabilidad">
+                                                        {{s.contac_descripcion}}
+                                                    </option>
+                                                </select>
+                                                <Section>
+                                                    <div class="error-message" *ngIf="TG_conec_ContaForms.get('id_contactabilidad')?.hasError('required') 
+                                                    && TG_conec_ContaForms.get('id_contactabilidad')?.touched">
+                                                        <span style="color: brown;">*Campo obligatorio.</span>
+                                                    </div>
+                                                </Section>
+
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4 col-12">
+                                            <div class="form-group">
+                                                <span><small>*</small>Permisos para abilitar campos</span>
+                                                <select style="height: 35px;" class="form-select"
+                                                (ngModelChange)="TG_conec_ContaForms.get('tipges_per_edi')!.value! == ''?null:CamposEdicion()"
+                                                    formControlName="tipges_per_edi">
+                                                    <option value="" disabled selected>
+                                                        Seleccione ...
+                                                    </option>
+                                                    
+                                                    <option *ngFor="let s of PermisosEditables" [value]="s.valor">
+                                                        {{s.texto}}
+                                                    </option>
+                                                </select>
+                                                <section *ngIf="CamposVisibles!">
+                                                    <label for="tipges_per_edi"><small>{{CamposVisibles}}</small></label>
+                                                </section>
+                                                <Section>
+                                                    <div class="error-message" *ngIf="TG_conec_ContaForms.get('tipges_per_edi')?.hasError('required') 
+                                                    && TG_conec_ContaForms.get('tipges_per_edi')?.touched">
+                                                        <span style="color: brown;">*Campo obligatorio.</span>
+                                                    </div>
+                                                </Section>
+
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-4 col-12 d-flex justify-content-center align-items-center"
+                                            *ngIf="TituloFormulario != 'Agregar' && TG_conec_ContaForms.get('tipges_fecha_act')!.value
+                                                != null">
+                                            <label class="truncate-text">Fecha de
+                                                Activación:&nbsp;{{TG_conec_ContaForms.get('tipges_fecha_act')!.value
+                                                ==
+                                                null?'':Fechas.fechaCortaAbt(TG_conec_ContaForms.get('tipges_fecha_act')!.value!.toString())}}</label>
+                                        </div>
+                                        <div class="col-lg-4 col-12 d-flex justify-content-center align-items-center"
+                                            *ngIf="TituloFormulario != 'Agregar' && TG_conec_ContaForms.get('tipges_fecha_desact')!.value
+                                                != null">
+                                            <label class="truncate-text">Fecha de
+                                                Desactivación:&nbsp;{{TG_conec_ContaForms.get('tipges_fecha_desact')!.value
+                                                ==
+                                                null?'':Fechas.fechaCortaAbt(TG_conec_ContaForms.get('tipges_fecha_desact')!.value!.toString())}}</label>
+                                        </div>
+                                        <div class="col-lg-4 col-12 d-flex justify-content-center align-items-center"
+                                            *ngIf="TituloFormulario != 'Agregar' && TG_conec_ContaForms.get('tipges_fecha_in')!.value
+                                                != null">
+                                            <label class="truncate-text">Fecha de
+                                                Creación:&nbsp;{{TG_conec_ContaForms.get('tipges_fecha_in')!.value
+                                                ==
+                                                null?'':Fechas.fechaCortaAbt(TG_conec_ContaForms.get('tipges_fecha_in')!.value!.toString())}}</label>
+                                        </div>
+                                        <div class="col-lg-4 col-12 d-flex justify-content-center align-items-center"
+                                            *ngIf="TituloFormulario != 'Agregar' && TG_conec_ContaForms.get('tipges_fecha_up')!.value
+                                                != null">
+                                            <label class="truncate-text">Fecha de
+                                                Actualización:&nbsp;{{TG_conec_ContaForms.get('tipges_fecha_up')!.value
+                                                ==
+                                                null?'':Fechas.fechaCortaAbt(TG_conec_ContaForms.get('tipges_fecha_up')!.value!.toString())}}</label>
+                                        </div> 
+                                        <div class="col-lg-4 col-12">
+                                            <div class="Centrar">
+                                                <div class="btn-group">
+                                                    <div class="form-group">
+                                                        <label class="truncate-text"
+                                                            for="tipges_esactivo">Estado</label>&nbsp;
+                                                        <div class="custom-control custom-switch Centrar"
+                                                            title="Estado">
+                                                            <input type="checkbox" class="custom-control-input"
+                                                                formControlName="tipges_esactivo" name="estado"
+                                                                id="tipges_esactivo">
+                                                            <label class="custom-control-label"
+                                                                for="tipges_esactivo">{{TG_conec_ContaForms.get('tipges_esactivo')!.value
+                                                                == false ?
+                                                                'Inactivo' : 'Activo'}}</label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="card-footer" style="background-color: var(--color-formulario-terciario);">
+                                <div class="row Centrar ">
+                                    <small>
+                                        <button class="btnAceptar" [disabled]="TG_conec_ContaForms.invalid"
+                                            *ngIf="TituloFormulario != 'Visualizar'" id="btnAgregar"
+                                            (click)="ActDesControles(1);GuardarObjeto(TG_conec_ContaForms.value);ActDesControles(0)">Guardar</button>
+                                        <button class="btnCancelar ml-3"
+                                            (click)="CerrarAgregarEditarElemento()">Cancelar</button>
+                                    </small>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- FORMULARIO PARA LISTAR ELEMENTOS -->
+                    <section class="expand-bottom" *ngIf="TituloFormulario == ''">
+                        <div class="card-body" style="background-color: var(--color-formulario-secundario);">
+                            <div class="card-footer" style="background-color: var(--color-formulario-terciario);"
+                                *ngIf="ListaTG_conec_Conta.length != 0">
+                                <div class="float-right clearfix">
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <button type="button" class="btn btnOk btn-sm dropdown-toggle"
+                                                data-toggle="dropdown" aria-expanded="false">
+                                                {{FirltroPor}}
+                                            </button>
+                                            <ul class="dropdown-menu" x-placement="top-start">
+                                                <li class="dropdown-item" style="cursor: pointer;"
+                                                *ngFor="let item of ParametrosDeFiltro"
+                                                    (click)="FiltrarPor(item.valor)">
+                                                    <a>{{item.texto}}</a>
+                                                </li>
+
+
+                                            </ul>
+                                        </div>
+
+                                        <input type="text" id="TxtFiltro" (keyup)="FiltrarLista()"
+                                            [formControl]="TextoFiltro" class="form-control form-control-sm">
+
+                                        <div class="input-group-append">
+                                            <button type="button" class="btn btnOk btn-sm" (click)="VaciarFiltro()">
+                                                <i class="bi bi-trash"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <table class="table table-bordered table-responsive-md" *ngIf="ListaTG_conec_Conta.length != 0">
+                                <thead>
+                                    <tr>
+                                        <th style="width: 10px">#</th>
+                                        <th id="ThF0">Tipo de Gestion</th>
+                                        <th id="ThF1">Conectividad</th>
+                                        <th id="ThF2">Contactabilidad</th>
+                                        <th class="OcultarMax450px" *ngIf="PaginaActual.Menu_Act.men_lectura != 0">
+                                            Estado</th>
+                                        <th>Acciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let datos of DatosCargaMasiva; let i = index">
+                                        <th>{{InicioPaginacion + i + 1}}</th>
+                                        <th>{{datos.gestion_tip_descripcion}}</th>
+                                        <th>{{datos.conec_descripcion}}</th>
+                                        <th>{{datos.contac_descripcion}}</th>
+                                        <th class="OcultarMax450px ContenidoCentrado"
+                                            *ngIf="PaginaActual.Menu_Act.men_lectura != 0">
+                                            <div class="custom-switch">
+                                                <input type="checkbox" class="custom-control-input"
+                                                    id="idEstado_{{datos.id_tipges_conect_contac}}"
+                                                    [checked]="datos.tipges_esactivo==='1'?true:false" name="estado"
+                                                    (change)="ActualizaEstado(datos)">
+                                                <label class="custom-control-label"
+                                                    for="idEstado_{{datos.id_tipges_conect_contac}}"></label>
+                                            </div>
+                                        </th>
+                                        <th>
+                                            <div class="btn-group" role="group">
+                                                <button class="btnVer" (click)="CargarElemento(datos,3)">
+                                                    <i class="fa-regular fa-eye"></i></button>
+                                                <button *ngIf="PaginaActual.Menu_Act.men_lectura != 0"
+                                                    class="ml-2 btnEditar" (click)="CargarElemento(datos,2)">
+                                                    <i class="bi bi-pencil-fill"></i></button>
+                                                <button *ngIf="PaginaActual.Menu_Act.men_lectura != 0"
+                                                    class="ml-2 btnEliminar" (click)="EliminarElemento(datos)">
+                                                    <i class="bi bi-trash"></i></button>
+
+                                            </div>
+                                        </th>
+
+                                    </tr>
+                                </tbody>
+                            </table>
+
+                        </div>
+
+                        <div class="card-footer" style="background-color: var(--color-formulario-terciario);"
+                            *ngIf="ListaTG_conec_Conta.length != 0 ">
+                            <div class="row">
+                                <div class="col-lg-2 col-6">
+                                    <p>Total<strong>&nbsp;{{ContadorDatosGeneral}}</strong></p>
+                                </div>
+                                <div class="col-lg-2 col-6">
+                                    <div *ngIf="ContadorDatosGeneral != ContadorDatos">
+                                        <p>Resultado Filtro<strong>&nbsp;{{ContadorDatos}}</strong></p>
+                                    </div>
+
+                                </div>
+                                <div class="col-lg-2 col-6">
+                                    <div>
+                                        <p>Elementos<strong>&nbsp;{{InicioPaginacion + 1}}</strong>-<strong>
+                                                &nbsp;{{InicioPaginacion + RangoPaginacion}}</strong></p>
+                                    </div>
+                                </div>
+                                <div class="col-lg-2 col-6">
+                                </div>
+                                <div class="col-lg-4 col-12">
+                                    <div class="form-group">
+                                        <div class="float-right">
+                                            <small>
+                                                <button
+                                                    (click)="InicioPaginacion == 0?BtnPreviousUser(1):BtnPreviousUser()"
+                                                    *ngIf="FraccionDatos !== 0||InicioPaginacion !==0" type="button"
+                                                    class="BtnNextPrevious" aria-label=""
+                                                    style="display: inline-block;"><i
+                                                        class="bi bi-arrow-left-circle"></i>
+                                                    Anterior</button>
+
+                                                <button
+                                                    *ngIf="(InicioPaginacion + RangoPaginacion) < ContadorDatos||ContadorDatos == PaginaActual.Usuario.usr_rango_datos"
+                                                    (click)="(InicioPaginacion + RangoPaginacion) == ContadorDatos?BtnNextUser(1):BtnNextUser()"
+                                                    type="button" class="BtnNextPrevious ml-2 " aria-label=""
+                                                    style="display: inline-block;">Siguiente <i
+                                                        class="bi bi-arrow-right-circle"></i></button>
+                                            </small>
+
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                        </div>
+                    </section>
+
+
+
+                </div>
+            </div>
+        </section>
+
+
+        <router-outlet></router-outlet>
+    </div>
+</div>
+<app-footer></app-footer>
+
+
+<ng-template #loadingOrError>
+    <section>
+        <div class="ContenidoCentrado">
+            <div class="loader"></div>
+        </div>
+    </section>
+</ng-template>
+
+<section class="modal" id="Cargando">
+    <section>
+        <div class="CentroSobrepuesto">
+            <div class="loaderLogin"></div>
+        </div>
+    </section>
+</section>

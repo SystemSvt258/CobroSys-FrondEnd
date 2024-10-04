@@ -1,0 +1,32 @@
+.main-header{
+    background-color: var(--color-secundario);
+}
+.navbar-badge {
+    font-size: .6rem;
+    font-weight: 300;
+    padding: 2px 4px;
+    position: absolute;
+    right: 5px;
+    top: 9px;
+}
+.dropdown-menu{
+    background-color: var(--color-secundario);
+}
+a{
+    color: var(--color-texto-primario);
+    border-top-left-radius: 20px;
+    border-bottom-right-radius: 20px;
+}
+.colot-texto{
+    color: var(--color-texto-primario);
+}
+i{
+    color: var(--color-texto-primario);
+}
+a:hover{
+    background-color: var(--color-secundario-hover);
+    border: var(--color-primario-hover) 1px solid;
+    border-top-left-radius: 20px;
+    border-bottom-right-radius: 20px;
+      
+}

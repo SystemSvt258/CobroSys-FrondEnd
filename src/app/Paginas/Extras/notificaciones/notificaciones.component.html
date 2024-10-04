@@ -1,0 +1,284 @@
+<app-header></app-header>
+<app-sidebar></app-sidebar>
+<div class="content-wrapper">
+    <div class="container-fluid">
+        <h4 class="NombrePage">{{PaginaActual.Menu_Act.men_descripcion}}</h4>
+        <!-- PAGINA DE SELECCION -->
+        <section class="content" *ngIf="TituloPagina == ''">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-md-3 col-sm-6 col-12" style="cursor: pointer;" (click)="SelecionFuncional(1)">
+                        <div class="info-box  bg-info">
+                            <span class="info-box-icon"><i class="fa-solid fa-envelopes-bulk"></i></span>
+                            <div class="info-box-content">
+                                <span class="info-box-text">ARCHIVOS</span>
+                                <span class="fa-solid fa-upload"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3 col-sm-6 col-12" style="cursor: pointer;" (click)="SelecionFuncional(2)">
+                        <div class="info-box  bg-info">
+                            <span class="info-box-icon"><i class="fa-solid fa-file-lines"></i></span>
+                            <div class="info-box-content">
+                                <span class="info-box-text">ELEMENTOS</span>
+                                <span class="fa-solid fa-upload"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+        </section>
+        <!-- PAGINA PARA CARGAR ARCHIVOS -->
+        <section class="content" *ngIf="TituloPagina == 'ARCHIVOS'">
+            <div class="container-fluid">
+                <form [formGroup]="SeleccionEntidad">
+                    <div class="row">
+                        <div class="col-md-3 col-sm d-flex align-items-center">
+                            <div class="form-group" style="min-width: 80%;" role="group" aria-label="Basic example">
+                                <span title=""><small>*</small>Entidad</span>
+                                <select style="height: 35px;" class="form-select" formControlName="tipo_entidad"
+                                    (ngModelChange)="this.SeleccionEntidad.get('tipo_entidad')?.value == 0?null:this.SeleccionarEntidad()">
+                                    <option [value]="0" disabled selected>
+                                        Seleccione ...
+                                    </option>
+                                    <option *ngFor="let s of TipoEntidad" [value]="s.valor">
+                                        {{s.name}}
+                                    </option>
+                                </select>
+                            </div>
+                            <div class="btn-group ml-2" role="group" aria-label="Basic example">
+                                <button class="btnAceptar" (click)="DescargarModelo()"
+                                    [disabled]="SeleccionEntidad.get('tipo_entidad')?.value == 0">
+                                    <i class="fa-solid fa-arrow-down"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-6">
+                            <div class="form-floating mb-3">
+                                <input type="file" class="form-control" id="archivo_lectura"
+                                    formControlName="archivo_lectura" accept=".xls,.xlsx"
+                                    (change)="SeleccionarArchivo($event)">
+                                <label for="archivo_lectura"><small>*</small>Archivo</label>
+                            </div>
+                        </div>
+
+                        <div class="col-md-2 col-sm d-flex align-items-center" *ngIf="archivo != null">
+                            <div class="form-group" style="min-width: 100%;" role="group" aria-label="Basic example">
+                                <span title=""><small>*</small>Hoja</span>
+                                <select style="height: 35px;" class="form-select" formControlName="hoja_selecionada"
+                                    (change)="SeleccionarHoja()">
+                                    <option [value]="''" disabled selected>
+                                        Seleccione ...
+                                    </option>
+                                    <option *ngFor="let s of HojasExcelLectura" [value]="s">
+                                        {{s}}
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+                        <!-- <div class="col-md-3 col-sm d-flex align-items-center">
+                            <div class="form-group" style="min-width: 80%;" role="group" aria-label="Basic example">
+                                <span title=""><small>*</small>Hoja</span>
+                                <select style="height: 35px;" class="form-select" formControlName="tipo_entidad"
+                                    (ngModelChange)="this.SeleccionEntidad.get('tipo_entidad')?.value == 0?null:this.SeleccionarEntidad()">
+                                    <option [value]="0" disabled selected>
+                                        Seleccione ...
+                                    </option>
+                                    <option *ngFor="let s of HojasExcelLectura" [value]="s">
+                                        {{s}}
+                                    </option>
+                                </select>
+                            </div>
+                        </div> -->
+
+                        <div class="col-sm d-flex align-items-center">
+                            <div class="btn-group" role="group" aria-label="Basic example">
+                                <button class="btnEliminar" (click)="ResetSeleccionEntidad()">Limpiar&nbsp;
+                                    <i class="bi bi-trash"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm d-flex align-items-center">
+                            <div class="btn-group" role="group" aria-label="Basic example">
+                                <button class="btnEditar" (click)="ValidarElementos()">Validar&nbsp;
+                                    <!-- <i class="bi bi-trash"></i> -->
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div *ngIf="DatosHojaSeleccionada.length > 0 || DatosValidados.length > 0"
+                            class="table-responsive">
+                            <table class="table table-bordered">
+                                <!-- <div style="max-height: 300px">
+                                    <thead>
+                                        <tr>
+                                            <th>#</th>
+                                            <th *ngFor="let header of headers">{{ header }}</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr *ngFor="let cliente of DatosHojaSeleccionada; let i = index" >
+                                            <td>{{i + 1}}</td>
+                                            <td *ngFor="let header of headers">{{ cliente[header] }}</td>
+                                        </tr>
+
+                                        <tr *ngFor="let cliente of DatosValidados; let i = index" >
+                                            <td [ngStyle]="{'background-color': cliente.validacion ? null : 'red'}">{{i + 1}}</td>
+                                            <td [ngStyle]="{'background-color': cliente.validacion ? null : 'red'}" *ngFor="let header of headers">{{ cliente[header] }}</td>
+                                        </tr>
+                                    </tbody>
+                                </div> -->
+                                <!-- <div style="max-height: 300px">
+                                    <table>
+                                        <thead>
+                                            <tr>
+                                                <th>#</th>
+                                                <th *ngFor="let header of headers">{{ header }}</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+
+                                            <tr *ngFor="let elemento of DatosHojaSeleccionada; let i = index"
+                                                [ngStyle]="{'background-color': hasInvalidFields(elemento) ? 'rgba(255, 0, 0, 0.1)' : null}">
+                                                <td>{{ i + 1 }}</td>
+                                                <td *ngFor="let header of headers"
+                                                    [ngStyle]="{'background-color': isFieldInvalid(elemento, header) ? 'rgba(255, 0, 0, 0.5)' : null}">
+                                                    {{ elemento[header] }}
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div> -->
+
+
+                            </table>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <!-- <div class="row"  *ngIf="DatosHojaSeleccionada.length > 0"> -->
+                        <section class="expand-bottom">
+                            <div class="card-body" style="background-color: var(--color-formulario-secundario);">
+
+                                <div class="card-header" style="background-color: var(--color-formulario-terciario);">
+                                    <div class="row">
+                                        <div class="col-lg-2 col-6">
+                                            <p>Total<strong>&nbsp;</strong></p>
+                                        </div>
+                                        <div class="col-lg-2 col-6">
+                                            <p>Filas<strong>&nbsp;</strong></p>
+                                        </div>
+                                        <div class="col-lg-2 col-6">
+                                            <p>Columnas<strong>&nbsp;</strong></p>
+                                        </div>
+                                        <div class="col-lg-2 col-6">
+                                            <p>Correctos<strong>&nbsp;</strong></p>
+                                        </div>
+                                        <div class="col-lg-2 col-6">
+                                            <p>Incorrectos<strong>&nbsp;</strong></p>
+                                        </div>
+                                        <div class="col-md-2 col-6 d-flex align-items-center justify-content-end">
+                                            <!-- Alineación a la derecha -->
+                                            <div class="input-group mr-2">
+                                                <span class=" mr-2">Filtro&nbsp;</span>
+                                                <select class="form-select form-control-sm"
+                                                    formControlName="tipo_entidad"
+                                                    (ngModelChange)="this.SeleccionEntidad.get('tipo_entidad')?.value == 0 ? null : this.SeleccionarEntidad()">
+                                                    <option [value]="0" disabled selected>Seleccione ...</option>
+                                                    <option [value]="1">Todos</option>
+                                                    <option [value]="2">Validos</option>
+                                                    <option [value]="3">Invalidos</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+                                </div>
+                                 <table class="table table-bordered table-responsive   table-auto small">
+                                    <div style="max-height: 300px">
+                                        <thead>
+                                            <tr>
+                                                <th >#</th>
+                                                <th *ngFor="let header of headers">{{ header }}</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+
+                                            <tr *ngFor="let elemento of DatosHojaSeleccionada; let i = index"
+                                                [ngStyle]="{'background-color': hasInvalidFields(elemento) ? 'rgba(255, 0, 0, 0.1)' : null}">
+                                                <td>{{ i + 1 }}</td>
+                                                <td *ngFor="let header of headers"
+                                                    [ngStyle]="{'background-color': isFieldInvalid(elemento, header) ? 'rgba(255, 0, 0, 0.5)' : null}">
+                                                    {{ elemento[header] }}
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </div>
+                                </table>                                
+                            </div>
+
+                            <div class="card-footer" style="background-color: var(--color-formulario-terciario);">
+                                <div class="row">
+                                    <div class="col-lg-2 col-6">
+                                        <p>Total<strong>&nbsp;</strong></p>
+                                    </div>
+                                    <div class="col-lg-2 col-6">
+                                        <div>
+                                            <p>Resultado Filtro<strong>&nbsp;</strong></p>
+                                        </div>
+
+                                    </div>
+                                    <div class="col-lg-2 col-6">
+                                        <div>
+                                            <p>Elementos<strong>&nbsp;</strong>-<strong>&nbsp;</strong></p>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-2 col-6">
+                                        <!-- <p>Grupo<strong>&nbsp;1</strong>-<strong>&nbsp;10</strong></p> -->
+
+                                    </div>
+                                    <div class="col-lg-4 col-12">
+                                        <div class="form-group">
+                                            <div class="float-right">
+
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+
+                            </div>
+                        </section>
+                    </div>
+                </form>
+            </div>
+        </section>
+
+
+        <router-outlet></router-outlet>
+    </div>
+</div>
+<app-footer></app-footer>
+
+
+<ng-template #loadingOrError1>
+    <section>
+        <div class="ContenidoCentrado">
+            <div class="loader1"></div>
+        </div>
+    </section>
+</ng-template>
+
+<section class="modal" id="Cargando">
+    <section>
+        <div class="CentroSobrepuesto">
+            <div class="loaderLogin"></div>
+        </div>
+    </section>
+</section>

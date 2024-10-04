@@ -1,0 +1,843 @@
+<app-header></app-header>
+<app-sidebar></app-sidebar>
+<div class="content-wrapper">
+    <div class="container-fluid">
+        <h4 class="NombrePage">{{PaginaNombre}}</h4>
+        <section class="content">
+            <div class="container-fluid">
+                <div class="card card-default">
+
+
+                    <!-- BARRA DE INICIO Y PARA FILTROS DE BUSQUEDA -->
+                    <section class="horizontal-center" *ngIf="TituloFormulario == ''">
+                        <div class="card-header" style="background-color: var(--color-formulario-primario);">
+                            <div class="btn-group" role="group">
+                                <button class="btnHome" (click)="GetFiltrarElemento(BuscarForms.value)"><i
+                                        class="fa-solid fa-house"></i></button>
+
+                            </div>
+                            <div class="btn-group float-right" role="group">
+
+                                <button class="btnFilter collapsed" type="button" data-bs-toggle="collapse"
+                                    data-bs-target="#MasParametrosBusqueda" aria-expanded="false"
+                                    aria-controls="MasParametrosBusqueda">
+                                    <i class="bi bi-funnel"></i>
+                                </button>
+
+
+                                <button *ngIf="LecturaEscritura != 0" type="button" class="btnAgregar ml-2"
+                                    (click)="AgregarEditarElemento(1)"><i class="bi bi-plus-circle-dotted"></i></button>
+
+                                    <section>
+                                        <button *ngIf="this.ListaPagos.length>0" class="btnImprimir ml-2" data-toggle="dropdown" ><i
+                                            class="bi bi-printer"></i></button>
+                                        <div class="dropdown-menu" role="menu1">
+                                            <a class="dropdown-item col-md-4" (click)="GetDescargaPor(d)"
+                                                *ngFor="let d of ParametrosDeDescarga">{{d}}</a>
+                                        </div>
+                                    </section>
+
+                            </div>
+                        </div>
+
+                    </section>
+                    <section class="horizontal-center" *ngIf="TituloFormulario == ''">
+                        <form [formGroup]="BuscarForms">
+                            <div class="row">
+                                <div class="accordion" id="AcordionParametrosBus">
+                                    <div class="accordion-item">
+
+                                        <div id="MasParametrosBusqueda" class="accordion-collapse collapse"
+                                            data-bs-parent="#AcordionParametrosBus">
+                                            <div class="accordion-body">
+                                                <div class="row">
+                                                    <div class="col-md-1 col-3">
+                                                        <button type="button" class="btnBuscar ml-2"
+                                                            (click)="GetFiltrarElemento(BuscarForms.value)">
+                                                            <i class="bi bi-search"></i>
+                                                        </button>
+                                                    </div>
+                                                    <div class="col-md-2 col-9">
+                                                        <div class="form-floating">
+                                                            <input type="text" class="form-control" id="identificacion"
+                                                                placeholder="" formControlName="identificacion">
+                                                            <label class="truncate-text"
+                                                                for="identificacion">Identificación</label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-3 col-12">
+                                                        <div class="form-floating">
+                                                            <input type="text" class="form-control" id="nombres_cliente"
+                                                                placeholder="" formControlName="nombres_cliente">
+                                                            <label class="truncate-text"
+                                                                for="nombres_cliente">Nombres</label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-3 col-6">
+                                                        <div class="form-group">
+                                                            <span title="">Cartera</span>
+
+                                                            <select style="height: 35px;" class="form-select"
+                                                                formControlName="cartera">
+                                                                <option [value]="0">Todos</option>
+                                                                <option *ngFor="let s of CarteraGestor"
+                                                                    [value]="s.cart_id">
+                                                                    {{s.cart_descripcion+' '+s.cart_tip_descripcion}}
+                                                                </option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-3 col-6">
+                                                        <div class="form-group">
+                                                            <span title="">Gestor</span>
+
+                                                            <select style="height: 35px;" class="form-select"
+                                                                (click)="ListaGestores.length == 0?ListarGestores():null"
+                                                                formControlName="gestor">
+                                                                <option *ngIf="ListaGestores.length == 0" disabled>
+                                                                    Cargando...
+                                                                </option>
+                                                                <option [value]="0">Todos</option>
+                                                                <option *ngFor="let s of ListaGestores"
+                                                                    [value]="s.id_gestor">
+                                                                    {{s.ges_nombres+' '+s.ges_apellidos}}
+                                                                </option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-3 col-6">
+                                                        <div class="form-group">
+                                                            <span title="">Cuentas</span>
+
+                                                            <select style="height: 35px;" class="form-select"
+                                                                (click)="ListaCuentas.length == 0?ListarCuentas():null"
+                                                                formControlName="cuenta">
+                                                                <option *ngIf="ListaCuentas.length == 0" disabled>
+                                                                    Cargando...
+                                                                </option>
+                                                                <option [value]="0">Todas</option>
+                                                                <option *ngFor="let s of ListaCuentas"
+                                                                    [value]="s.id_cuenta">
+                                                                    {{s.cuent_nombre}}
+                                                                </option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-3 col-6">
+                                                        <div class="form-group">
+                                                            <span title="">Mes</span>
+
+                                                            <select style="height: 35px;" class="form-select"
+                                                                formControlName="mes">
+                                                                <option *ngIf="ListaMeses.length == 0" disabled>
+                                                                    Cargando...
+                                                                </option>
+                                                                <option *ngFor="let s of ListaMeses" [value]="s.nombre">
+                                                                    {{s.nombre}}
+                                                                </option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-3 col-6">
+                                                        <div class="form-group">
+                                                            <span title="">Año</span>
+
+                                                            <select style="height: 35px;" class="form-select"
+                                                                (click)="ListaYear.length == 0?ListarYears():null"
+                                                                formControlName="year">
+                                                                <option *ngIf="ListaYear.length == 0" disabled>
+                                                                    Cargando...
+                                                                </option>
+                                                                <option *ngFor="let s of ListaYear" [value]="s.valor">
+                                                                    {{s.valor}}
+                                                                </option>
+                                                                <!-- <option [value]="0">Todos</option> -->
+                                                            </select>
+                                                        </div>
+                                                    </div>
+
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+
+                            </div>
+                        </form>
+                    </section>
+
+                    <!-- FORMULARIO PARA LISTAR ELEMENTOS -->
+                    <section class="expand-bottom" *ngIf="TituloFormulario == ''">
+                        <div class="" style="background-color: var(--color-formulario-secundario);"
+                            *ngIf="!loading ;else loadingOrError">
+                            <div class="card-footer" style="background-color: var(--color-formulario-terciario);"
+                                *ngIf="ListaPagos.length != 0">
+                                <div class="row">
+                                    <div class="col-lg-2 col-6">
+                                        <p>Total<strong>&nbsp;{{PagosTotal}}</strong></p>
+                                    </div>
+                                    <div class="col-lg-2 col-6">
+                                        <div>
+                                            <p>Pagos Verificados<strong>&nbsp;{{PagosVerificados}}</strong></p>
+                                        </div>
+
+                                    </div>
+                                    <div class="col-lg-2 col-6">
+                                        <div>
+                                            <p>Pagos sin verificar<strong>&nbsp;{{PagosSinVerificados}}</strong></p>
+                                        </div>
+
+                                    </div>
+                                    <div class="col-lg-2 col-6">
+                                        <!-- <p>Grupo<strong>&nbsp;1</strong>-<strong>&nbsp;10</strong></p> -->
+
+                                    </div>
+                                    <div class="col-lg-4 col-12">
+                                        <div class="form-group">
+                                            <div class="float-right">
+                                                <div class="float-right clearfix">
+                                                    <div class="input-group">
+                                                        <div class="input-group-prepend">
+                                                            <button type="button"
+                                                                class="btn btnOk btn-sm dropdown-toggle"
+                                                                data-toggle="dropdown" aria-expanded="false">
+                                                                {{ FirltroPor}}
+                                                            </button>
+                                                            <ul class="dropdown-menu" x-placement="top-start">
+                                                                <li class="dropdown-item" style="cursor: pointer;"
+                                                                    (click)="FiltrarPor('Nombre')">
+                                                                    <a>Nombre</a>
+                                                                </li>
+                                                                <li class="dropdown-item" style="cursor: pointer;"
+                                                                    (click)="FiltrarPor('Apellido')">
+                                                                    <a>Apellido</a>
+                                                                </li>
+
+                                                            </ul>
+                                                        </div>
+
+                                                        <input type="text" id="TxtFiltro" (keyup)="FiltrarLista(0)"
+                                                            [formControl]="TextoFiltro"
+                                                            class="form-control form-control-sm">
+
+                                                        <div class="input-group-append">
+                                                            <button type="button" class="btn btnOk btn-sm"
+                                                                (click)="VaciarFiltro()">
+                                                                <i class="bi bi-trash"></i>
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+
+
+                            </div>
+                            <table class="table table-bordered table-responsive   table-auto small"
+                                *ngIf="ListaPagos.length != 0">
+                                <thead>
+                                    <tr>
+                                        <th style="width: 10px">#</th>
+                                        <th>Acciones</th>
+                                        <!-- <th id="ThDescripcion">Id Pago</th> -->
+                                        <th id="ThApellido">Cliente</th>
+                                        <th id="ThApellido"></th>
+                                        <th class="OcultarMax450px">Cartera</th>
+                                        <th class="OcultarMax450px">Cod. Comprobante</th>
+                                        <th class="OcultarMax450px">Abono</th>
+                                        <th class="OcultarMax450px">Cuenta</th>
+                                        <!-- <th class="OcultarMax450px">Id Credito</th> -->
+                                        <th class="OcultarMax450px">Cod Credito</th>
+                                        <th class="OcultarMax450px">Producto</th>
+                                        <th class="OcultarMax450px">Fecha pago</th>
+                                        <th class="OcultarMax450px">Ges. Ingresa</th>
+                                        <th class="OcultarMax450px">Fecha Verificacion</th>
+                                        <th class="OcultarMax450px">Verificado por</th>
+                                        <th class="OcultarMax450px">Ges. Asignado</th>
+                                        <th class="OcultarMax450px">Fecha ingreso</th>
+                                        <th class="OcultarMax450px">Estado</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="small">
+                                    <tr *ngFor="let datos of DatosCargaMasiva; let i = index">
+                                        <th class="{{datos.Pagos.pag_pago_verificado==1?'verificado':''}}">
+                                            {{InicioPaginacion
+                                            + i + 1}}</th>
+                                        <th class="{{datos.Pagos.pag_pago_verificado==1?'verificado':''}}">
+                                            <div class="btn-group" role="group">
+                                                <button class="btnVer" (click)="VerElemento(datos)">
+                                                    <i class="fa-regular fa-eye"></i></button>
+
+                                                <button class="ml-2 btnEditar"
+                                                    *ngIf="datos.Pagos.pag_pago_verificado!=1 || Rol == 'ADMINISTRADOR'"
+                                                    (click)="CargarElemento(datos,2)">
+                                                    <i class="bi bi-pencil-fill"></i></button>                                               
+                                                <button class="ml-2 btnAceptar"
+                                                    [disabled]="datos.Pagos.pag_url_comprobante == ''"
+                                                    *ngIf="Rol != 'GESTOR'"
+                                                    (click)="datos.Pagos.pag_pago_verificado==1?YaVerificado():VerificarElemento(datos.Pagos)">
+                                                    <i class="fa-solid fa-circle-check"></i></button>
+
+                                                <button class="ml-2 btnEliminar"
+                                                    *ngIf="datos.Pagos.pag_pago_verificado!=1  || Rol == 'ADMINISTRADOR'"
+                                                    (click)="EliminarElemento(datos.Pagos)">
+                                                    <i class="bi bi-trash"></i></button>
+                                            </div>
+                                        </th>
+                                        <!-- <th class="{{datos.Pagos.pag_pago_verificado==1?'verificado':''}}">{{datos.Pagos.id_pagos}}
+                                        </th> -->
+                                        <th class="{{datos.Pagos.pag_pago_verificado==1?'verificado':''}}">
+                                            {{datos.Pagos.Cliente.cli_identificacion}}</th>
+                                        <th class="{{datos.Pagos.pag_pago_verificado==1?'verificado':''}}">
+                                            {{datos.Pagos.Cliente.cli_nombres}}</th>
+                                        <th class="{{datos.Pagos.pag_pago_verificado==1?'verificado':''}}">
+                                            {{datos.Pagos.Cartera.cart_descripcion}}</th>
+                                        <th class="{{datos.Pagos.pag_pago_verificado==1?'verificado':''}}">
+                                            {{datos.Pagos.pag_codigo_comprobante}}</th>
+                                        <th class="{{datos.Pagos.pag_pago_verificado==1?'verificado':''}}">
+                                            {{datos.Pagos.pag_pago}}</th>
+                                        <th class="{{datos.Pagos.pag_pago_verificado==1?'verificado':''}}">
+                                            {{datos.Pagos.Cuenta.cuent_nombre}}</th>
+                                        <!-- <th class="{{datos.Pagos.pag_pago_verificado==1?'verificado':''}}">
+                                            {{datos.Pagos.Credito.id_cxc_operacion}}</th> -->
+                                        <th class="{{datos.Pagos.pag_pago_verificado==1?'verificado':''}}">
+                                            {{datos.Pagos.Credito.ope_cod_credito}}</th>
+                                        <th class="{{datos.Pagos.pag_pago_verificado==1?'verificado':''}}">
+                                            {{datos.Pagos.Credito.ope_producto}}</th>
+                                        <th class="{{datos.Pagos.pag_pago_verificado==1?'verificado':''}}">
+                                            {{datos.Pagos.pag_fecha_pago==null?'':fechas.fechaCortaAbt(datos.Pagos.pag_fecha_pago)}}
+                                        </th>
+                                        <th class="{{datos.Pagos.pag_pago_verificado==1?'verificado':''}}">
+                                            {{datos.ingresa}}</th>
+                                        <th class="{{datos.Pagos.pag_pago_verificado==1?'verificado':''}}">
+                                            {{datos.Pagos.pag_fecha_verificacion ==
+                                            null?null:fechas.fechaCortaAbt(datos.Pagos.pag_fecha_verificacion)}}</th>
+                                        <th class="{{datos.Pagos.pag_pago_verificado==1?'verificado':''}}">
+                                            {{datos.verifica}}</th>
+                                        <th class="{{datos.Pagos.pag_pago_verificado==1?'verificado':''}}">
+                                            {{datos.Pagos.Gestor.ges_nombres+' '+datos.Pagos.Gestor.ges_apellidos}}</th>
+                                        <th class="{{datos.Pagos.pag_pago_verificado==1?'verificado':''}}">
+                                            {{datos.Pagos.pag_fecha_in==null?'':fechas.fechaCortaAbtF1(datos.Pagos.pag_fecha_in)}}
+                                        </th>
+                                        <th class="{{datos.Pagos.pag_pago_verificado==1?'verificado':''}}">
+                                            {{datos.Pagos.Credito.ope_estado_contacta}}</th>
+
+                                    </tr>
+                                </tbody>
+                            </table>
+
+                        </div>
+
+                        <div class="card-footer" style="background-color: var(--color-formulario-terciario);"
+                            *ngIf="ListaPagos.length != 0 ">
+                            <div class="row">
+                                <div class="col-lg-2 col-6">
+                                    <p>Total<strong>&nbsp;{{ContadorDatosGeneral}}</strong></p>
+                                </div>
+                                <div class="col-lg-2 col-6">
+                                    <div *ngIf="ContadorDatosGeneral != ContadorDatos">
+                                        <p>Resultado Filtro<strong>&nbsp;{{ContadorDatos}}</strong></p>
+                                    </div>
+
+                                </div>
+                                <div class="col-lg-2 col-6">
+                                    <div>
+                                        <p>Elementos<strong>&nbsp;{{InicioPaginacion+1}}</strong>-<strong>&nbsp;{{InicioPaginacion
+                                                + RangoPaginacion}}</strong></p>
+                                    </div>
+                                </div>
+                                <div class="col-lg-2 col-6">
+                                    <!-- <p>Grupo<strong>&nbsp;1</strong>-<strong>&nbsp;10</strong></p> -->
+
+                                </div>
+                                <!-- <div class="col-lg-4 col-12">
+                                    <div class="form-group">
+                                        <div class="float-right">
+                                            <small>
+                                                <button
+                                                    (click)="InicioPaginacion == 0?BtnPreviousUser(1):BtnPreviousUser()"
+                                                    *ngIf="FraccionDatos !== 0||InicioPaginacion !==0" type="button"
+                                                    class="BtnNextPrevious" aria-label=""
+                                                    style="display: inline-block;"><i
+                                                        class="bi bi-arrow-left-circle"></i>
+                                                    Anterior</button>
+
+                                                <button
+                                                    *ngIf="(InicioPaginacion + RangoPaginacion) < ContadorDatos||ContadorDatos == RangoDatos"
+                                                    (click)="(InicioPaginacion + RangoPaginacion) == ContadorDatos?BtnNextUser(1):BtnNextUser()"
+                                                    type="button" class="BtnNextPrevious ml-2 " aria-label=""
+                                                    style="display: inline-block;">Siguiente <i
+                                                        class="bi bi-arrow-right-circle"></i></button>
+                                            </small>
+
+                                        </div>
+                                    </div>
+
+                                </div> -->
+                            </div>
+
+                        </div>
+                    </section>
+
+
+                    <!-- FORMULARIO PARA AGREGAR ELEMENTOS -->
+                    <section class="horizontal-center" *ngIf="TituloFormulario != ''">
+                        <div class="card-header" style="background-color: var(--color-formulario-primario);">
+                            <button type="button" (click)="CerrarAgregarEditarElemento()"
+                                class="btn btn-close float-right"></button>
+                            <h2 class="Centrar">{{TituloFormulario}} {{PaginaNombre.toLocaleLowerCase()}}</h2>
+                        </div>
+                        <div class="card-body" style="background-color: var(--color-formulario-secundario);">
+                            <div class="row">
+
+                                <div class="col-md-8">
+                                    <form [formGroup]="PagosForms">
+                                        <div class="row">
+
+                                            <div class="col-md-6">
+                                                <div class="form-floating">
+                                                    <input type="text" class="form-control" id="cli_identificacion"
+                                                        placeholder="" formControlName="cli_identificacion"
+                                                        (ngModelChange)="BuscarCliente()">
+                                                    <label
+                                                        for="cli_identificacion"><small>*</small>Cedula/Ruc/Pasaporte</label>
+                                                    <Section>
+                                                        <div class="error-message" *ngIf="PagosForms.get('cli_identificacion')?.hasError('required') 
+                                                    && PagosForms.get('cli_identificacion')?.touched">
+                                                            <span style="color: brown;">*Este campo es
+                                                                obligatorio.</span>
+                                                        </div>
+                                                    </Section>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-floating ">
+                                                    <input type="text" class="form-control" id="clinombres"
+                                                        placeholder="" [formControl]="Cliente">
+                                                    <label for="clinombres">Nombres</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <span title=""><small>*</small>Producto</span>
+
+                                                    <select style="height: 35px;" class="form-select"
+                                                        formControlName="ope_cod_credito"
+                                                        (ngModelChange)="SeleccionProducto()"
+                                                        (click)="ListaCreditos.length == 0?ListarCreditos():null">
+                                                        <option value="" disabled selected>
+                                                            Seleccione ...
+                                                        </option>
+                                                        <option *ngIf="ListaCreditos.length == 0" disabled>
+                                                            Cargandol
+                                                            ...
+                                                        </option>
+                                                        <option *ngFor="let s of ListaCreditos"
+                                                            [value]="s.ope_cod_credito">
+                                                            {{s.ope_producto}}
+                                                        </option>
+                                                    </select>
+                                                    <Section>
+                                                        <div class="error-message" *ngIf="PagosForms.get('ope_cod_credito')?.hasError('required') 
+                                                    && PagosForms.get('ope_cod_credito')?.touched">
+                                                            <span style="color: brown;">*Este campo es
+                                                                obligatorio.</span>
+                                                        </div>
+                                                    </Section>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="row">
+                                                    <div class="col-8">
+                                                        <div class="form-group">
+                                                            <span title=""><small>*</small>Telefono</span>
+
+                                                            <select style="height: 35px;" class="form-select"
+                                                                formControlName="pag_medio_contacto"
+                                                                (click)="ListaContacto.length == 0?ListarContacto():null">
+                                                                <option value="" disabled selected>
+                                                                    Seleccione ...
+                                                                </option>
+                                                                <option *ngIf="ListaContacto.length == 0" disabled>
+                                                                    Cargando
+                                                                    ...
+                                                                </option>
+                                                                <option *ngFor="let s of ListaContacto"
+                                                                    [value]="s.id_telefono">
+                                                                    {{s.tel_numero}}
+                                                                </option>
+                                                            </select>
+                                                            <Section>
+                                                                <div class="error-message" *ngIf="PagosForms.get('pag_medio_contacto')?.hasError('required') 
+                                                            && PagosForms.get('pag_medio_contacto')?.touched">
+                                                                    <span style="color: brown;">*Este campo es
+                                                                        obligatorio.</span>
+                                                                </div>
+                                                            </Section>
+                                                        </div>
+
+                                                    </div>
+                                                    <div class="col ContenidoVertical">
+                                                        <button *ngIf="LecturaEscritura != 0" type="button"
+                                                            class="btnAgregar small small "
+                                                            (click)="AbrirModalAgregarTelefono(1)"><i
+                                                                class="bi bi-plus-circle-dotted"></i></button>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <span title=""><small>*</small>Cuenta</span>
+
+                                                    <select style="height: 35px;" class="form-select"
+                                                        formControlName="id_cuenta"
+                                                        (click)="ListaCuentas.length == 0?ListarCuentas():null">
+                                                        <option value="" disabled selected>
+                                                            Seleccione ...
+                                                        </option>
+                                                        <option *ngIf="ListaCuentas.length == 0" disabled>
+                                                            Cargando
+                                                            ...
+                                                        </option>
+                                                        <option *ngFor="let s of ListaCuentas" [value]="s.id_cuenta">
+                                                            {{s.cuent_nombre}}
+                                                        </option>
+                                                    </select>
+                                                    <Section>
+                                                        <div class="error-message" *ngIf="PagosForms.get('id_cuenta')?.hasError('required') 
+                                                        && PagosForms.get('id_cuenta')?.touched">
+                                                            <span style="color: brown;">*Este campo es
+                                                                obligatorio.</span>
+                                                        </div>
+                                                    </Section>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-floating mb-3">
+                                                    <input type="email" class="form-control" id="pag_codigo_comprobante"
+                                                        placeholder="" formControlName="pag_codigo_comprobante">
+                                                    <label for="pag_codigo_comprobante"><small>*</small>Codigo
+                                                        comprobante</label>
+                                                    <Section>
+                                                        <div class="error-message" *ngIf="PagosForms.get('pag_codigo_comprobante')?.hasError('required') 
+                                                    && PagosForms.get('pag_codigo_comprobante')?.touched">
+                                                            <span style="color: brown;">*Este campo es
+                                                                obligatorio.</span>
+                                                        </div>
+                                                    </Section>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-floating mb-3">
+                                                    <input type="date" class="form-control" id="pag_fecha_pago"
+                                                        placeholder="" formControlName="pag_fecha_pago">
+                                                    <label for="pag_fecha_pago"><small>*</small>Fecha Pago</label>
+                                                    <Section>
+                                                        <div class="error-message" *ngIf="PagosForms.get('pag_fecha_pago')?.hasError('required') 
+                                                    && PagosForms.get('pag_fecha_pago')?.touched">
+                                                            <span style="color: brown;">*Este campo es
+                                                                obligatorio.</span>
+                                                        </div>
+                                                    </Section>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="form-floating mb-3">
+                                                    <input type="email" class="form-control" id="pag_pago"
+                                                        placeholder="" formControlName="pag_pago">
+                                                    <label for="pag_pago"><small>*</small>Abono CXC</label>
+                                                    <Section>
+                                                        <div class="error-message" *ngIf="PagosForms.get('pag_pago')?.hasError('required') 
+                                                    && PagosForms.get('pag_pago')?.touched">
+                                                            <span style="color: brown;">*Este campo es
+                                                                obligatorio.</span>
+                                                        </div>
+                                                        <div class="error-message"
+                                                            *ngIf="PagosForms.get('pag_pago')?.value != ''
+                                                    ? validar.V_NumerosDesimales(PagosForms.get('pag_pago')?.value!)  === false:null ">
+                                                            <span style="color: brown;">*contiene caracteres
+                                                                no permitidos en este campo.</span>
+                                                        </div>
+                                                        <div class="error-message"
+                                                            *ngIf="PagosForms.get('pag_pago')?.value != '' && PagosForms.get('pag_valor_total_comprobante')?.value != '' 
+                                                        ? validar.V_MayorQue(PagosForms.get('pag_pago')?.value!,PagosForms.get('pag_valor_total_comprobante')?.value!)  === false:null ">
+                                                            <span style="color: brown;">*El valor no puede ser mayor al
+                                                                comprovante.</span>
+                                                        </div>
+                                                    </Section>
+                                                </div>
+
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-floating mb-3">
+                                                    <input type="email" class="form-control"
+                                                        id="pag_valor_total_comprobante" placeholder=""
+                                                        formControlName="pag_valor_total_comprobante">
+                                                    <label for="pag_valor_total_comprobante"><small>*</small>Valor
+                                                        Comprovante</label>
+                                                    <Section>
+                                                        <div class="error-message" *ngIf="PagosForms.get('pag_valor_total_comprobante')?.hasError('required') 
+                                                        && PagosForms.get('pag_valor_total_comprobante')?.touched">
+                                                            <span style="color: brown;">*Este campo es
+                                                                obligatorio.</span>
+                                                        </div>
+                                                        <div class="error-message"
+                                                            *ngIf="PagosForms.get('pag_valor_total_comprobante')?.value != ''
+                                                        ? validar.V_NumerosDesimales(PagosForms.get('pag_valor_total_comprobante')?.value!)  === false:null ">
+                                                            <span style="color: brown;">*contiene caracteres
+                                                                no permitidos en este campo.</span>
+                                                        </div>
+                                                        <div class="error-message"
+                                                            *ngIf="PagosForms.get('pag_pago')?.value != '' && PagosForms.get('pag_valor_total_comprobante')?.value != '' 
+                                                        ? validar.V_MayorQue(PagosForms.get('pag_pago')?.value!,PagosForms.get('pag_valor_total_comprobante')?.value!)  === false:null ">
+                                                            <span style="color: brown;">*El valor no puede ser menor al
+                                                                comprovante.</span>
+                                                        </div>
+                                                    </Section>
+                                                </div>
+                                            </div>
+
+
+                                            <div class="col-md-6">
+                                                <div class="form-floating mb-3">
+                                                    <textarea type="text" class="form-control"
+                                                        id="pag_observ_comprobante" placeholder=""
+                                                        formControlName="pag_observ_comprobante"></textarea>
+                                                    <label for="pag_observ_comprobante">Observacion
+                                                        Comprovante</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-floating mb-3">
+                                                    <textarea type="text" class="form-control" id="pag_observacion_pago"
+                                                        placeholder=""
+                                                        formControlName="pag_observacion_pago"></textarea>
+                                                    <label for="pag_observacion_pago">Observacion Pago</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="row" *ngIf="TituloFormulario != 'Visualizar'">
+                                        <div class="col-md-10 Centrar">
+                                            <div class="form-floating mb-3">
+                                                <input type="file" class="form-control" id="comprovante"
+                                                    (change)="onFileSelected($event)">
+                                                <label for="comprovante"><small>*</small>Imagen</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+
+                                        <div class="col-md-10 Centrar">
+                                            <!-- <img *ngIf="previewUrl" [src]="previewUrl" alt="Preview"
+                                                    style="max-width: 100%; max-height: 300px;"> -->
+                                            <a data-lightbox="image-preview" (click)="verImagen()">
+                                                <img *ngIf="previewUrl" [src]="previewUrl" alt="Preview"
+                                                    style="max-width: 100%; max-height: 300px;">
+                                            </a>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+
+
+                        </div>
+
+                        <div class="card-footer" style="background-color: var(--color-formulario-terciario);">
+                            <div class="row Centrar ">
+                                <small>
+                                    <button class="btnAceptar" [disabled]="PagosForms.invalid || Cliente.value == ''"
+                                        *ngIf="TituloFormulario != 'Visualizar'" id="btnAgregar"
+                                        (click)="ActDesControles(1);GuardarObjeto(PagosForms.value);ActDesControles(0)">Guardar</button>
+                                    <button class="btnCancelar ml-3"
+                                        (click)="CerrarAgregarEditarElemento()">Cancelar</button>
+                                </small>
+                            </div>
+                        </div>
+                    </section>
+
+
+                </div>
+            </div>
+        </section>
+
+        <router-outlet></router-outlet>
+    </div>
+</div>
+<app-footer></app-footer>
+
+
+<ng-template #loadingOrError>
+    <section>
+        <div class="ContenidoCentrado">
+            <div class="loader"></div>
+        </div>
+    </section>
+</ng-template>
+
+
+<section class="modal" id="Cargando">
+    <section>
+        <div class="CentroSobrepuesto">
+            <div class="loaderLogin"></div>
+        </div>
+    </section>
+</section>
+
+
+<section class="modal" id="ModalAgregarTelefono">
+    <div class="modal__container ">
+        <div class="col-sm alert" style="background-color: var(--color-formulario-primario);">
+            <button type="button" (click)="CerrarModalAgregarTelefonos()" class="btn btn-close float-right"></button>
+            <h2 class="modal__title Centrar">Agregar Telefono</h2>
+            <form [formGroup]="TelefonosForms">
+                <div class="card-header">
+                    <section class="row">
+                        <div class="col-lg-12">
+                            <div class="row">
+                                <div class="col-lg-4">
+                                    <div class="form-group">
+                                        <span>&nbsp;Id&nbsp;</span>
+                                        <span>&nbsp;{{this.PagosForms.get('cli_identificacion')?.value}}&nbsp;</span>
+                                    </div>
+
+
+                                </div>
+                                <div class="col-lg-8">
+                                    <div class="form-group">
+                                        <span>&nbsp;Nombres&nbsp;</span>
+                                        <span>&nbsp;{{this.Cliente.value}}&nbsp;</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+                <section class="vertical-center">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <span title="Tipo de Correo">Tipo de telefono</span>
+
+                            <select style="height: 35px;" class="form-select" formControlName="tel_id_tipo_telefono"
+                                (click)="TipoTelefonoList.length != 0?null:ListarTipoTelefonos()">
+                                <option *ngIf="TipoTelefonoList.length == 0" disabled>Cargando ...
+                                </option>
+                                <option *ngFor="let s of TipoTelefonoList" [value]="s.id_tipo_telefono">
+                                    {{s.tel_tip_descripcion}}
+                                </option>
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-floating mb-3">
+                                <input type="text" class="form-control" id="tel_numero" placeholder=""
+                                    formControlName="tel_numero">
+                                <label class="truncate-text" for="tel_numero">Numero</label>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-floating mb-3">
+                                <input type="email" class="form-control" id="tel_observacion" placeholder=""
+                                    formControlName="tel_observacion">
+                                <label class="truncate-text" for="tel_observacion">Observación</label>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="row Centrar mb-3">
+                                <div class="col-lg-5 col-12">
+                                    <label class="truncate-text" for="tel_operadora">Operadora</label>
+                                </div>
+                                <div class="col-lg-7 col-12">
+                                    <select class="form-select" formControlName="tel_operadora"
+                                        style="max-width: 175px;min-width: 125px;">
+                                        <option *ngIf="Operadora.length == 0" disabled>Cargando
+                                            ...
+                                        </option>
+                                        <option *ngFor="let s of Operadora" [value]="s.value">
+                                            {{s.name}}
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="Centrar">
+                                <div class="btn-group">
+                                    <div class="form-group">
+                                        <label class="truncate-text" for="tel_tipo_operadora">Tipo</label>&nbsp;
+                                        <div class="custom-control custom-switch Centrar" title="Tipo Telefono">
+                                            <input type="checkbox" class="custom-control-input"
+                                                formControlName="tel_tipo_operadora" name="Tipo Telefono"
+                                                id="tel_tipo_operadora">
+                                            <label class="custom-control-label"
+                                                for="tel_tipo_operadora">{{TelefonosForms.get('tel_tipo_operadora')!.value
+                                                == true ?
+                                                'MOVIL' : 'FIJO'}}</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="Centrar">
+                                <div class="btn-group">
+                                    <div class="form-group">
+                                        <label class="truncate-text" for="tel_esactivo">Estado</label>&nbsp;
+                                        <div class="custom-control custom-switch Centrar" title="Estado">
+                                            <input type="checkbox" class="custom-control-input"
+                                                formControlName="tel_esactivo" name="estado" id="tel_esactivo">
+                                            <label class="custom-control-label"
+                                                for="tel_esactivo">{{TelefonosForms.get('tel_esactivo')!.value
+                                                == false ?
+                                                'Inactivo' : 'Activo'}}</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <span title="Tipo de Correo">Detalle de
+                                telefono</span>
+
+                            <select style="height: 35px;" class="form-select" formControlName="tel_id_detal_telefono"
+                                (click)="DetalleTelefonoList.length != 0?null:ListarDetTelefono()">
+                                <option *ngIf="DetalleTelefonoList.length == 0" disabled>Cargando ...
+                                </option>
+                                <option *ngFor="let s of DetalleTelefonoList" [value]="s.id_detalle_telefono">
+                                    {{s.tel_detal_descripcion}}
+                                </option>
+                            </select>
+                        </div>
+
+
+                    </div>
+                </section>
+
+                <div class="card-footer">
+                    <div class="row Centrar ">
+                        <small>
+                            <button class="btnAceptar" [disabled]="TelefonosForms.invalid"
+                                *ngIf="TituloFormularioAgregarTelefonos != ''" id="btnAgregar"
+                                (click)="GuardarObjetoTelefonos(TelefonosForms.value)">Guardar</button>
+                            <button class="btnCancelar ml-3" (click)="CerrarModalAgregarTelefonos()">Cancelar</button>
+                        </small>
+                    </div>
+                </div>
+
+            </form>
+        </div>
+    </div>
+</section>

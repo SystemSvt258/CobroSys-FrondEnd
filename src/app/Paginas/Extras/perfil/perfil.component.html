@@ -1,0 +1,215 @@
+<app-header></app-header>
+<app-sidebar></app-sidebar>
+<div class="content-wrapper">
+    <div class="container-fluid"><br>
+         <div class="card card-info card-outline">
+            <div class="card-header">
+                <h3 class="card-title">Perfil</h3>
+            </div> <br>
+
+            <div class="container-fluid" *ngIf="UsuarioInfo != null; else loadingOrError">
+                <div class="row">
+                    <div class="col-md-3">
+
+                        <div class="card card-info card-outline">
+                            <div class="card-body box-profile">
+                                <div class="text-center">
+                                    <img class="profile-user-img img-fluid img-circle"
+                                    src="{{UsuarioInfo.usr_img_url === null || UsuarioInfo.usr_img_url === '' ? './assets/Imagenes/user2-160x160.jpg':UsuarioInfo.usr_img_url}}"
+                                        src="./assets/dist/img/user2-160x160.jpg"
+                                        alt="foto de perfil del usuario">
+                                </div>
+                                <h3 class="profile-username text-center">
+                                    <font style="vertical-align: inherit;">
+                                        <font style="vertical-align: inherit;">{{UsuarioInfo.usr_usuario}}</font>
+                                    </font>
+                                </h3>
+                                <p class="text-muted text-center">
+                                    <font style="vertical-align: inherit;">
+                                        <font style="vertical-align: inherit;">{{UsuarioInfo.Gestor.ges_nombres+' '+UsuarioInfo.Gestor.ges_apellidos}}</font>
+                                    </font>
+                                </p>
+
+                                <div class="btn-group perfilcentrado" role="group" aria-label="Basic mixed styles example">
+                                    <button type="button" class="btnInfo" (click)="CambiarImgPerfil()">
+                                        <i class="bi bi-person"></i><b class="ml-2">Cambiar</b></button>
+                                    <button type="button" class="btnCancelar ml-1" (click)="EliminarImgPerfil()">
+                                        <i class="bi bi-trash"></i></button>
+                                </div>
+
+                                <div>
+
+
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div class="col-md-9">
+                        <div class="card card-info card-outline">
+                            <div class="card-header p-2">
+                                <ul class="nav nav-pills">
+                                    <li class="nav-item"><a class="nav-link  active"  href="#activity" data-toggle="tab">
+                                            <font style="vertical-align: inherit;">
+                                                <font style="vertical-align: inherit;">Información</font>
+                                            </font>
+                                        </a></li>
+                                    <li class="nav-item"><a class="nav-link" href="#settings" data-toggle="tab"
+                                        >
+                                            <font style="vertical-align: inherit;">
+                                                <font style="vertical-align: inherit;">Cambio de Contraseña</font>
+                                            </font>
+                                        </a></li>
+                                </ul>
+                            </div>
+                            <div class="card-body">
+                                <div class="tab-content">
+                                    <div class="tab-pane active" id="activity">
+
+                                        <div class="card-body" style="display: block;">
+                                            <div class="row">
+                                                <div class="row invoice-info">
+                                                    <div class="col-sm-6 invoice-col">
+                                                        <address>
+                                                            <strong></strong><br>
+                                                            Nombres: <strong>{{UsuarioInfo.Gestor.ges_nombres+' '+UsuarioInfo.Gestor.ges_apellidos}}</strong><br>
+                                                            Usuario: <strong>{{UsuarioInfo.usr_usuario}}</strong> <br>
+                                                            Rol: <strong>{{UsuarioInfo.Rol.rol_descripcion}}</strong><br>
+
+                                                        </address>
+                                                    </div>
+
+                                                    <div class="col-sm-6 invoice-col">
+
+                                                        <address>
+                                                            <strong></strong><br>                                                            
+                                                            Email: <strong>{{UsuarioInfo.usr_correo}}</strong><br>
+                                                            Telefono: <strong>{{UsuarioInfo.usr_telefono}}</strong><br>
+                                                            Meta: <strong>{{UsuarioInfo.Gestor.ges_meta}}</strong><br>
+                                                        </address>
+                                                    </div>
+
+                                                    <!-- <div class="col-sm-4 invoice-col">
+                                                        <address>
+                                                            <strong></strong><br>
+                                                            Dirección:
+                                                            <strong>{{datosusuarios.usrdireccion}}</strong><br>
+                                                            Teléfono: <strong>{{datosusuarios.usrtelefono}}</strong><br>
+                                                            Fecha de Nacimiento:
+                                                            <strong>{{datosusuarios.usrfechanacimiento |
+                                                                date:'dd-MM-YYYY'}}</strong><br>
+                                                        </address>
+
+                                                    </div> -->
+
+                                                </div>
+
+                                            </div>
+
+
+                                        </div>
+
+                                    </div>
+
+                                    <div class="tab-pane" id="settings">
+                                        <form class="form-horizontal">
+                                            <div class="form-group row">
+                                                <label for="inputNueva" class="col-sm-2 col-form-label">
+                                                    <font style="vertical-align: inherit;">
+                                                        <font style="vertical-align: inherit;">Nueva Contraseña</font>
+                                                    </font>
+                                                </label>
+                                                <div class="col-sm-10">
+                                                    <input type="password" class="form-control" [formControl]="txtNueva"
+                                                        id="txtNueva" placeholder="Nueva Contraceña">
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                <label for="inputConfirmar" class="col-sm-2 col-form-label">
+                                                    <font style="vertical-align: inherit;">
+                                                        <font style="vertical-align: inherit;">Confirmar Contraseña
+                                                        </font>
+                                                    </font>
+                                                </label>
+                                                <div class="col-sm-10">
+                                                    <input type="password" class="form-control"
+                                                        [formControl]="txtConfirmar" id="txtConfirmar"
+                                                        placeholder="Confirmar Contraceña">
+                                                </div>
+                                            </div>
+
+
+                                            <div class="form-group row">
+                                                <div class="offset-sm-2 col-sm-10">
+                                                    <div class="custom-control custom-checkbox">
+                                                        <input class="custom-control-input" type="checkbox"
+                                                            [formControl]="chkAcepta" #chkEstoyDeAcuerdo
+                                                            id="chkEstoyDeAcuerdo">
+                                                        <label for="chkEstoyDeAcuerdo" class="custom-control-label">
+                                                            <font style="vertical-align: inherit;">
+                                                                <font style="vertical-align: inherit;">Estoy de
+                                                                    acuerdo con los </font>
+                                                            </font>
+                                                            <font (click)="TerminosCondiciones()"
+                                                                style="cursor: pointer; color: rgb(28, 107, 225); vertical-align: inherit;">
+                                                                términos
+                                                                y condiciones</font>
+                                                        </label>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                <div class="offset-sm-2 col-sm-10">
+                                                    <button type="submit" class="btn btn-success"
+                                                        (click)="CambiarClave()">
+                                                        <font style="vertical-align: inherit;">
+                                                            <font style="vertical-align: inherit;">Guardar</font>
+                                                        </font>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+
+                                </div>
+
+                            </div>
+                        </div>
+
+                    </div>
+
+
+                </div>
+
+            </div>
+
+
+        </div> 
+        <br><br>
+
+
+
+        <router-outlet></router-outlet>
+    </div>
+</div>
+<app-footer></app-footer>
+
+
+<ng-template #loadingOrError>
+    <section>
+        <div class="ContenidoCentrado">
+            <div class="loader"></div>
+        </div>
+    </section>
+</ng-template>
+
+
+<section class="modal" id="Cargando">
+    <section>
+        <div class="CentroSobrepuesto">
+            <div class="loaderLogin"></div>
+        </div>
+    </section>
+</section>

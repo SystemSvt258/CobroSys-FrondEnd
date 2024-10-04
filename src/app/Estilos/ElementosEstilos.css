@@ -1,0 +1,35 @@
+/* label utilizado para que el texto no se salga de las lineas
+y en su lugar aparezca tres puntos  */
+.truncate-text {
+    display: block;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 100%;
+} 
+
+/* ///////////////////////////////////////////////////////////// */
+/* le da el efecto de un letrero electronico */
+
+.marquee-container {
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+}
+
+.marquee-text {
+    width: calc(100%);
+}
+
+.marquee {
+    position: absolute;
+    top: 0;
+    left: 100%; 
+    white-space: nowrap;
+    animation: marquee 10s linear infinite;
+}
+
+@keyframes marquee {
+    0% { left: 100%; }
+    100% { left: -100%; }
+}

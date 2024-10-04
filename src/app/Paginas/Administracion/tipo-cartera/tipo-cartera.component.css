@@ -1,0 +1,5 @@
+@import "src/app/Estilos/Modal.css";
+thead{
+    color: var(--color-primario);
+    background-color: var(--color-primario);
+  }

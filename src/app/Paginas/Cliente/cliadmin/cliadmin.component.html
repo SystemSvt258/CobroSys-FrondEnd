@@ -1,0 +1,73 @@
+<app-header></app-header>
+<app-sidebar></app-sidebar>
+<div class="content-wrapper">
+    <div class="container-fluid">
+        <section *ngIf="PaginaMuestra != ''">
+            <h4 class="NombrePage">CLIENTES PROCESOS OPERATIVO</h4>
+            <section class="content">
+                <div class="container-fluid">
+
+                    <div class="row">
+                        <div class="col-lg-3 col-md-4 col-sm-6 col-12" style="cursor: pointer;" *ngFor="let menu of MenuClientes">
+
+                            <div class="small-box" (click)="BotonNavegar(menu.men_url)">
+                                <div class="inner">
+                                    <div class="OcultarMax450px"><br><br><br></div>
+                                    <p>{{menu.men_descripcion}}</p>
+                                </div>
+                                <div class="icon">
+                                    <i class="{{menu.men_icono}}"></i>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+
+                </div>
+            </section>
+        </section>
+        <section *ngIf="PaginaMuestra == ''">
+            <h4 class="NombrePage">CLIENTES</h4>
+            <section class="content">
+                <div class="container-fluid">
+
+                    <div class="row">
+                        <div class="col-lg-3 col-md-4 col-sm-6 col-12"  style="cursor: pointer;">
+                            <div class="small-box" [routerLink]="['/gestionar','O']">
+                                <div class="inner">
+                                    <div class="OcultarMax450px"><br><br><br></div>
+
+                                    <!-- <h3>'</h3> -->
+                                    <p>CONSULTAR</p>
+                                </div>
+                                <div class="icon">
+                                    <i class="fa-solid fa-user-secret"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-md-4 col-sm-6 col-12" style="cursor: pointer;">
+                            <div class="small-box" (click)="BotonNavegar('gestionar')">
+                                <div class="inner">
+                                    <div class="OcultarMax450px"><br><br><br></div>
+
+                                    <!-- <h3>'</h3> -->
+                                    <p>MIS CLIENTES</p>
+                                </div>
+                                <div class="icon">
+                                    <i class="fa-solid fa-people-line"></i>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+
+                </div>
+            </section>
+        </section>
+
+        <router-outlet></router-outlet>
+    </div>
+</div>
+<app-footer></app-footer>

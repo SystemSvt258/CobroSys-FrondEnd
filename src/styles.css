@@ -1,0 +1,26 @@
+/* You can add global styles to this file, and also import other style files */
+@import '~bootstrap/dist/css/bootstrap.min.css';
+@import '~bootstrap-icons/font/bootstrap-icons.css';
+@import "src/app/Estilos/ColoresMatriz.css";
+@import "src/app/Estilos/UbicacionElementos.css";
+@import "src/app/Estilos/Botones.css";
+@import "src/app/Estilos/ComportamientoElementos.css";
+@import "src/app/Estilos/Spinner.css";
+@import "src/app/Estilos/Modal.css";
+@import "src/app/Estilos/ColorElementosPrincipales.css";
+@import "src/app/Estilos/Animaciones.css";
+@import "src/app/Estilos/ElementosEstilos.css";
+@import "src/app/Estilos/Tablas.css";
+
+.NombrePage{
+    display: grid;
+    place-items: center;
+    border-width: 2px;
+    border-bottom: 5px solid;
+    color: var(--color-secundario);
+    border-color: var(--color-primario);
+}
+.content-wrapper{
+    background-color: var(--color-sexto);
+}
+

@@ -1,0 +1,37 @@
+<app-header></app-header>
+<app-sidebar></app-sidebar>
+<div class="content-wrapper">
+    <div class="container-fluid">
+        <h4 class="NombrePage">{{PaginaNombre}}</h4>
+        <!-- page -->
+        <section class="content">
+            <div class="container-fluid">
+
+                <div class="row">
+                    <div class="col-lg-3 col-12" style="cursor: pointer;" *ngFor="let menu of MenusReportes">
+
+                        <div class="small-box" (click)="BotonNavegar(menu.men_url)">
+                            <div class="inner">
+                                <div class="OcultarMax450px"><br><br><br></div>
+                               
+                                <!-- <h3>'</h3> -->
+                                <p>{{menu.men_descripcion}}</p>
+                            </div>
+                            <div class="icon">
+                                <i class="{{menu.men_icono}}"></i>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+
+            </div>
+        </section>
+        <!-- page -->
+
+
+        <router-outlet></router-outlet>
+    </div>
+</div>
+<app-footer></app-footer>

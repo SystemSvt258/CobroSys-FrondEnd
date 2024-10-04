@@ -1,0 +1,54 @@
+@import "src/app/Estilos/Modal.css";
+
+#chartRadio {
+  padding: 0;
+  max-width: 450px;
+  margin: 35px auto;
+}
+
+#ChartFondo {
+  position: absolute;
+  top: 0;
+  left: 0;
+  color: #000;
+}
+.TablaAnchoTextoDeterminado {
+  /* min-width: 150px; */
+  max-width: 350px;
+  font-size: 12px; /* Tamaño de la fuente pequeño */
+}
+
+
+
+.CardCarteras{
+  text-decoration: none;
+  color: black;
+  background-color: #97DECE;
+  background-image: linear-gradient( 135deg, #a3fefb 10%, #fff 100%);
+  transition: background-color .3s;
+}
+
+.CardCarteras:hover{
+  color: #fff;
+  background-image: linear-gradient( 135deg, #0dcaf0 10%, #bbe7fc 100%);
+  background-color: #0dcaf0;
+  cursor: pointer;
+  animation-name: swing;
+-webkit-animation-name: swing;
+-moz-animation-name: swing;
+ animation-duration: 1s;
+-webkit-animation-duration: 1s;
+-moz-animation-duration: 1s;
+}
+
+@keyframes swing {
+20% {transform: rotate3d(0, 0, 1, 15deg);}
+40% {transform: rotate3d(0, 0, 1, -10deg);}
+60% {transform: rotate3d(0, 0, 1, 5deg);}
+80% {transform: rotate3d(0, 0, 1, -5deg);}
+to  {transform: rotate3d(0, 0, 1, 0deg);}
+}
+
+.card-header {
+  background-color: var(--color-formulario-primario);
+}

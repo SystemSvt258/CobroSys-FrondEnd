@@ -1,0 +1,43 @@
+.main-sidebar{
+    background-color: var(--color-secundario);
+}
+a{
+    color: var(--color-texto-secundario);
+    border-top-right-radius: 0px;
+    border-top-left-radius: 20px;
+    border-bottom-left-radius: 0px;
+    border-bottom-right-radius: 20px;
+}
+p{
+    color: var(--color-texto-primario);
+}
+i{
+    color: var(--color-texto-primario);
+}
+a:hover{
+    background-color: var(--color-secundario-hover);
+    padding: 15px 15;
+    border: var(--color-primario-hover) 1px solid;
+    border-top-right-radius: 0px;
+    border-top-left-radius: 30px;
+    border-bottom-left-radius: 0px;
+    border-bottom-right-radius: 30px;
+}
+
+/* Contenedor para la imagen centrada */
+.sidebar-custom .logo-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: auto; /* Altura del contenedor, ajusta según tus necesidades */
+    overflow: hidden; /* Ocultar cualquier parte de la imagen que exceda la altura */
+    transition: width 0.3s ease;
+  }
+  
+  /* Estilo personalizado para la imagen */
+  .sidebar-custom .logo-image {
+    width: 70%; /* Ancho de la imagen al 100% del contenedor */
+    height: auto; /* La altura se ajustará automáticamente según el ancho */
+    transition: width 0.3s ease; /* Agregar una transición suave de 0.3 segundos al cambiar el ancho */
+  }
+    

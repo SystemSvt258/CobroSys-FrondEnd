@@ -1,0 +1,38 @@
+@import "src/app/Estilos/Modal.css";
+
+
+.forml {
+    width: 300px;
+    margin: 0 auto;
+}
+
+.rowl {
+    display: flex;
+    flex-direction: column;
+}
+
+.inputl[type="text"],
+.inputl[type="password"],
+.inputl[type="submit"] {
+    margin-bottom: 10px;
+    padding: 5px;
+} 
+
+.verificado {
+    background-color: greenyellow;
+  }
+
+
+  .table-wrapper {
+    max-height: 160px;
+    overflow-x: auto; /* Scrolling horizontal */
+    overflow-y: hidden; /* Oculta el scrolling vertical */
+    white-space: nowrap; /* Evita el salto de línea en las celdas */
+}
+
+
+.frente {
+    position: absolute; 
+    z-index: 9999; 
+  }
+  

@@ -1,0 +1,35 @@
+:root {
+  --color-primario: #276678;
+  --color-secundario: #1687A7;
+  --color-terciario: #32c2de;
+  --color-cuaternario: #acebf5;
+  --color-quinto: #D3E0EA;
+  --color-sexto: #eef2f5;
+  
+  --color-texto-primario: #fff;
+  --color-texto-secundario: black;
+
+  --color-primario-hover: PowderBlue;
+  --color-secundario-hover: rgba(172, 235, 245,0.5);
+  --color-resaltado-contexto: #cebdb2;
+
+
+  --color-formulario-primario: #d9f6fc;
+  --color-formulario-secundario: #f2f7f6;
+  --color-formulario-terciario: #e8f6f9;
+
+
+  --color-login-degradado: rgba(0,0,0,0.5) !important;
+  --color-login-primario: rgb(211, 231, 63);
+  --color-login-secundario: white;
+  --color-login-terciario: #0f1416;
+  --color-login-cuaternario: rgb(164, 164, 210);
+  --color-login-quinto: #0dcaf0;
+  --color-login-hover: white;
+  --color-login-texto: black;
+  --color-login-texto-hover: black;
+}
+
+.degPrimario{
+  background-image: linear-gradient( 135deg, #0dcaf0 10%, #fff 100%)
+}

@@ -1,0 +1,9 @@
+/* excel-viewer.component.css */
+.table-container {
+    max-height: 400px; /* Ajusta la altura máxima según tus necesidades */
+    overflow-y: auto;
+    border: 1px solid #ddd; /* Agrega un borde opcional */
+    padding: 10px; /* Agrega un relleno opcional */
+  }
+  
+  

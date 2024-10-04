@@ -1,0 +1,1114 @@
+<app-header></app-header>
+<app-sidebar></app-sidebar>
+<div class="content-wrapper">
+  <div class="container-fluid">
+    <h4 class="NombrePage">{{ PaginaNombre }}</h4>
+    <section class="content">
+      <div class="container-fluid">
+        <div class="card card-default">
+          <!-- BARRA PRINCIPAL -->
+          <section class="horizontal-center" *ngIf="TituloFormulario == ''">
+            <div class="card-header" style="background-color: var(--color-formulario-primario)">
+              <div class="btn-group" role="group">
+                <button class="btnHome" (click)="ListarElementos(1)">
+                  <i class="fa-solid fa-house"></i>
+                </button>
+              </div>
+              <div class="btn-group float-right" role="group">
+                <label type="text-info" class="formControl CenterItemColorSecundario center ml-1" style="width: 50%"
+                  *ngIf="itemBusqueda.value !== ''">{{ itemBusqueda.value }}</label>
+
+                <button type="button" class="btnFilter ml-1" data-toggle="dropdown">
+                  <i class="bi bi-funnel"></i>
+                </button>
+
+                <div class="OcultarMax450px" style="width: 50%">
+                  <input *ngIf="
+                      itemBusqueda.value !== '' &&
+                      itemBusqueda.value != 'Estado'
+                    " id="txtValorBusqueda" [formControl]="txtBusqueda" (keydown.enter)="FiltrarElemento()"
+                    (keyup)="ConvertirMayusculas()" class="form-control ml-2" type="text" placeholder="Buscar"
+                    autofocus />
+                </div>
+                <div class="ml-2 OcultarMax450px">
+                  <select class="form-select" *ngIf="
+                      itemBusqueda.value !== '' &&
+                      itemBusqueda.value === 'Estado'
+                    " [formControl]="txtBusqueda" [spellcheck]="false" style="width: 150px">
+                    <option *ngFor="let estado of ParametrosEstado" [value]="estado.value">
+                      {{ estado.name }}
+                    </option>
+                  </select>
+                </div>
+                <div>
+                  <button type="button" class="btnBuscar ml-2 OcultarMax450px" *ngIf="txtBusqueda.value !== ''"
+                    (click)="FiltrarElemento()">
+                    <i class="bi bi-search"></i>
+                  </button>
+                </div>
+
+                <button *ngIf="LecturaEscritura != 0" type="button" class="btnAgregar ml-2"
+                  (click)="AgregarEditarElemento(1)">
+                  <i class="bi bi-plus-circle-dotted"></i>
+                </button>
+
+                <div class="dropdown-menu" role="menu">
+                  <a class="dropdown-item" (click)="GetBusquedaPor(item)" *ngFor="let item of ParametrosDeBusqueda">{{
+                    item }}</a>
+                </div>
+                <section>
+                  <button *ngIf="this.ListaCreditos.length>0" class="btnImprimir ml-2" data-toggle="dropdown" ><i
+                      class="bi bi-printer"></i></button>
+                  <div class="dropdown-menu" role="menu1">
+                      <a class="dropdown-item col-md-4" (click)="GetDescargaPor(d)"
+                          *ngFor="let d of ParametrosDeDescarga">{{d}}</a>
+                  </div> 
+              </section>
+              </div>
+            </div>
+            <div class="card-header OcultarMin450px" style="background-color: var(--color-formulario-primario)">
+              <div class="btn-group float-right" role="group">
+                <input *ngIf="
+                    itemBusqueda.value !== '' &&
+                    (itemBusqueda.value === 'Descripción' ||
+                      itemBusqueda.value === 'Descripción Incompleta')
+                  " id="txtValorBusqueda" style="width: 80%" [formControl]="txtBusqueda"
+                  (keydown.enter)="FiltrarElemento()" (keyup)="ConvertirMayusculas()" class="form-control ml-2"
+                  type="text" placeholder="Buscar" autofocus />
+
+                <select class="form-select" *ngIf="
+                    itemBusqueda.value !== '' && itemBusqueda.value === 'Estado'
+                  " [formControl]="txtBusqueda" [spellcheck]="false" style="width: 150px">
+                  <option *ngFor="let estado of ParametrosEstado" [value]="estado.value">
+                    {{ estado.name }}
+                  </option>
+                </select>
+
+                <button type="button" class="btnBuscar ml-2" *ngIf="txtBusqueda.value !== ''"
+                  (click)="FiltrarElemento()">
+                  <i class="bi bi-search"></i>
+                </button>
+              </div>
+            </div>
+          </section>
+          <!-- FORMULARIO PARA AGREGAR ELEMENTOS -->
+          <section class="vertical-center" *ngIf="TituloFormulario != ''">
+            <div class="card-body" style="background-color: var(--color-formulario-secundario)">
+              <div class="card-header" style="background-color: var(--color-formulario-primario)">
+                <button type="button" (click)="CerrarAgregarEditarElemento()"
+                  class="btn btn-close float-right"></button>
+                <h2 class="Centrar">
+                  {{ TituloFormulario }} {{ PaginaNombre.toLocaleLowerCase() }}
+                </h2>
+              </div>
+              <div class="card-body" style="background-color: var(--color-formulario-secundario)">
+                <form [formGroup]="CreditosForms">
+                  <div class="row">
+                    <div class="col-lg-4 col-12">
+                      <div class="row mb-3">
+                        <div class="col-lg-8 col-12">
+                          <div class="form-floating">
+                            <input type="text" class="form-control" id="cli_identificacion" placeholder=""
+                              formControlName="cli_identificacion" (keyup)="ClienteInfo.patchValue('')" />
+                            <label class="truncate-text"
+                              for="cli_identificacion"><small>*</small>Cedula/Ruc/Pasaporte</label>
+                            <Section>
+                              <div class="error-message" *ngIf="CreditosForms.get('cli_identificacion')?.hasError('required') 
+                              && CreditosForms.get('cli_identificacion')?.touched">
+                                <span style="color: brown;">*Campo obligatorio.</span>
+                              </div>
+                            </Section>
+                          </div>
+                        </div>
+                        <div class="col-lg-4 col-6 Centrar" *ngIf="TituloFormulario != 'Visualizar'">
+                          <small>
+                            <button *ngIf="LecturaEscritura != 0" type="button" class="btnBuscar" [disabled]="
+                                CreditosForms.get('cli_identificacion')!
+                                  .value! == ''
+                              " (click)="
+                                BuscarCliente(
+                                  CreditosForms.get('cli_identificacion')!.value!
+                                )
+                              ">
+                              <i class="fa-solid fa-magnifying-glass"></i>
+                            </button>
+                            <button *ngIf="LecturaEscritura != 0" type="button" class="btnAgregar"
+                              (click)="AbrirModalCliente()">
+                              <i class="bi bi-plus-circle-dotted"></i>
+                            </button>
+                          </small>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-lg-4 col-12">
+                      <div class="row mb-3">
+                        <div class="col-lg-10 col-9">
+                          <div class="form-floating">
+                            <input type="text" class="form-control" id="clinombres" placeholder=""
+                              [formControl]="ClienteInfo" />
+                            <label class="truncate-text" for="clinombres">Nombres</label>
+                          </div>
+                        </div>
+                        <div class="col-lg-2 col-2">
+                          <small>
+                            <button *ngIf="LecturaEscritura != 0" type="button" class="btnVer"
+                              [disabled]="ClienteInfo.value == ''" (click)="VerCliente()">
+                              <i class="fa-solid fa-eye"></i>
+                            </button>
+                          </small>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-md-4 col-12">
+                      <div class="form-group">
+                        <span><small>*</small>Cartera</span>
+                        <select class="form-select" (click)="CarterasList.length != 0?null:ListarCarteras()"
+                          formControlName="id_cartera">
+                          <option  value="0" disabled selected>
+                              Seleccione ...
+                          </option>
+                          <option *ngIf="CarterasList.length == 0" disabled>Cargando ...
+                          </option>
+                          <option *ngFor="let s of CarterasList" [value]="s.id_cartera">
+                            {{s.cart_descripcion+' '+s.cart_tip_descripcion}}
+                          </option>
+                        </select>
+                        <Section>
+                          <div class="error-message" *ngIf="CreditosForms.get('id_cartera')?.touched 
+                              && CreditosForms.get('id_cartera')?.value == 0">
+                            <span style="color: brown;">*Campo obligatorio.</span>
+                          </div>
+                        </Section>
+
+                      </div>
+                    </div>
+
+                    <div class="col-lg-4 col-12">
+                      <div class="form-floating mb-3">
+                        <input type="text" class="form-control" id="ope_cod_credito" placeholder=""
+                          formControlName="ope_cod_credito"/>
+                        <label class="truncate-text" for="ope_cod_credito"><small>*</small>Codigo de credito</label>
+                        <Section>
+                          <div class="error-message" *ngIf="CreditosForms.get('ope_cod_credito')?.hasError('required') 
+                          && CreditosForms.get('ope_cod_credito')?.touched">
+                            <span style="color: brown;">*Campo obligatorio.</span>
+                          </div>
+                          <div class="error-message"
+                            *ngIf="CreditosForms.get('ope_cod_credito')?.value != ''
+                                            ? validar.V_AlfaNumerico(CreditosForms.get('ope_cod_credito')?.value!)  === false:null ">
+                            <span style="color: brown;">*Caracteres no permitidos</span>
+                          </div>
+                        </Section>
+                      </div>
+                    </div>
+
+                    <div class="col-lg-4 col-12">
+                      <div class="form-floating mb-3">
+                        <input type="text" class="form-control" id="ope_descripcion" placeholder=""
+                          formControlName="ope_descripcion" />
+                        <label class="truncate-text" for="ope_descripcion"><small>*</small>Descripcion</label>
+                        <Section>
+                          <div class="error-message" *ngIf="CreditosForms.get('ope_descripcion')?.hasError('required') 
+                          && CreditosForms.get('ope_descripcion')?.touched">
+                            <span style="color: brown;">*Campo obligatorio.</span>
+                          </div>
+                        </Section>
+                      </div>
+                    </div>
+                    <div class="col-lg-4 col-12">
+                      <div class="form-floating mb-3">
+                        <input type="text" class="form-control" id="ope_linea" placeholder=""
+                          formControlName="ope_linea" />
+                        <label class="truncate-text" for="ope_linea"><small>*</small>Linea</label>
+                        <Section>
+                          <div class="error-message" *ngIf="CreditosForms.get('ope_linea')?.hasError('required') 
+                          && CreditosForms.get('ope_linea')?.touched">
+                            <span style="color: brown;">*Campo obligatorio.</span>
+                          </div>
+                        </Section>
+                      </div>
+                    </div>
+                    <div class="col-lg-4 col-12">
+                      <div class="form-floating mb-3">
+                        <input type="text" class="form-control" id="ope_producto" placeholder=""
+                          formControlName="ope_producto" />
+                        <label class="truncate-text" for="ope_producto"><small>*</small>Producto</label>
+                        <Section>
+                          <div class="error-message" *ngIf="CreditosForms.get('ope_producto')?.hasError('required') 
+                          && CreditosForms.get('ope_producto')?.touched">
+                            <span style="color: brown;">*Campo obligatorio.</span>
+                          </div>
+                        </Section>
+                      </div>
+                    </div>
+                    <div class="col-lg-4 col-12">
+                      <div class="form-floating mb-3">
+                        <input type="text" class="form-control" id="ope_dias_mora" placeholder=""
+                          formControlName="ope_dias_mora" />
+                        <label class="truncate-text" for="ope_dias_mora"><small>*</small>Dias de mora</label>
+                        <Section>
+                          <div class="error-message" *ngIf="CreditosForms.get('ope_dias_mora')?.hasError('required') 
+                          && CreditosForms.get('ope_dias_mora')?.touched">
+                            <span style="color: brown;">*Campo obligatorio.</span>
+                          </div>
+                          <div class="error-message"
+                            *ngIf="CreditosForms.get('ope_dias_mora')?.value != ''
+                                            ? validar.V_SoloNumeros(CreditosForms.get('ope_dias_mora')?.value!)  === false:null ">
+                            <span style="color: brown;">*Caracteres no permitidos</span>
+                          </div>
+                        </Section>
+
+                      </div>
+                    </div>
+                    <div class="col-lg-4 col-12">
+                      <div class="form-floating mb-3">
+                        <input type="text" class="form-control" id="ope_interes_mora" placeholder=""
+                          formControlName="ope_interes_mora" />
+                        <label class="truncate-text" for="ope_interes_mora"><small>*</small>Interes de mora</label>
+                        <Section>
+                          <div class="error-message" *ngIf="CreditosForms.get('ope_interes_mora')?.hasError('required') 
+                          && CreditosForms.get('ope_interes_mora')?.touched">
+                            <span style="color: brown;">*Campo obligatorio.</span>
+                          </div>
+                          <div class="error-message"
+                            *ngIf="CreditosForms.get('ope_interes_mora')?.value != ''
+                                            ? validar.V_NumerosDesimales(CreditosForms.get('ope_interes_mora')?.value!)  === false:null ">
+                            <span style="color: brown;">*Caracteres no permitidos</span>
+                          </div>
+                        </Section>
+                      </div>
+                    </div>
+                    <div class="col-lg-4 col-12">
+                      <div class="form-floating mb-3">
+                        <input type="text" class="form-control" id="ope_gastos_cobranzas" placeholder=""
+                          formControlName="ope_gastos_cobranzas" />
+                        <label class="truncate-text" for="ope_gastos_cobranzas"><small>*</small>Gastos de
+                          cobranzas</label>
+                        <Section>
+                          <div class="error-message" *ngIf="CreditosForms.get('ope_gastos_cobranzas')?.hasError('required') 
+                          && CreditosForms.get('ope_gastos_cobranzas')?.touched">
+                            <span style="color: brown;">*Campo obligatorio.</span>
+                          </div>
+                          <div class="error-message"
+                            *ngIf="CreditosForms.get('ope_gastos_cobranzas')?.value != ''
+                                            ? validar.V_NumerosDesimales(CreditosForms.get('ope_gastos_cobranzas')?.value!)  === false:null ">
+                            <span style="color: brown;">*Caracteres no permitidos</span>
+                          </div>
+                        </Section>
+                      </div>
+                    </div>
+                    <div class="col-lg-4 col-12">
+                      <div class="form-floating mb-3">
+                        <input type="text" class="form-control" id="ope_saldo_cxc_actual" placeholder=""
+                          formControlName="ope_saldo_cxc_actual" />
+                        <label class="truncate-text" for="ope_saldo_cxc_actual"><small>*</small>Saldo cxc actual</label>
+                        <Section>
+                          <div class="error-message" *ngIf="CreditosForms.get('ope_saldo_cxc_actual')?.hasError('required') 
+                          && CreditosForms.get('ope_saldo_cxc_actual')?.touched">
+                            <span style="color: brown;">*Campo obligatorio.</span>
+                          </div>
+                          <div class="error-message"
+                            *ngIf="CreditosForms.get('ope_saldo_cxc_actual')?.value != ''
+                                            ? validar.V_NumerosDesimales(CreditosForms.get('ope_saldo_cxc_actual')?.value!)  === false:null ">
+                            <span style="color: brown;">*Caracteres no permitidos</span>
+                          </div>
+                        </Section>
+                      </div>
+                    </div>
+                    <div class="col-lg-4 col-12">
+                      <div class="form-floating mb-3">
+                        <input type="text" class="form-control" id="ope_liquidar" placeholder=""
+                          formControlName="ope_liquidar" />
+                        <label class="truncate-text" for="ope_liquidar"><small>*</small>Liquidar</label>
+                        <Section>
+                          <div class="error-message" *ngIf="CreditosForms.get('ope_liquidar')?.hasError('required') 
+                          && CreditosForms.get('ope_liquidar')?.touched">
+                            <span style="color: brown;">*Campo obligatorio.</span>
+                          </div>
+                          <div class="error-message"
+                            *ngIf="CreditosForms.get('ope_liquidar')?.value != ''
+                                            ? validar.V_NumerosDesimales(CreditosForms.get('ope_liquidar')?.value!)  === false:null ">
+                            <span style="color: brown;">*Caracteres no permitidos</span>
+                          </div>
+                        </Section>
+                      </div>
+                    </div>
+                    <div class="col-lg-4 col-12">
+                      <div class="form-floating mb-3">
+                        <input type="text" class="form-control" id="ope_saldo_cuota_actual" placeholder=""
+                          formControlName="ope_saldo_cuota_actual" />
+                        <label class="truncate-text" for="ope_saldo_cuota_actual">Saldo cuota actual</label>
+                        <Section>
+                          <div class="error-message"
+                            *ngIf="CreditosForms.get('ope_saldo_cuota_actual')?.value != ''
+                                            ? validar.V_NumerosDesimales(CreditosForms.get('ope_saldo_cuota_actual')?.value!)  === false:null ">
+                            <span style="color: brown;">*Caracteres no permitidos</span>
+                          </div>
+                        </Section>
+                      </div>
+                    </div>
+                    <div class="col-lg-4 col-12">
+                      <div class="form-floating mb-3">
+                        <input type="text" class="form-control" id="ope_saldo_capital_venc" placeholder=""
+                          formControlName="ope_saldo_capital_venc" />
+                        <label class="truncate-text" for="ope_saldo_capital_venc">Saldo capital vencida</label>
+                        <Section>
+                          <div class="error-message"
+                            *ngIf="CreditosForms.get('ope_saldo_capital_venc')?.value != ''
+                                            ? validar.V_NumerosDesimales(CreditosForms.get('ope_saldo_capital_venc')?.value!)  === false:null ">
+                            <span style="color: brown;">*Caracteres no permitidos</span>
+                          </div>
+                        </Section>
+                      </div>
+                    </div>
+                    <div class="col-lg-4 col-12">
+                      <div class="Centrar">
+                        <div class="btn-group">
+                          <div class="form-group">
+                            <label class="truncate-text" for="ope_poner_aldia">Poner al dia</label>&nbsp;
+                            <div class="custom-control custom-switch Centrar" title="Estado">
+                              <input type="checkbox" class="custom-control-input" formControlName="ope_poner_aldia"
+                                name="estado" id="ope_poner_aldia" />
+                              <label class="custom-control-label"
+                                for="ope_poner_aldia">{{CreditosForms.get("ope_poner_aldia")!.value == false?
+                                "Inactivo": "Activo"}}</label>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-lg-4 col-12">
+                      <div class="form-floating mb-2">
+                        <input type="date" class="form-control" formControlName="ope_fecha_venc" id="ope_fecha_venc"
+                          placeholder="" />
+                        <label class="truncate-text" for="ope_fecha_venc">Fecha vencido</label>
+                      </div>
+                    </div>
+                    <div class="col-lg-4 col-12">
+                      <div class="form-floating mb-3">
+                        <input type="text" class="form-control" id="ope_plazo" placeholder=""
+                          formControlName="ope_plazo" />
+                        <label class="truncate-text" for="ope_plazo">Plazo en meses</label>
+                        <Section>
+                          <div class="error-message"
+                            *ngIf="CreditosForms.get('ope_plazo')?.value != ''
+                                            ? validar.V_SoloNumeros(CreditosForms.get('ope_plazo')?.value!)  === false:null ">
+                            <span style="color: brown;">*Caracteres no permitidos</span>
+                          </div>
+                        </Section>
+                      </div>
+                    </div>
+                    <div class="col-lg-4 col-12">
+                      <div class="Centrar">
+                        <div class="btn-group">
+                          <div class="form-group">
+                            <label class="truncate-text" for="ope_liquidado">Liquidado</label>&nbsp;
+                            <div class="custom-control custom-switch Centrar" title="Estado">
+                              <input type="checkbox" class="custom-control-input" formControlName="ope_liquidado"
+                                name="estado" id="ope_liquidado" />
+                              <label class="custom-control-label" for="ope_liquidado">{{
+                                CreditosForms.get("ope_liquidado")!.value ==
+                                false
+                                ? "Inactivo"
+                                : "Activo"
+                                }}</label>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-lg-4 col-12">
+                      <div class="Centrar">
+                        <div class="btn-group">
+                          <div class="form-group">
+                            <label class="truncate-text" for="ope_deuda_pagada">Deuda pagada</label>&nbsp;
+                            <div class="custom-control custom-switch Centrar" title="Estado">
+                              <input type="checkbox" class="custom-control-input" formControlName="ope_deuda_pagada"
+                                name="estado" id="ope_deuda_pagada" />
+                              <label class="custom-control-label" for="ope_deuda_pagada">{{
+                                CreditosForms.get("ope_deuda_pagada")!.value ==
+                                false
+                                ? "Inactivo"
+                                : "Activo"
+                                }}</label>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-lg-4 col-12">
+                      <div class="form-floating mb-2">
+                        <input type="date" class="form-control" formControlName="ope_fecha_pagada" id="ope_fecha_pagada"
+                          placeholder="" />
+                        <label class="truncate-text" for="ope_fecha_pagada">Fecha pagado</label>
+                      </div>
+                    </div>
+                    <div class="col-lg-4 col-12">
+                      <div class="form-floating mb-3">
+                        <input type="text" class="form-control" id="ope_provincia" placeholder=""
+                          formControlName="ope_provincia" />
+                        <label class="truncate-text" for="ope_provincia">Provincia</label>
+                      </div>
+                    </div>
+                    <div class="col-lg-4 col-12">
+                      <div class="Centrar">
+                        <div class="btn-group">
+                          <div class="form-group">
+                            <label class="truncate-text" for="ope_tiene_garante">Tiene garante</label>&nbsp;
+                            <div class="custom-control custom-switch Centrar" title="Estado">
+                              <input type="checkbox" class="custom-control-input" formControlName="ope_tiene_garante"
+                                name="estado" id="ope_tiene_garante" />
+                              <label class="custom-control-label" for="ope_tiene_garante">{{
+                                CreditosForms.get("ope_tiene_garante")!.value ==
+                                false
+                                ? "No"
+                                : "Si"
+                                }}</label>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-lg-4 col-12">
+                      <div class="form-floating mb-2">
+                        <input type="date" class="form-control" formControlName="ope_fecha_compra" id="ope_fecha_compra"
+                          placeholder="" />
+                        <label class="truncate-text" for="ope_fecha_compra">Fecha compra producto</label>
+                      </div>
+                    </div>
+
+                    <div class="col-lg-4 col-12">
+                      <div class="form-floating mb-3">
+                        <input type="text" class="form-control" id="ope_observacion" placeholder=""
+                          formControlName="ope_observacion" />
+                        <label class="truncate-text" for="ope_observacion">Observacion</label>
+                      </div>
+                    </div>
+                    <div class="col-lg-4 col-12">
+                      <div class="form-floating mb-3">
+                        <input type="text" class="form-control" id="ope_abono_realizado" placeholder=""
+                          formControlName="ope_abono_realizado" />
+                        <label class="truncate-text" for="ope_abono_realizado">Abono realizado</label>
+                        <Section>
+                          <div class="error-message"
+                            *ngIf="CreditosForms.get('ope_abono_realizado')?.value != ''
+                                            ? validar.V_NumerosDesimales(CreditosForms.get('ope_abono_realizado')?.value!)  === false:null ">
+                            <span style="color: brown;">*Caracteres no permitidos</span>
+                          </div>
+                        </Section>
+                      </div>
+                    </div>
+                    <div class="col-lg-4 col-12">
+                      <div class="form-floating mb-3">
+                        <input type="text" class="form-control" id="ope_valor_total_pag" placeholder=""
+                          formControlName="ope_valor_total_pag" />
+                        <label class="truncate-text" for="ope_valor_total_pag">Valor total a pagar</label>
+                        <Section>
+                          <div class="error-message"
+                            *ngIf="CreditosForms.get('ope_valor_total_pag')?.value != ''
+                                            ? validar.V_NumerosDesimales(CreditosForms.get('ope_valor_total_pag')?.value!)  === false:null ">
+                            <span style="color: brown;">*Caracteres no permitidos</span>
+                          </div>
+                        </Section>
+                      </div>
+                    </div>
+                    <div class="col-lg-4 col-12">
+                      <div class="form-floating mb-3">
+                        <input type="text" class="form-control" id="ope_tipo_actualizacion" placeholder=""
+                          formControlName="ope_tipo_actualizacion" />
+                        <label class="truncate-text" for="ope_tipo_actualizacion">Tipo de actualizacion</label>
+                      </div>
+                    </div>
+                    <div class="col-lg-4 col-12">
+                      <div class="form-floating mb-3">
+                        <input type="text" class="form-control" id="ope_total_vencido" placeholder=""
+                          formControlName="ope_total_vencido" />
+                        <label class="truncate-text" for="ope_total_vencido">Total vencido</label>
+                        <Section>
+                          <div class="error-message"
+                            *ngIf="CreditosForms.get('ope_total_vencido')?.value != ''
+                                            ? validar.V_NumerosDesimales(CreditosForms.get('ope_total_vencido')?.value!)  === false:null ">
+                            <span style="color: brown;">*Caracteres no permitidos</span>
+                          </div>
+                        </Section>
+                      </div>
+                    </div>
+                    <div class="col-lg-4 col-12">
+                      <div class="form-floating mb-3">
+                        <input type="text" class="form-control" id="ope_nom_segm_vencido" placeholder=""
+                          formControlName="ope_nom_segm_vencido" />
+                        <label class="truncate-text" for="ope_nom_segm_vencido">Nom. segmento vencido</label>
+                      </div>
+                    </div>
+                    <div class="col-lg-4 col-12">
+                      <div class="form-floating mb-3">
+                        <input type="text" class="form-control" id="ope_categoria_cliente" placeholder=""
+                          formControlName="ope_categoria_cliente" />
+                        <label class="truncate-text" for="ope_categoria_cliente">Categoria cliente</label>
+                      </div>
+                    </div>
+                    <div class="col-lg-4 col-12">
+                      <div class="form-floating mb-3">
+                        <input type="text" class="form-control" id="ope_segmentacion" placeholder=""
+                          formControlName="ope_segmentacion" />
+                        <label class="truncate-text" for="ope_segmentacion">Segmentacion</label>
+                      </div>
+                    </div>
+                    <div class="col-lg-4 col-12">
+                      <div class="form-floating mb-3">
+                        <input type="text" class="form-control" id="ope_promo_cuotas_gratis" placeholder=""
+                          formControlName="ope_promo_cuotas_gratis" />
+                        <label class="truncate-text" for="ope_promo_cuotas_gratis">promocion cuotas gratis</label>
+                      </div>
+                    </div>
+                    <div class="col-lg-4 col-12">
+                      <div class="form-floating mb-3">
+                        <input type="text" class="form-control" id="ope_deuda_actual" placeholder=""
+                          formControlName="ope_deuda_actual" />
+                        <label class="truncate-text" for="ope_deuda_actual">Deuda actual</label>
+                        <Section>
+                          <div class="error-message"
+                            *ngIf="CreditosForms.get('ope_deuda_actual')?.value != ''
+                                            ? validar.V_NumerosDesimales(CreditosForms.get('ope_deuda_actual')?.value!)  === false:null ">
+                            <span style="color: brown;">*Caracteres no permitidos</span>
+                          </div>
+                        </Section>
+                      </div>
+                    </div>
+                    <div class="col-lg-4 col-12">
+                      <div class="form-floating mb-3">
+                        <input type="text" class="form-control" id="ope_saldo_interes" placeholder=""
+                          formControlName="ope_saldo_interes" />
+                        <label class="truncate-text" for="ope_saldo_interes">Saldo interes</label>
+                        <Section>
+                          <div class="error-message"
+                            *ngIf="CreditosForms.get('ope_saldo_interes')?.value != ''
+                                            ? validar.V_NumerosDesimales(CreditosForms.get('ope_saldo_interes')?.value!)  === false:null ">
+                            <span style="color: brown;">*Caracteres no permitidos</span>
+                          </div>
+                        </Section>
+                      </div>
+                    </div>
+                    <div class="col-lg-4 col-12">
+                      <div class="form-floating mb-3">
+                        <input type="text" class="form-control" id="ope_saldo_amortizacion" placeholder=""
+                          formControlName="ope_saldo_amortizacion" />
+                        <label class="truncate-text" for="ope_saldo_amortizacion">Saldo amortizacion</label>
+                        <Section>
+                          <div class="error-message"
+                            *ngIf="CreditosForms.get('ope_saldo_amortizacion')?.value != ''
+                                            ? validar.V_NumerosDesimales(CreditosForms.get('ope_saldo_amortizacion')?.value!)  === false:null ">
+                            <span style="color: brown;">*Caracteres no permitidos</span>
+                          </div>
+                        </Section>
+                      </div>
+                    </div>
+                    <div class="col-lg-4 col-12">
+                      <div class="form-floating mb-3">
+                        <input type="text" class="form-control" id="ope_int_cobra" placeholder=""
+                          formControlName="ope_int_cobra" />
+                        <label class="truncate-text" for="ope_int_cobra">Interes cobranza</label>
+                        <Section>
+                          <div class="error-message"
+                            *ngIf="CreditosForms.get('ope_int_cobra')?.value != ''
+                                            ? validar.V_NumerosDesimales(CreditosForms.get('ope_int_cobra')?.value!)  === false:null ">
+                            <span style="color: brown;">*Caracteres no permitidos</span>
+                          </div>
+                        </Section>
+                      </div>
+                    </div>
+                    <div class="col-lg-4 col-12">
+                      <div class="form-floating mb-3">
+                        <input type="text" class="form-control" id="ope_saldo_cobra_mora" placeholder=""
+                          formControlName="ope_saldo_cobra_mora" />
+                        <label class="truncate-text" for="ope_saldo_cobra_mora">Saldo cobranzas mora</label>
+                        <Section>
+                          <div class="error-message"
+                            *ngIf="CreditosForms.get('ope_saldo_cobra_mora')?.value != ''
+                                            ? validar.V_NumerosDesimales(CreditosForms.get('ope_saldo_cobra_mora')?.value!)  === false:null ">
+                            <span style="color: brown;">*Caracteres no permitidos</span>
+                          </div>
+                        </Section>
+                      </div>
+                    </div>
+                    <div class="col-lg-4 col-12">
+                      <div class="form-floating mb-3">
+                        <input type="text" class="form-control" id="ope_descu_campa_saldo_capit" placeholder=""
+                          formControlName="ope_descu_campa_saldo_capit" />
+                        <label class="truncate-text" for="ope_descu_campa_saldo_capit">Descuento campana saldo
+                          capital</label>
+                          <Section>
+                          <div class="error-message"
+                            *ngIf="CreditosForms.get('ope_descu_campa_saldo_capit')?.value != ''
+                                            ? validar.V_NumerosDesimales(CreditosForms.get('ope_descu_campa_saldo_capit')?.value!)  === false:null ">
+                            <span style="color: brown;">*Caracteres no permitidos</span>
+                          </div>
+                        </Section>
+                      </div>
+                    </div>
+                    <div class="col-lg-4 col-12">
+                      <div class="form-floating mb-3">
+                        <input type="text" class="form-control" id="ope_valor_descu_saldo_capit" placeholder=""
+                          formControlName="ope_valor_descu_saldo_capit" />
+                        <label class="truncate-text" for="ope_valor_descu_saldo_capit">Valor descuento saldo
+                          capital</label>
+                          <Section>
+                          <div class="error-message"
+                            *ngIf="CreditosForms.get('ope_valor_descu_saldo_capit')?.value != ''
+                                            ? validar.V_NumerosDesimales(CreditosForms.get('ope_valor_descu_saldo_capit')?.value!)  === false:null ">
+                            <span style="color: brown;">*Caracteres no permitidos</span>
+                          </div>
+                        </Section>
+                      </div>
+                    </div>
+                    <div class="col-lg-4 col-12">
+                      <div class="form-floating mb-3">
+                        <input type="text" class="form-control" id="ope_descrip_unidad_gestion" placeholder=""
+                          formControlName="ope_descrip_unidad_gestion" />
+                        <label class="truncate-text" for="ope_descrip_unidad_gestion">Descripcion unidad gestion</label>
+                      </div>
+                    </div>
+
+
+
+
+                    <div class="col-lg-4 col-12">
+                      <div class="Centrar">
+                        <div class="btn-group">
+                          <div class="form-group">
+                            <label class="truncate-text" for="ope_esactivo">Estado</label>&nbsp;
+                            <div class="custom-control custom-switch Centrar" title="Estado">
+                              <input type="checkbox" class="custom-control-input" formControlName="ope_esactivo"
+                                name="estado" id="ope_esactivo" />
+                              <label class="custom-control-label" for="ope_esactivo">{{
+                                CreditosForms.get("ope_esactivo")!.value ==
+                                false
+                                ? "Inactivo"
+                                : "Activo"
+                                }}</label>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </form>
+              </div>
+
+              <div class="card-footer" style="background-color: var(--color-formulario-terciario)">
+                <div class="row Centrar">
+                  <small>
+                    <button class="btnAceptar" [disabled]="CreditosForms.invalid || ClienteInfo.value == ''"
+                      *ngIf="TituloFormulario != 'Visualizar'" id="btnAgregar" (click)="
+                        ActDesControles(1);
+                        GuardarObjeto(CreditosForms.value);
+                        ActDesControles(0)
+                      ">
+                      Guardar
+                    </button>
+                    <button class="btnCancelar ml-3" (click)="CerrarAgregarEditarElemento()">
+                      Cancelar
+                    </button>
+                  </small>
+                </div>
+              </div>
+            </div>
+          </section>
+          <!-- FORMULARIO PARA LISTAR ELEMENTOS -->
+          <section class="expand-bottom" *ngIf="TituloFormulario == ''">
+            <div class="card-body" style="background-color: var(--color-formulario-secundario)"
+              *ngIf="!loading; else loadingOrError">
+              <div class="card-footer" style="background-color: var(--color-formulario-terciario)"
+                *ngIf="ListaCreditos.length != 0">
+                <div class="float-right clearfix">
+                  <div class="input-group">
+                    <div class="input-group-prepend">
+                      <button type="button" class="btn btnOk btn-sm dropdown-toggle" data-toggle="dropdown"
+                        aria-expanded="false">
+                        <label id="lblFiltro0"></label>
+                      </button>
+                      <ul class="dropdown-menu" x-placement="top-start">
+                        <li class="dropdown-item" style="cursor: pointer" (click)="FiltrarPor('Identificacion', 0)">
+                          <a>Identificación</a>
+                        </li>
+                        <li class="dropdown-item" style="cursor: pointer" (click)="FiltrarPor('Nombres', 0)">
+                          <a>Nombres</a>
+                        </li>
+                        <li class="dropdown-item" style="cursor: pointer" (click)="FiltrarPor('Correo', 0)">
+                          <a>Correo</a>
+                        </li>
+                      </ul>
+                    </div>
+
+                    <input type="text" id="TxtFiltro0" (keyup)="FiltrarLista(0, 0)"
+                      class="form-control form-control-sm" />
+
+                    <div class="input-group-append">
+                      <button type="button" class="btn btnOk btn-sm" (click)="VaciarFiltro(0)">
+                        <i class="bi bi-trash"></i>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <table class="table table-bordered table-responsive-md" *ngIf="ListaCreditos.length != 0">
+                <thead>
+                  <tr>
+                    <th style="width: 10px">#</th>
+                    <th id="ThIdentificacion0">Identificación</th>
+                    <th id="ThDescripcion0">Nombres</th>
+                    <th id="ThCorreo0">Código</th>
+                    <th id="ThCorreo0">linea</th>
+                    <th class="OcultarMax450px">Descripción</th>
+                    <th class="OcultarMax450px">Saldo Cxc</th>
+                    <!-- <th class="OcultarMax450px">Actualización</th> -->
+                    <th class="OcultarMax450px" *ngIf="LecturaEscritura != 0">
+                      Estado
+                    </th>
+                    <th>Acciones</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let datos of DatosCargaMasiva; let i = index">
+                    <th>{{ InicioPaginacion + i + 1 }}</th>
+                    <th>{{ datos.cli_identificacion }}</th>
+                    <th>{{ datos.cli_nombres }}</th>
+                    <th>{{ datos.ope_cod_credito }}</th>
+                    <th>{{ datos.ope_linea }}</th>
+                    <th class="OcultarMax450px">
+                      {{ datos.ope_descripcion }}
+                    </th>
+                    <th class="OcultarMax450px">
+                      {{ datos.ope_saldo_cxc_actual }}
+                    </th>
+                    <!-- <th class="OcultarMax450px">{{Fechas.fechaCorta(datos.cor_fecha_up)}}</th> -->
+                    <th class="OcultarMax450px ContenidoCentrado" *ngIf="LecturaEscritura != 0">
+                      <div class="custom-switch">
+                        <input type="checkbox" class="custom-control-input" id="idEstado_{{ datos.id_cxc_operacion }}"
+                          [checked]="datos.ope_esactivo === '1' ? true : false" name="estado"
+                          (change)="ActualizaEstado(datos)" />
+                        <label class="custom-control-label" for="idEstado_{{ datos.id_cxc_operacion }}"></label>
+                      </div>
+                    </th>
+                    <th>
+                      <div class="btn-group" role="group">
+                        <button class="btnVer" (click)="CargarElemento(datos, 3)">
+                          <i class="fa-regular fa-eye"></i>
+                        </button>
+                        <button *ngIf="LecturaEscritura != 0" class="ml-2 btnEditar" (click)="CargarElemento(datos, 2)">
+                          <i class="bi bi-pencil-fill"></i>
+                        </button>
+                        <button *ngIf="LecturaEscritura != 0" class="ml-2 btnEliminar"
+                          (click)="EliminarElemento(datos)">
+                          <i class="bi bi-trash"></i>
+                        </button>
+                      </div>
+                    </th>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <div class="card-footer" style="background-color: var(--color-formulario-terciario)"
+              *ngIf="ListaCreditos.length != 0">
+              <div class="row">
+                <div class="col-lg-2 col-6">
+                  <p>
+                    Total<strong>&nbsp;{{ ContadorDatosGeneral }}</strong>
+                  </p>
+                </div>
+                <div class="col-lg-2 col-6">
+                  <div *ngIf="ContadorDatosGeneral != ContadorDatos">
+                    <p>
+                      Resultado Filtro<strong>&nbsp;{{ ContadorDatos }}</strong>
+                    </p>
+                  </div>
+                </div>
+                <div class="col-lg-2 col-6">
+                  <div>
+                    <p>
+                      Elementos<strong>&nbsp;{{ InicioPaginacion + 1 }}</strong>-<strong>&nbsp;{{ InicioPaginacion +
+                        RangoPaginacion }}</strong>
+                    </p>
+                  </div>
+                </div>
+                <div class="col-lg-2 col-6">
+                  <!-- <p>Grupo<strong>&nbsp;1</strong>-<strong>&nbsp;10</strong></p> -->
+                </div>
+                <div class="col-lg-4 col-12">
+                  <div class="form-group">
+                    <div class="float-right">
+                      <small>
+                        <button (click)="
+                            InicioPaginacion == 0
+                              ? BtnPrevious(0, 1)
+                              : BtnPrevious(0)
+                          " *ngIf="FraccionDatos !== 0 || InicioPaginacion !== 0" type="button" class="BtnNextPrevious"
+                          aria-label="" style="display: inline-block">
+                          <i class="bi bi-arrow-left-circle"></i> Anterior
+                        </button>
+
+                        <button *ngIf="
+                            InicioPaginacion + RangoPaginacion <
+                              ContadorDatos || ContadorDatos == RangoDatos
+                          " (click)="
+                            InicioPaginacion + RangoPaginacion == ContadorDatos
+                              ? BtnNext(0, 1)
+                              : BtnNext(0)
+                          " type="button" class="BtnNextPrevious ml-2" aria-label="" style="display: inline-block">
+                          Siguiente <i class="bi bi-arrow-right-circle"></i>
+                        </button>
+                      </small>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+        </div>
+      </div>
+    </section>
+
+    <router-outlet></router-outlet>
+  </div>
+</div>
+<app-footer></app-footer>
+
+<section class="modal" id="ModalCliente">
+  <div class="modal__container">
+    <div class="col-sm alert" style="background-color: var(--color-formulario-primario)">
+      <button type="button" (click)="CerrarModalCliente()" class="btn btn-close float-right"></button>
+      <h2 class="modal__title Centrar">
+        {{ ModoVistaCliente == true ? "Ver" : "Agregar" }} Cliente
+      </h2>
+
+      <section class="vertical-center" *ngIf="TituloFormulario != ''">
+        <div class="card-body" style="background-color: var(--color-formulario-secundario)">
+          <div class="card-body" style="background-color: var(--color-formulario-secundario)">
+            <form [formGroup]="ClienteForms">
+              <div class="row">
+                <div class="col-md-2 col-12">
+                  <div class="form-group">
+                    <span><small>*</small>identificacion por</span>
+                    <select style="height: 35px;" class="form-select" formControlName="cli_tipo_identificacion">
+                      <option *ngFor="let s of TipoIdentificacion" [value]="s.value">
+                        {{s.name}}
+                      </option>
+                    </select>
+                    <Section>
+                      <div class="error-message" *ngIf="ClienteForms.get('cli_tipo_identificacion')?.hasError('required') 
+                          && ClienteForms.get('cli_tipo_identificacion')?.touched">
+                        <span style="color: brown;">*Campo obligatorio.</span>
+                      </div>
+                    </Section>
+
+                  </div>
+                </div>
+                <div class="col-lg-4 col-12">
+                  <div class="form-floating mb-3">
+                    <input type="text" class="form-control" id="cli_identificacion" placeholder=""
+                      formControlName="cli_identificacion">
+                    <label for="cli_identificacion"><small>*</small>Identificacion</label>
+                    <Section>
+                      <div class="error-message" *ngIf="ClienteForms.get('cli_identificacion')?.hasError('required') 
+                          && ClienteForms.get('cli_identificacion')?.touched">
+                        <span style="color: brown;">*Campo obligatorio.</span>
+                      </div>
+                      <div class="error-message"
+                        *ngIf="ClienteForms.get('cli_identificacion')?.value != ''
+                  ? validar.Tipo_Identificacion(ClienteForms.get('cli_identificacion')?.value!,ClienteForms.get('cli_tipo_identificacion')?.value!)  === false:null ">
+                        <span style="color: brown;">*Dijitos incorrectos</span>
+                      </div>
+                    </Section>
+                  </div>
+                </div>
+                <div class="col-md-6 col-12">
+                  <div class="form-floating mb-3">
+                    <input type="text" class="form-control" id="cli_nombres" placeholder=""
+                      formControlName="cli_nombres">
+                    <label for="cli_nombres"><small>*</small>Nombres</label>
+                    <Section>
+                      <div class="error-message" *ngIf="ClienteForms.get('cli_nombres')?.hasError('required') 
+                          && ClienteForms.get('cli_nombres')?.touched">
+                        <span style="color: brown;">*Campo obligatorio.</span>
+                      </div>
+                    </Section>
+                  </div>
+                </div>
+                <div class="col-md-2 col-12">
+                  <div class="form-group">
+                    <span>Genero</span>
+                    <select style="height: 35px;" class="form-select" formControlName="cli_genero">
+                      <option *ngFor="let s of Genero" [value]="s.value">
+                        {{s.name}}
+                      </option>
+                    </select>
+                    <Section>
+                      <div class="error-message" *ngIf="ClienteForms.get('cli_genero')?.hasError('required') 
+                          && ClienteForms.get('cli_genero')?.touched">
+                        <span style="color: brown;">*Campo obligatorio.</span>
+                      </div>
+                    </Section>
+
+                  </div>
+                </div>
+                <div class="col-md-2 col-12">
+                  <div class="form-group">
+                    <span><small>*</small>Estado Civil</span>
+                    <select style="height: 35px;" class="form-select" formControlName="cli_estado_civil">
+                      <option *ngFor="let s of EstadoCivil" [value]="s.value">
+                        {{s.name}}
+                      </option>
+                    </select>
+                    <Section>
+                      <div class="error-message" *ngIf="ClienteForms.get('cli_estado_civil')?.hasError('required') 
+                          && ClienteForms.get('cli_estado_civil')?.touched">
+                        <span style="color: brown;">*Campo obligatorio.</span>
+                      </div>
+                    </Section>
+
+                  </div>
+                </div>
+                <div class="col-lg-4 col-12">
+                  <div class="form-floating mb-3">
+                    <input type="text" class="form-control" id="cli_ocupacion" placeholder=""
+                      formControlName="cli_ocupacion">
+                    <label for="cli_ocupacion">Ocupacion</label>
+                  </div>
+                </div>
+                <div class="col-lg-4 col-12">
+                  <div class="form-floating mb-3">
+                    <input type="date" class="form-control" id="cli_fecha_nacimiento" placeholder=""
+                      formControlName="cli_fecha_nacimiento">
+                    <label for="cli_fecha_nacimiento"><small>*</small>Fecha de Nacimiento</label>
+                    <Section>
+                      <div class="error-message" *ngIf="ClienteForms.get('cli_fecha_nacimiento')?.hasError('required') 
+                          && ClienteForms.get('cli_fecha_nacimiento')?.touched">
+                        <span style="color: brown;">*Campo obligatorio.</span>
+                      </div>
+                    </Section>
+                  </div>
+                </div>
+                <div class="col-lg-4 col-12">
+                  <div class="form-floating mb-3">
+                    <input type="text" class="form-control" id="cli_score" placeholder="" formControlName="cli_score" />
+                    <label class="truncate-text" for="cli_score">Calificación</label>
+                  </div>
+                </div>
+                <div class="col-lg-4 col-12">
+                  <div class="Centrar">
+                    <div class="btn-group">
+                      <div class="form-group">
+                        <label class="truncate-text" for="cli_fallecido">Fallecido</label>&nbsp;
+                        <div class="custom-control custom-switch Centrar" title="Fallecido">
+                          <input type="checkbox" class="custom-control-input" formControlName="cli_fallecido"
+                            name="fallecido" id="cli_fallecido" />
+                          <label class="custom-control-label" for="cli_fallecido">{{
+                            ClienteForms.get("cli_fallecido")!.value == false
+                            ? "NO"
+                            : "SI"
+                            }}</label>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-lg-4 col-12">
+                  <div class="form-floating mb-3">
+                    <input type="date" class="form-control" id="cli_fecha_fallecido" placeholder=""
+                      formControlName="cli_fecha_fallecido" />
+                    <label class="truncate-text" for="cli_fecha_fallecido">Fecha de defuncion</label>
+                  </div>
+                </div>
+                <div class="col-lg-4 col-12">
+                  <div class="form-floating mb-3">
+                    <input type="text" class="form-control" id="cli_observacion" placeholder=""
+                      formControlName="cli_observacion" />
+                    <label class="truncate-text" for="cli_observacion">Observación</label>
+                  </div>
+                </div>
+                <div class="col-lg-4 col-12">
+                  <div class="form-floating mb-3">
+                    <input type="text" class="form-control" id="cli_provincia" placeholder=""
+                      formControlName="cli_provincia" />
+                    <label class="truncate-text" for="cli_provincia">Provincia</label>
+                  </div>
+                </div>
+                <div class="col-lg-4 col-12">
+                  <div class="form-floating mb-3">
+                    <input type="text" class="form-control" id="cli_canton" placeholder=""
+                      formControlName="cli_canton" />
+                    <label class="truncate-text" for="cli_canton">Canton</label>
+                  </div>
+                </div>
+                <div class="col-lg-4 col-12">
+                  <div class="form-floating mb-3">
+                    <input type="text" class="form-control" id="cli_parroquia" placeholder=""
+                      formControlName="cli_parroquia" />
+                    <label class="truncate-text" for="cli_parroquia">Parroquia</label>
+                  </div>
+                </div>
+                <div class="col-lg-4 col-12">
+                  <div class="Centrar">
+                    <div class="btn-group">
+                      <div class="form-group">
+                        <label class="truncate-text" for="cli_esactivo">Estado</label>&nbsp;
+                        <div class="custom-control custom-switch Centrar" title="Estado">
+                          <input type="checkbox" class="custom-control-input" formControlName="cli_esactivo"
+                            name="estado" id="cli_esactivo" />
+                          <label class="custom-control-label" for="cli_esactivo">{{
+                            ClienteForms.get("cli_esactivo")!.value == false
+                            ? "Inactivo"
+                            : "Activo"
+                            }}</label>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+
+          <div class="card-footer" style="background-color: var(--color-formulario-terciario)">
+            <div class="row Centrar">
+              <small>
+                <button class="btnAceptar" [disabled]="ClienteForms.invalid" *ngIf="!ModoVistaCliente" id="btnAgregar"
+                  (click)="GuardarObjetoCliente(ClienteForms.value)">
+                  Guardar
+                </button>
+                <button class="btnCancelar ml-3" (click)="CerrarModalCliente()">
+                  Cancelar
+                </button>
+              </small>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </div>
+</section>
+
+<ng-template #loadingOrError>
+  <section>
+    <div class="ContenidoCentrado">
+      <div class="loader"></div>
+    </div>
+  </section>
+</ng-template>
+
+<ng-template #loadingOrError1>
+  <section>
+    <div class="ContenidoCentrado">
+      <div class="loader1"></div>
+    </div>
+  </section>
+</ng-template>
+
+<section class="modal" id="Cargando">
+  <section>
+    <div class="CentroSobrepuesto">
+      <div class="loaderLogin"></div>
+    </div>
+  </section>
+</section>

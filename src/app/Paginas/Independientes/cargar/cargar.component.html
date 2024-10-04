@@ -1,0 +1,272 @@
+<app-header></app-header>
+<app-sidebar></app-sidebar>
+<div class="content-wrapper">
+    <div class="container-fluid">
+        <h4 class="NombrePage">{{PaginaNombre}}</h4>
+        <!-- PAGINA DE SELECCION -->
+        <section class="content" *ngIf="TituloPagina == ''">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-md-3 col-sm-6 col-12" style="cursor: pointer;" (click)="CargarArchivos()">
+                        <div class="info-box  bg-info">
+                            <span class="info-box-icon"><i class="fa-solid fa-envelopes-bulk"></i></span>
+                            <div class="info-box-content">
+                                <span class="info-box-text">ARCHIVOS</span>
+                                <span class="fa-solid fa-upload"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3 col-sm-6 col-12" style="cursor: pointer;" (click)="CargarElementos()">
+                        <div class="info-box  bg-info">
+                            <span class="info-box-icon"><i class="fa-solid fa-file-lines"></i></span>
+                            <div class="info-box-content">
+                                <span class="info-box-text">ELEMENTOS</span>
+                                <span class="fa-solid fa-upload"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+        </section>
+        <!-- PAGINA PARA CARGAR ARCHIVOS -->
+        <section class="content" *ngIf="TituloPagina == 'Cargar Archivos'">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-md-8 col-sm-6 col-12">
+                        <div class="input-group input-group-lg mb-3">
+                            <div class="input-group-prepend flex-grow-1">
+                                <select class="form-select" [formControl]="itemFile" (change)="cambiarTipoArchivo()">
+                                    <option *ngFor="let s of TipoArchivo" [value]="s.value">
+                                        {{s.name}}
+                                    </option>
+                                    <option *ngIf="TipoArchivo.length == 0" disabled>Cargando ...</option>
+                                </select>
+                            </div>
+                            
+                            <div class="input-group-prepend flex-grow-1"> <!-- Use flex-grow-1 for responsiveness -->
+                                <input [disabled]="itemFile.invalid" id="SubirArchivo" type="file" #filePicker class="form-control"
+                                (change)="LeerArchivo($event)">
+                            </div>
+                        
+                            <div class="input-group-prepend flex-grow-1 d-flex justify-content-center">
+                                <span class="input-group-append">
+                                    <button type="button" class="btnAceptar btn-flat" (click)="uploadFile()">
+                                        <i class="bi bi-upload"></i>
+                                    </button>
+                                    <button type="button" class="btnCancelar btn-flat" (click)="clearFileInput(filePicker)">
+                                        <i class="bi bi-x-circle"></i>
+                                    </button>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 d-flex align-items-center justify-content-center"style="width: 100%; height: 100%;color: #0c2af0;"*ngIf="!ocultar">
+                        <img *ngIf="esImagen" [src]="urlAbs" style="width: 100%;height: 100%;" />
+                        <ngx-extended-pdf-viewer [base64Src]="url" backgroundColor="#ffffff" [useBrowserLocale]="true" [handTool]="false" [showHandToolButton]="true" [mobileFriendlyZoom]="'zoom'" style="width: 100%;height: 1005;" *ngIf="esPdf"></ngx-extended-pdf-viewer>
+                      </div>
+                    </div>
+            </div>
+        </section>
+        <!-- PAGINA PARA CARGAR ELEMENTOS -->
+        <section class="content" *ngIf="TituloPagina == 'Cargar Elementos'">
+            <div class="horizontal-center" *ngIf="!isLoading  ;else loadingOrError1">
+                <div class="form-row align-items-center">
+                    <div class="col-md-3 col-sm-3 col-6">
+                        <div class="form-group">
+                            <span title="Cantidad de meses sin gestión"><strong>Entidad</strong></span>
+                            <select class="form-select form-select-sm" [formControl]="itemFiles" (ngModelChange)="this.iniciarEntidad()">
+                                <option *ngFor="let s of TipoElementoOrdenado" [value]="s.value">
+                                    {{s.name}}
+                                </option>
+                                <option *ngIf="TipoElemento.length == 0" disabled>Cargando ...</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-2 col-sm-1 col-2">
+                        <button class="btnAceptar ml-2" (click)="seleccionEntidad()" data-bs-toggle="tooltip" data-bs-placement="top" title="Descargar Modelo"><i class="fa-solid fa-download"></i>Descargar</button>
+                    </div>
+                    <div class="col-md-2 col-sm-12 col-12">
+                        <div class="form-group">
+                            <span title="Cantidad de meses sin gestión"><strong>Seleccionar</strong></span>
+                            <div class="input-group-prepend flex-grow-1">
+                                <input [disabled]="itemFiles.invalid" id="SubirArchivos" type="file" #filePicker class="form-control"
+                                    (change)="LeerArchivo($event)" accept=".xlsx">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3 col-sm-3 col">
+                        <div class="form-group">
+                            <span title="Cantidad de meses sin gestión"><strong>Hoja</strong></span>
+                            <div class="input-group-prepend flex-grow-1">
+                                <select class="form-select" [formControl]="hojaFile" (ngModelChange)="this.cargarInf()">
+                                    <option *ngFor="let s of indicesDeHojas" [value]="s">
+                                        {{s}}
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-auto">
+                        <button type="button" class="btnCancelar btn-flat"
+                        (click)="clearFileInput(filePicker)" data-bs-toggle="tooltip" data-bs-placement="top" title="Limpiar"><i class="bi bi-x-circle"></i>Limpiar</button>
+                    </div>
+                    <div class="col-auto">
+                        <div class="form-group" *ngIf="banderaCartera">
+                            <span title="Cantidad de meses sin gestión"><strong>Cartera</strong></span>
+                            <select class="form-select" [formControl]="filtroCartera" (ngModelChange)="desactivaXCartera()">
+                                <option *ngFor="let s of listaCarteras" [value]="s.id_cartera">
+                                    {{s.cart_descripcion}}
+                                </option>
+                                <option *ngIf="TipoElemento.length == 0" disabled>Cargando ...</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-row align-items-center">
+                    <div class="col-md-3 col-6">
+                        <div class="form-group">
+                            <span title="Cantidad de meses sin gestión"><strong>Columnas:</strong></span>
+                            <p>{{ countColumns.value }}</p>
+                        </div>
+                    </div>
+                    <div class="col-md-3 col-6">
+                        <div class="form-group">
+                            <span title="Cantidad de meses sin gestión"><strong>Filas:</strong></span>
+                            <p>{{ countRows.value}}</p>
+                        </div>
+                    </div>
+                
+                </div>
+                <div class="form-row align-items-center">
+                    <div class="col-md-3 col-sm-6  col-8">
+                        <div class="form-group">
+                            <span title="Cantidad de meses sin gestión"><strong>Filtro</strong></span>
+                            <select class="form-select" [formControl]="filtroMensaje" (ngModelChange)="seleccionFiltro()">
+                                <option *ngFor="let s of listaFiltros" [value]="s">
+                                    {{s}}
+                                </option>
+                                <option *ngIf="TipoElemento.length == 0" disabled>Cargando ...</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-2 col-sm-3  col-2">
+                        <button class="btnEliminar ml-2" (click)="limpiarFiltro()" data-bs-toggle="tooltip" data-bs-placement="top" title="Limpiar Filtro"><i class="bi bi-eraser" style="font-size: 20px;"></i>Limpiar</button>
+                    </div>
+                    <div class="col-md-7  col-sm-12  col-12">
+                        <div class="form-group">
+                            <span title="Cantidad de meses sin gestión"><strong>Lista de Errores:</strong></span>
+                            <div class="table-container">
+                                <div class="table-responsive" *ngIf="banderaMenajeError">
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <th>Cedula</th>
+                                                <th>Mensaje</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr *ngFor="let fila of ListaErroresXRow">
+                                                <td [ngStyle]="{'color': 'blue'}">
+                                                    {{ fila.cedula }}
+                                                </td>
+                                                <td [ngStyle]="{'color': 'red'}">
+                                                    {{ fila.mensaje}}
+                                                </td>
+                                              </tr>
+                                          </tbody>
+                                    </table>
+                                </div>
+    
+                            </div>
+                            
+                        </div>
+                    </div>
+                
+                </div>
+                <div class="form-row align-items-center"[formGroup]="busquedaForm" *ngIf="banderaBusqueda">
+                    <div class="col-md-3 col-sm-3 col-4">
+                        <div class="form-group">
+                            <span title="Cantidad de meses sin gestión"><strong>Buscar por:</strong></span>
+                           <select class="form-select flex-grow-1" formControlName="opcionBusqueda" (ngModelChange)="busquedaXFiltro()" style="width: 60%;">
+                                    <option *ngFor="let s of headers" [value]="s">
+                                        {{s}}
+                                    </option>
+                                    <option *ngIf="!headers || headers.length == 0" disabled>Cargando ...</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-3 col-sm-3 col-2">
+                        <input type="text" class="form-control flex-grow-1" id="parametro" placeholder=""
+                        formControlName="parametro" style="width: 30%;">
+                    </div>
+                    <div class="col-md-2 col-sm-2 col-2">
+                        <button class="btnEliminar ml-2" (click)="limpiarFiltro()"><i class="bi bi-eraser" style="font-size: 20px;"></i></button>
+                    </div>
+                    
+                    
+                </div>
+                <div class="form-row align-items-center">
+                    <div class="col-md-6 col-sd-4 col-6">
+                        <button [disabled]="isButtonDisabled()" class="btnAceptar" (click)="procesarDatos()"  data-bs-toggle="tooltip" data-bs-placement="top" title="Procesar los datos del Documento">
+                         <i class="bi bi-zoom-in"></i>
+                         Verificar
+                        </button>
+                    </div>
+                    <div class="col-md-6 col-sd-4 col-6" *ngIf="banderaGuardar">
+                        <button class="btnAceptar ml-2" (click)="guardarMasivo()" [disabled]="ListaErroresXRow.length>0" data-bs-toggle="tooltip" data-bs-placement="top" title="Guardar Todos">
+                            <i class="bi bi-floppy"></i>
+                            Guardar
+                        </button>
+                    </div>
+                </div>
+                <div class="form-row align-items-center">
+                    <div class="col-md-12 col-sm-12 col-12">
+                        <div class="table-container" *ngIf="data.length>0">
+                            <div class="table-responsive">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th *ngFor="let header of headers">{{ header }}</th>
+                                            <th>Acciones</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr *ngFor="let row of data ; let i = index ">
+                                          <td *ngFor="let valor of row; let j = index"
+                                          [ngStyle]="{'color': aplicarValidacionElemento(valor, j) ? 'blue' : 'red'}"
+                                          > {{ valor }}</td>
+                                            <td>
+                                                <div class="btn-group" role="group">
+                                                    <button class="btnAceptar ml-2" (click)="agregarObjeto(row)" [disabled]="verificarErroresRowXDesabilitarBotonSaved(row)">
+                                                        <i class="bi bi-floppy"></i>
+                                                      </button>
+                                                    <button class="btnEliminar ml-2" (click)="eliminarObjeto(row)"><i class="bi bi-eraser" style="font-size: 20px;"></i></button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                      </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- page -->
+
+
+        <router-outlet></router-outlet>
+    </div>
+</div>
+<app-footer></app-footer>
+
+
+<ng-template #loadingOrError1>
+    <section>
+        <div class="ContenidoCentrado">
+            <div class="loader1"></div>
+        </div>
+    </section>
+</ng-template>

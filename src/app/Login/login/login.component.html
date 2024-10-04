@@ -1,0 +1,132 @@
+<section>
+    <div class="row">
+        <div class="col-md-4 Lateral ContenedorCarousel d-none d-md-inline-block">
+            <div class="row">
+                <div class="">
+                    <div class="ContenidoCentrado">
+                        <img class="ImagenFormato" src="../../../assets/Imagenes/LogoSistema.png">
+                    </div>
+                </div>
+            </div>
+            <br>
+            <div class="row">
+                <div class="">
+                    <div class="ml-2">
+                        <carousel>
+                            <slide class="slide ImagenCarousel"
+                                style="background-image: url('../../../assets/Imagenes/ProyectoCobranzas/cobranzas3.jpeg'); background-size: cover; background-position: center;">
+                            </slide>
+                            <slide class="slide ImagenCarousel"
+                                style="background-image: url('../../../assets/Imagenes/ProyectoCobranzas/cobranzas2.jpeg'); background-size: cover; background-position: center;">
+                            </slide>
+                            <slide class="slide ImagenCarousel"
+                                style="background-image: url('../../../assets/Imagenes/ProyectoCobranzas/cobranzas1.jpeg'); background-size: cover; background-position: center;">
+                            </slide>
+                        </carousel>
+                        <!-- <carousel>
+                    <slide class="slide">
+                        <div class="text-center py-5">
+                            <h2>First custom content</h2>
+                            <div class="lead">
+                                <h3>First slide label</h3>
+                                <p>Nulla vitae elit libero, a pharetra augue mollis interdum.</p>
+                            </div>
+                        </div>
+                    </slide>
+                    <slide class="slide">
+                        <div class="text-center py-5">
+                            <h2>Second custom content</h2>
+                            <div class="lead">
+                                <h3>Second slide label</h3>
+                                <p>Nulla vitae elit libero, a pharetra augue mollis interdum.</p>
+                            </div>
+                        </div>
+                    </slide>
+                    <slide class="slide">
+                        <div class="text-center py-5">
+                            <h2>Third custom content</h2>
+                            <div class="lead">
+                                <h3>Third slide label</h3>
+                                <p>Nulla vitae elit libero, a pharetra augue mollis interdum. </p>
+                            </div>
+                        </div>
+                    </slide>
+                </carousel> -->
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <div class="col-md-8 ImagenFondo">
+            <div class="container">
+                <div class="d-flex justify-content-center h-100">
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="d-flex justify-content-end social_icon">
+                                <span><i class="fab fa-facebook-square"></i></span>
+                                <span><i class="fab fa-google-plus-square"></i></span>
+                                <span><i class="fab fa-twitter-square"></i></span>
+                            </div>
+                        </div>
+                        <div class="card-body mt-1">
+                            <form class="ContenidoCentrado" [formGroup]="loginForm"
+                                (ngSubmit)="onLoginPost(loginForm.value)">
+                                <h3 class="login__title">Inicio Sesión</h3>
+                                <div class="input-group form-group " style="width: 75%;">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><i class="fas fa-user"></i></span>
+                                    </div>
+                                    <input type="text" class="form-control" placeholder="usuario"
+                                        formControlName="usr_usuario">
+
+                                </div>
+                                <div class="input-group form-group" style="width: 75%;">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><i class="fas fa-key"></i></span>
+                                    </div>
+                                    <input type="password" class="form-control" placeholder="contraseña"
+                                        formControlName="usr_password">
+                                </div>
+                                <div class="input-group form-group" style="width: 75%;">
+                                    <div class="custom-control custom-checkbox">
+                                        <input class="custom-control-input" type="checkbox" formControlName="servidata"
+                                            id="chkPerdioContacto" value="0">
+                                        <label for="chkPerdioContacto"
+                                            class="custom-control-label login__title small">Inicio sesión en
+                                            ServiData</label>
+                                    </div>
+                                </div>
+
+                                <div class="form-group ContenidoCentrado">
+                                    <input type="submit" value="Login" class="btn  login_btn">
+                                </div>
+                            </form>
+                            <div class="alert alert-danger" *ngIf="errorStatus">
+                                <p>{{errorMsj}}</p>
+                            </div>
+                            <br>
+                            <div class="d-flex justify-content-center links">
+                                ¿Olvidó su contraseña?
+                            </div>
+                            <div class="d-flex justify-content-center">
+                                <a (click)="RecuperarClave()" class="btnRecuperar">Recuperar contraseña</a>
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+</section>
+
+<section class="modal" id="LoginModal">
+    <section>
+        <div class="CentroSobrepuesto">
+            <div class="loaderLogin"></div>
+        </div>
+    </section>
+</section>

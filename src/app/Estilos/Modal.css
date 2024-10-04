@@ -1,0 +1,76 @@
+/********************** Ventana emerjente Modal*******************************/
+
+.modal{
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #111111bd;
+    display: flex;
+    opacity: 0;
+    pointer-events: none;
+    overflow-y: none;
+    transition: opacity .2s .5s;
+    --transform: translateY(-100vh);
+    --transition: transform .4s;
+  }
+  
+  .modal--show{
+    opacity: 1;
+    pointer-events: unset;
+    transition: opacity .2s;
+    --transform: translateY(0);
+    --transition: transform .4s .4s;
+    animation:scale-up-vertical-center 0.4s
+  }
+  
+  /* .scale-up-vertical-center{animation:scale-up-vertical-center 0.4s}  */
+@keyframes scale-up-vertical-center{0%{transform:scaleY(.2)}100%{transform:scaleY(1)}}
+
+  .modal__container{
+    margin: auto;
+    width: auto;
+    min-width: 40%;
+    max-width: 80%;
+    max-height: auto; 
+    background-color: #fff;
+    border-radius: 8px;
+    padding: 0.25em 0.25em;
+    display: grid;
+    gap: 1em;
+    place-items: center;
+    grid-auto-columns: 100%;
+    transform: var(--transform);
+    transition:var(--transition);
+  }
+  
+  .modal__title{
+    /* font-size: 2.5rem; */
+    color: rgb(13, 62, 72);
+  }
+  @media (max-width:800px) {
+    .modal__container{
+        padding: .5em .5em;
+    }
+  
+    .modal__title{
+        font-size: 2rem;
+    }
+  }
+
+
+  .Color-Principal-Modal {
+    background-color: var(--color-cuaternario);
+    color: var(--color-primario);
+  }
+  
+  .Color-Secundario-Modal {
+    background-color: var(--color-secundario);
+    color: var(--color-cuaternario);
+  }
+  
+  .Color-Terciario-Modal {
+    background-color: var(--color-terciario);
+    color: var(--color-secundario);
+  }

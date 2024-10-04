@@ -1,0 +1,454 @@
+/************************* BOTON BUSCAR ********************************/
+.btnBuscar {
+  text-decoration: none;
+  color: var(--color-texto-secundario);
+  background-color: var(--color-terciario);
+  padding: 0.5em 1em;
+  border: 1px solid;
+  border-radius: 8px;
+  display: inline-block;
+  font-weight: 300;
+  transition: background-color 0.3s;
+}
+.btnBuscar:hover {
+  color: var(--color-texto-primario);
+  background-color: var(--color-cuaternario);
+}
+
+.btnBuscar:disabled {
+  color: var(--color-texto-primario);
+  background-color: var(--color-quinto);
+}
+/************************* BOTON ACEPTAR ********************************/
+.btnAceptar {
+  text-decoration: none;
+  color: #fff;
+  background-color: #37cc27;
+  padding: 0.5em 1em;
+  border: 1px solid;
+  border-radius: 8px;
+  display: inline-block;
+  font-weight: 300;
+  transition: background-color 0.3s;
+}
+
+.btnAceptar:hover {
+  color: #37cc27;
+  background-color: #fff;
+  cursor: pointer;
+}
+.btnAceptar:disabled {
+  color: var(--color-texto-primario);
+  background-color: var(--color-quinto);
+}
+/************************* BOTON CANCELAR ********************************/
+
+.btnCancelar {
+  text-decoration: none;
+  color: #fff;
+  background-color: #f33734;
+  padding: 0.5em 1em;
+  border: 1px solid;
+  border-radius: 8px;
+  display: inline-block;
+  font-weight: 300;
+  transition: background-color 0.3s;
+}
+
+.btnCancelar:hover {
+  color: #f33734;
+  background-color: #fff;
+  /* background-image: linear-gradient( -75deg, #fff 10%, #f33734 100%); */
+}
+/************************* BOTON AGREGAR ********************************/
+.btnAgregar {
+  text-decoration: none;
+  color: #fff;
+  background-color: #37cc27;
+  padding: 0.5em 1em;
+  border: 1px solid;
+  border-radius: 8px;
+  display: inline-block;
+  font-weight: 300;
+  transition: background-color 0.3s;
+}
+
+.btnAgregar:hover {
+  color: #37cc27;
+  background-color: #fff;
+}
+/******************************IMPRIMIR********************************/
+.btnImprimir {
+  text-decoration: none;
+  color: #fff;
+  background-color: #4b4e4aaa;
+  padding: 0.5em 1em;
+  border: 1px solid;
+  border-radius: 8px;
+  display: inline-block;
+  font-weight: 300;
+  transition: background-color 0.3s;
+}
+
+.btnImprimir:hover {
+  color: #4b4e4aaa;
+  background-color: #fff;
+}
+/************************* BOTON HOME ********************************/
+.btnHome {
+  text-decoration: none;
+  color: #fff;
+  background-color: #85e3f8;
+  padding: 0.5em 1em;
+  border: 1px solid;
+  border-radius: 8px;
+  display: inline-block;
+  font-weight: 300;
+  transition: background-color 0.3s;
+}
+
+.btnHome:hover {
+  color: #85e3f8;
+  background-color: #fff;
+}
+/************************* BOTON FILTRO ********************************/
+.btnFilter {
+  text-decoration: none;
+  color: #fff;
+  background-color: #b663e9;
+  padding: 0.5em 1em;
+  border: 1px solid;
+  border-radius: 8px;
+  display: inline-block;
+  font-weight: 300;
+  transition: background-color 0.3s;
+}
+
+.btnFilter:hover {
+  color: #b663e9;
+  background-color: #fff;
+}
+
+/************************* BOTON NEXT PREVIOUS ********************************/
+
+.BtnNextPrevious {
+  text-decoration: none;
+  color: #fff;
+  background-color: #138010;
+  padding: 0.25em 1em;
+  border: 1px solid;
+  border-radius: 8px;
+  display: inline-block;
+  font-weight: 300;
+  transition: background-color 0.3s;
+}
+.BtnNextPrevious:hover {
+  color: #138010;
+  background-color: #fff;
+}
+/************************* BOTON EDITAR ********************************/
+
+.btnEditar {
+  text-decoration: none;
+  color: #fff;
+  background-color: #4146e8;
+  padding: 0.5em 1em;
+  border: 1px solid ;
+  border-radius: 8px;
+  display: inline-block;
+  font-weight: 300;
+  transition: background-color .3s; 
+}
+
+
+
+.btnEditar:hover{
+  color: #4146e8;
+  background-color: #8782d8;
+} 
+
+/************************* BOTON VER ********************************/
+
+.btnVer {
+  text-decoration: none;
+  color: #fff;
+  background-color: #5eb3f4;
+  padding: 0.5em 1em;
+  border: 1px solid;
+  border-radius: 8px;
+  display: inline-block;
+  font-weight: 300;
+  /* transition: background-color .3s; */
+
+  cursor: hand;
+  position: relative;
+  overflow: hidden !important;
+  -webkit-transition: all 0.3s ease-in-out;
+  -moz-transition: all 0.3s ease-in-out;
+  -o-transition: all 0.3s ease-in-out;
+  transition: all 0.3s ease-in-out;
+  z-index: 10;
+}
+
+.btnVer:hover {
+  color: #5eb3f4;
+  background-color: #8782d8;
+}
+.btnVer:disabled {
+  color: var(--color-texto-primario);
+  background-color: var(--color-quinto);
+}
+
+.btnVer::before {
+  content: "";
+  width: 0%;
+  height: 100%;
+  display: block;
+  background: #071982;
+  position: absolute;
+  -ms-transform: skewX(-20deg);
+  -webkit-transform: skewX(-20deg);
+  transform: skewX(-20deg);
+  left: -10%;
+  opacity: 1;
+  top: 0;
+  z-index: -12;
+  -moz-transition: all 0.7s cubic-bezier(0.77, 0, 0.175, 1);
+  -o-transition: all 0.7s cubic-bezier(0.77, 0, 0.175, 1);
+  -webkit-transition: all 0.7s cubic-bezier(0.77, 0, 0.175, 1);
+  transition: all 0.7s cubic-bezier(0.77, 0, 0.175, 1);
+  box-shadow: 2px 0px 14px rgba(0, 0, 0, 0.6);
+}
+
+.btnVer::after {
+  content: "";
+  width: 0%;
+  height: 100%;
+  display: block;
+  background: #80ffd3;
+  position: absolute;
+  -ms-transform: skewX(-20deg);
+  -webkit-transform: skewX(-20deg);
+  transform: skewX(-20deg);
+  left: -10%;
+  opacity: 0;
+  top: 0;
+  z-index: -15;
+  -webkit-transition: all 0.94s cubic-bezier(0.2, 0.95, 0.57, 0.99);
+  -moz-transition: all 0.4s cubic-bezier(0.2, 0.95, 0.57, 0.99);
+  -o-transition: all 0.4s cubic-bezier(0.2, 0.95, 0.57, 0.99);
+  transition: all 0.4s cubic-bezier(0.2, 0.95, 0.57, 0.99);
+  box-shadow: 2px 0px 14px rgba(0, 0, 0, 0.6);
+}
+.btnVer:hover::before,
+.btn1O:hover::before {
+  opacity: 1;
+  width: 116%;
+}
+.btnVer:hover::after,
+.btn1O:hover::after {
+  opacity: 1;
+  width: 120%;
+}
+/************************* BOTON ELIMINAR ********************************/
+
+.btnEliminar {
+  text-decoration: none;
+  color: #fff;
+  background-color: #f33734;
+  padding: 0.5em 1em;
+  border: 1px solid;
+  border-radius: 8px;
+  display: inline-block;
+  font-weight: 300;
+  transition: background-color 0.3s;
+}
+
+.btnEliminar:hover {
+  color: #f33734;
+  background-color: #fff;
+  /* background-image: linear-gradient( -75deg, #fff 10%, #f33734 100%); */
+}
+
+/************************* BOTON LIMPIAR ********************************/
+.btnLimpiar {
+  text-decoration: none;
+  color: black;
+  background-color: darkgray;
+  padding: 0.5em 1em;
+  border: 1px solid;
+  border-radius: 8px;
+  display: inline-block;
+  font-weight: 300;
+  transition: background-color 0.3s;
+}
+.btnLimpiar:hover {
+  color: rgb(183, 181, 181);
+  background-color: rgb(246, 242, 242);
+}
+
+.btnLimpiar:disabled {
+  color: var(--color-texto-primario);
+  background-color: var(--color-quinto);
+}
+/************************* BOTON PAGOS ********************************/
+.btnPagos {
+  text-decoration: none;
+  color: black;
+  background-color: rgb(249, 223, 21);
+  padding: 0.5em 1em;
+  border: 1px solid;
+  border-radius: 8px;
+  display: inline-block;
+  font-weight: 300;
+  transition: background-color 0.3s;
+}
+.btnPagos:hover {
+  color:  rgb(249, 223, 21);
+  background-color: #fff;
+}
+
+.btnPagos:disabled {
+  color: var(--color-texto-primario);
+  background-color: var(--color-quinto);
+}
+/************************* BOTON GESTIONAR ********************************/
+.btnGestionar {
+  text-decoration: none;
+  color: black;
+  background-color:rgb(66, 208, 255);
+  padding: 0.5em 1em;
+  border: 1px solid;
+  border-radius: 8px;
+  display: inline-block;
+  font-weight: 300;
+  transition: background-color 0.3s;
+}
+.btnGestionar:hover {
+  color: rgb(66, 208, 255);
+  background-color:  #fff;
+}
+
+.btnGestionar:disabled {
+  color: var(--color-texto-primario);
+  background-color: var(--color-quinto);
+}
+/************************* BOTON INFO ********************************/
+
+.btnInfo {
+  text-decoration: none;
+  color: #fff;
+  background-color: #0dcaf0;
+  padding: 0.5em 1em;
+  border: 1px solid;
+  border-radius: 8px;
+  display: inline-block;
+  font-weight: 300;
+  transition: background-color 0.3s;
+}
+
+.btnInfo:hover {
+  color: #0dcaf0;
+  background-color: #fff;
+  /* background-image: linear-gradient( -75deg, #fff 10%, #f33734 100%); */
+}
+/************************* BOTON INFO 1 ********************************/
+
+.btnInfo1 {
+  text-decoration: none;
+  color: #fff;
+  background-color: #64e6fc;
+  padding: 0.5em 1em;
+  border: 1px solid;
+  border-radius: 8px;
+  display: inline-block;
+  font-weight: 300;
+  transition: background-color 0.3s;
+}
+
+.btnInfo1:hover {
+  color: #64e6fc;
+  background-color: #fff;
+  /* background-image: linear-gradient( -75deg, #fff 10%, #f33734 100%); */
+}
+
+/************************* BOTON INFO 2 ********************************/
+
+.btnInfo2 {
+  text-decoration: none;
+  color: #fff;
+  background-color: #a3f2fe;
+  padding: 0.5em 1em;
+  border: 1px solid;
+  border-radius: 8px;
+  display: inline-block;
+  font-weight: 300;
+  transition: background-color 0.3s;
+}
+
+.btnInfo2:hover {
+  color: #a3f2fe;
+  background-color: #fff;
+  /* background-image: linear-gradient( -75deg, #fff 10%, #f33734 100%); */
+}
+/************************* BOTON INFO 3 ********************************/
+
+.btnInfo3 {
+  text-decoration: none;  
+  color: #fff;
+  background-color:#01b1d9;
+  padding: 0.5em 1em;
+  border: 1px solid;
+  border-radius: 8px;
+  display: inline-block;
+  font-weight: 300;
+  transition: background-color 0.3s;
+}
+
+.btnInfo3:hover {
+  color:#01b1d9;
+  background-color: #fff;
+  /* background-image: linear-gradient( -75deg, #fff 10%, #f33734 100%); */
+}
+/************************* BOTON INFO 4 ********************************/
+
+.btnInfo4 {
+  text-decoration: none;
+  color: #fff;
+  background-color: #048db6;
+  padding: 0.5em 1em;
+  border: 1px solid;
+  border-radius: 8px;
+  display: inline-block;
+  font-weight: 300;
+  transition: background-color 0.3s;
+}
+
+.btnInfo4:hover {
+  color: #048db6;
+  background-color: #fff;
+  /* background-image: linear-gradient( -75deg, #fff 10%, #f33734 100%); */
+}
+/************************* BOTON CONFIGURAR ********************************/
+
+.btnConfiguracion {
+  text-decoration: none;
+  color: #EBE7E7;
+  background-color: #9C9A9A;
+  padding: 0.5em 1em;
+  border: 1px solid;
+  border-radius: 8px;
+  display: inline-block;
+  font-weight: 300;
+  transition: background-color 0.3s;
+}
+
+.btnConfiguracion:hover {
+  color: #9C9A9A;
+  background-color: #EBE7E7;
+  cursor: pointer;
+}
+.btnConfiguracion:disabled {
+  color: var(--color-texto-primario);
+  background-color: var(--color-quinto);
+}

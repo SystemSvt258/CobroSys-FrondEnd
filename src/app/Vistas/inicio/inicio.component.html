@@ -1,0 +1,619 @@
+<app-header></app-header>
+<app-sidebar></app-sidebar>
+<div class="content-wrapper">
+  <div class="container-fluid">
+    <!-- BIENVENIDO -->
+    <section class="content NombrePage">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-md-4 ContenidoIzquierda" style="height: 50px;">
+            <img src="assets/Imagenes/imagenes/{{randomImageUrl}}" alt="" style="height: 50px;" class="img-fluid">
+          </div>
+          <div class="col-md-4 col-12 text-center" style="height: 50px;">
+            <h1 class="bounce-top loader2"></h1>
+          </div>
+          <div class="col-md-4 ContenidoDerecha">
+            <div class="btn-group" role="group">
+              <button class="btnFilter collapsed" *ngIf="CarteraSelect != ''" type="button" data-bs-toggle="collapse"
+                data-bs-target="#MasParametrosBusqueda" aria-expanded="false" aria-controls="MasParametrosBusqueda">
+                <i class="bi bi-funnel"></i>
+              </button>
+            </div>
+            <!-- <div class="loader3"></div> -->
+            <!-- <div class="loader5"></div> -->
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- FILTRAR -->
+    <section class="horizontal-center" *ngIf="CarteraSelect != ''">
+      <section class="horizontal-center">
+        <form [formGroup]="BuscarForms">
+          <div class="row">
+            <div class="accordion" id="AcordionParametrosBus">
+              <div class="accordion-item">
+
+                <div id="MasParametrosBusqueda" class="accordion-collapse collapse"
+                  data-bs-parent="#AcordionParametrosBus">
+                  <div class="accordion-body">
+                    <div class="row">
+                      <div class="col-md-3 col-6">
+                        <div class="form-group">
+                          <span title="">Gestor</span>
+
+                          <select style="height: 35px;" class="form-select"
+                            (click)="ListaGestores.length == 0?ListarGestores():null" formControlName="gestor">
+                            <option *ngIf="ListaGestores.length == 0" disabled>
+                              Cargando...
+                            </option>
+                            <option [value]="0">Todos</option>
+                            <option *ngFor="let s of ListaGestores" [value]="s.id_gestor">
+                              {{s.ges_nombres+' '+s.ges_apellidos}}
+                            </option>
+                          </select>
+                        </div>
+                      </div>
+                      <!-- <div class="col-md-3 col-6">
+                        <div class="form-group">
+                          <span title="Cantidad de meses sin gestión">Contactabilidad</span>
+
+                          <select style="height: 35px;" class="form-select"
+                            (click)="ListaContactabilidad.length == 0?ListarContactabilidad():null"
+                            formControlName="contactabilidad">
+                            <option *ngIf="ListaContactabilidad.length == 0" disabled>
+                              Cargando...
+                            </option>
+                            <option [value]="0">Todas</option>
+                            <option *ngFor="let s of ListaContactabilidad" [value]="s.id_contactabilidad">
+                              {{s.contac_descripcion}}
+                            </option>
+                          </select>
+                        </div>
+                      </div> -->
+
+
+                      <div class="col-md-2 col-6">
+                        <div class="form-floating">
+                          <input type="date" class="form-control" id="fecha_inicial" placeholder=""
+                            formControlName="fecha_inicial">
+                          <label class="truncate-text" for="fecha_inicial">Rango Inicio</label>
+                        </div>
+                      </div>
+                      <div class="col-md-2 col-6">
+                        <div class="form-floating">
+                          <input type="date" class="form-control" id="fecha_final" placeholder=""
+                            formControlName="fecha_final">
+                          <label class="truncate-text" for="fecha_final">Rango Fin</label>
+                        </div>
+                      </div>
+                      <!-- <div class="col-md-2 col-6">
+                        <div class="btn-group ml-2" role="group" aria-label="Basic example">
+                          <div class="custom-control custom-checkbox">
+                            <input class="custom-control-input" type="checkbox" formControlName="todas" id="chkCarteras"
+                              value="0">
+                            <label class="truncate-text" for="chkCarteras"
+                              class="custom-control-label">Todas&nbsp;las&nbsp;carteras</label>
+                          </div>
+                        </div>
+                      </div> -->
+                      <div class="col-md-1 col-3 ContenidoDerecha">
+                        <button type="button" class="btnBuscar ml-2" (click)="GetFiltrarElemento(BuscarForms.value)">
+                          <i class="bi bi-search"></i>
+                        </button>
+                      </div>
+
+
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+
+
+          </div>
+        </form>
+      </section>
+    </section>
+    <!-- FILTRO -->
+    <section class="mt-1" *ngIf="CarteraSelect == '' && ListaCarteras.length > 0">
+      <div class="card-header">
+        <div class="float-right clearfix">
+          <div class="input-group">
+            <label for="TxtFiltro">Buscar</label>
+            <i class="bi bi-search ml-2 mr-2"></i>
+            <input type="text" id="TxtFiltro" class="form-control form-control-sm">
+
+            <div class="input-group-append">
+              <button type="button" class="btn btnOk btn-sm">
+                <i class="bi bi-trash"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- SELECCION DE CARTERA -->
+    <section class="content mt-2">
+      <div class="container-fluid">
+        <div class="row" *ngIf="CarteraSelect == ''">
+          <div class="col-md-2 col-4" style="cursor: pointer;" *ngFor="let datos of DatosGeneralAct"
+            (click)="SeleccionCartera(datos)">
+            <div class="small-box bg-info" style="opacity: 0.5;" title="{{datos.Cartera}}">
+              <div class="inner">
+                <h4>{{datos.Count}}</h4>
+                <p class="truncate-text">{{datos.Cartera}}</p>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- CARTERA SELECCIONADA Y CERRAR -->
+    <section class="content mt-2" *ngIf="CarteraSelect != ''">
+      <div class="card-header" style="background-color: var(--color-formulario-primario);">
+        <small><button type="button" class="btnCancelar float-right small mr-2" (click)="EncerarVariables()">
+            <i class="fa-solid fa-xmark"></i>
+          </button>
+        </small>
+        <h2 class="Centrar">{{CarteraSelect}}</h2>
+      </div>
+    </section>
+    <!-- MONTOS ASIGNADOS  -->
+    <section class="content mt-2" *ngIf="CarteraSelect != ''">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="card-body mt-2 row">
+            <div class="col-lg-3 col-md-3 col-sm-6 col-12 OcultarMax450px">
+              <div class="small-box bg-info" style="height: 125px;">
+                <div class="inner">
+                  <h4>{{ValoresMetas == undefined?'0':ValoresMetas.tota_asignado}}</h4>
+                  <p>Monto Asignado</p>
+                </div>
+                <div class="icon">
+                  <i class="fa-solid fa-face-smile-wink"></i>
+                </div>
+              </div>
+
+
+            </div>
+            <div class="col-lg-3 col-md-3 col-sm-6 col-12 OcultarMax450px">
+              <div class="small-box bg-warning" style="height: 125px;">
+                <div class="inner">
+                  <h4>{{ValoresMetas == undefined?'0':ValoresMetas!.meta_planteada}}</h4>
+                  <p>Meta Planteada</p>
+                </div>
+                <div class="icon">
+                  <i class="fa-solid fa-face-sad-tear"></i>
+                </div>
+              </div>
+
+
+            </div>
+            <div class="col-lg-3 col-md-3 col-sm-6 col-12">
+              <div class="small-box bg-success" style="height: 125px;">
+                <div class="inner">
+                  <h4>{{ValoresMetas == undefined?'0':ValoresMetas!.pagos_conf}}</h4>
+                  <p>Recuperación</p>
+                </div>
+                <div class="icon">
+                  <i class="fa-solid fa-face-grin-beam-sweat"></i>
+                </div>
+
+                <!-- <div id="ChartFondo" *ngIf="ValoresDeRecuperacion != undefined">
+                  <apx-chart [series]="ValoresDeRecuperacion.series1!" [chart]="ValoresDeRecuperacion.chart!"
+                    [grid]="ValoresDeRecuperacion.grid!" [xaxis]="ValoresDeRecuperacion.xaxis!"
+                    [stroke]="ValoresDeRecuperacion.stroke!" [dataLabels]="ValoresDeRecuperacion.dataLabels!"
+                    [yaxis]="ValoresDeRecuperacion.yaxis!" [labels]="ValoresDeRecuperacion.labels!"
+                    [legend]="ValoresDeRecuperacion.legend!"></apx-chart>
+                </div> -->
+              </div>
+
+
+            </div>
+            <div class="col-lg-3 col-md-3 col-sm-6 col-12">
+              <div class="small-box bg-danger" style="height: 125px;" (click)="BuscarInfoReporte()">
+                <div class="inner">
+                  <h4>{{ValoresMetas == undefined?'0':ValoresMetas!.pagos_sin_conf}}</h4>
+                  <p>Por Confirmar</p>
+                </div>
+                <div class="icon">
+                  <i class="fa-solid fa-face-grin-stars"></i>
+                </div>
+              </div>
+
+
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+    </section>
+    <!-- GRAFICOS -->
+    <section class="content mt-2" *ngIf="CarteraSelect != ''">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-lg-3 col-md-3 col-sm-6 col-12 connectedSortable ui-sortable" *ngIf="chartOptions4 != null">
+            <apx-chart [series]="chartOptions4.series1!" [chart]="chartOptions4.chart!"
+              [dataLabels]="chartOptions4.dataLabels!" [plotOptions]="chartOptions4.plotOptions!"
+              [xaxis]="chartOptions4.xaxis!" [stroke]="chartOptions4.stroke!" [fill]="chartOptions4.fill!"
+              [yaxis]="chartOptions4.yaxis!" [title]="chartOptions4.title!" [tooltip]="chartOptions4.tooltip!"
+              [legend]="chartOptions4.legend!"></apx-chart>
+          </div>
+          <div class="col-lg-3 col-md-3 col-sm-6 col-12 connectedSortable ui-sortable" *ngIf="chartOptions2 != null">
+            <apx-chart [series]="chartOptions2.series1!" [chart]="chartOptions2.chart!"
+              [dataLabels]="chartOptions2.dataLabels!" [plotOptions]="chartOptions2.plotOptions!"
+              [yaxis]="chartOptions2.yaxis!" [legend]="chartOptions2.legend!" [fill]="chartOptions2.fill!"
+              [stroke]="chartOptions2.stroke!" [tooltip]="chartOptions2.tooltip!"
+              [xaxis]="chartOptions2.xaxis!" [title]="chartOptions2.title!"></apx-chart>
+          </div>
+          <div class="col-lg-3 col-md-3 col-sm-6 col-12 connectedSortable ui-sortable" *ngIf="chartOptions5 != null">
+            <apx-chart [series]="chartOptions5.series1!" [chart]="chartOptions5.chart!" [xaxis]="chartOptions5.xaxis!"
+              [dataLabels]="chartOptions5.dataLabels!" [yaxis]="chartOptions5.yaxis!" [labels]="chartOptions5.labels!"
+              [title]="chartOptions5.title!"></apx-chart>
+          </div>
+          <div class="col-lg-3 col-md-3 col-sm-6 col-12 connectedSortable ui-sortable" *ngIf="chartOptions6 != null">
+            <apx-chart [series]="chartOptions6.series1!" [chart]="chartOptions6.chart!" [xaxis]="chartOptions6.xaxis!"
+              [dataLabels]="chartOptions6.dataLabels!" [yaxis]="chartOptions6.yaxis!" [labels]="chartOptions6.labels!"
+              [title]="chartOptions6.title!"></apx-chart>
+          </div>
+        </div>
+        <div class="row ContenidoVertical">
+          <div class="col-lg-3 col-md-12 col-sm-12 col-12 connectedSortable ui-sortable">
+            <div class="row rounded-lg" *ngIf="chartOptions1 != null">
+              <apx-chart [series]="chartOptions1.series1!" [chart]="chartOptions1.chart!" [xaxis]="chartOptions1.xaxis!"
+                [dataLabels]="chartOptions1.dataLabels!" [yaxis]="chartOptions1.yaxis!" [labels]="chartOptions1.labels!"
+                [title]="chartOptions1.title!"></apx-chart>
+            </div>
+            <div class="row rounded-lg" *ngIf="chartOptions3 != null">
+              <apx-chart [series]="chartOptions3.series!" [chart]="chartOptions3.chart!"
+                [plotOptions]="chartOptions3.plotOptions!" [labels]="chartOptions3.labels!"
+                [stroke]="chartOptions3.stroke!" [fill]="chartOptions3.fill!"></apx-chart>
+            </div>
+            <!-- <div class="row rounded-lg">
+              <apx-chart [series]="chartOptions8.series!" [chart]="chartOptions8.chart!"
+                [plotOptions]="chartOptions8.plotOptions!" [labels]="chartOptions8.labels!"
+                [legend]="chartOptions8.legend!" [colors]="chartOptions8.colors!"
+                [responsive]="chartOptions8.responsive!"></apx-chart>
+            </div> -->
+          </div>
+          <div class="col-lg-9 col-md-12 col-sm-12 col-12 connectedSortable ui-sortable">
+            <div class="row rounded-lg" *ngIf="chartOptions9 != null">
+              <apx-chart [series]="chartOptions9.series1!" [chart]="chartOptions9.chart!" [yaxis]="chartOptions9.yaxis!"
+                [xaxis]="chartOptions9.xaxis!" [labels]="chartOptions9.labels!" [stroke]="chartOptions9.stroke!"
+                [plotOptions]="chartOptions9.plotOptions!" [markers]="chartOptions9.markers!"
+                [fill]="chartOptions9.fill!" [tooltip]="chartOptions9.tooltip!"></apx-chart>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- NOTIFICACIONES -->
+    <section class="content mt-2" *ngIf="CarteraSelect != ''">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-lg-6 col-md-6 col-sm-12 col-12 connectedSortable ui-sortable" *ngIf="ListaNotificaciones.length > 0">
+            <div class="card">
+              <div class="card-header ui-sortable-handle" style="cursor: move;">
+                <h3 class="card-title">
+                  <i class="fa-solid fa-bell"></i>
+                  Notificaciones
+                </h3>
+                <div class="card-tools">
+                  <span title="3 New Messages" class="badge badge-primary">{{ListaNotificaciones.length}}</span>
+                  <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                    <i class="fas fa-minus"></i>
+                  </button>
+                  <button type="button" class="btn btn-tool" data-card-widget="remove">
+                    <i class="fas fa-times"></i>
+                  </button>
+                </div>
+              </div>
+              <div class="card-body" style="background-color: var(--color-formulario-secundario);">
+                <table class="AltoTabla160 table table-bordered table-responsive small">
+                  <thead>
+                    <tr>
+                      <th style="width: 10px">#</th>
+                      <th></th>
+                      <th>Mensaje</th>
+                      <th>Cliente</th>
+                      <th style="white-space: nowrap;">Fecha de Envio</th>
+                      <th style="white-space: nowrap;">Hora de Envio</th>
+                      <th>Enviado por</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let datos of ListaNotificaciones; let i = index">
+                      <td>{{i + 1}}</td>
+                      <td class="small">
+                        <div class="btn-group small" role="group">
+                          <button class="btnVer" (click)="Gestionar(datos)">
+                            <i class="fa-regular fa-eye"></i></button>
+                          <button class="ml-2 btnAgregar" (click)="NotificacionRevisada(datos)">
+                            <i class="fa-solid fa-circle-check"></i></button>
+                        </div>
+                      </td>
+                      <td class="TablaAnchoTextoDeterminado">{{datos.not_mensaje}}</td>
+                      <td style="white-space: nowrap;">{{datos.cli_identificacion}}</td>
+                      <td>{{datos.not_fecha_env ==
+                        null?null:fechas.fechaCortaAbt(datos.not_fecha_env)}}</td>
+                      <td>{{datos.not_hora_env ==
+                        null?null:fechas.HoraCorta(datos.not_hora_env)}}</td>
+                      <td style="white-space: nowrap;">{{datos.enviado_por}}</td>
+
+                    </tr>
+
+                  </tbody>
+                </table>
+
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-6 col-md-6 col-sm-12 col-12 connectedSortable ui-sortable" *ngIf="ListaVolverLLamar.length > 0">
+            <div class="card">
+              <div class="card-header ui-sortable-handle" style="cursor: move;">
+                <h3 class="card-title">
+                  <i class="fa-solid fa-phone-volume"></i>
+                  Volver a llamar
+                </h3>
+                <div class="card-tools">
+                  <span title="3 New Messages" class="badge badge-primary">{{ListaVolverLLamar.length}}</span>
+                  <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                    <i class="fas fa-minus"></i>
+                  </button>
+                  <button type="button" class="btn btn-tool" data-card-widget="remove">
+                    <i class="fas fa-times"></i>
+                  </button>
+                </div>
+              </div>
+              <div class="card-body" style="background-color: var(--color-formulario-secundario);">
+
+                <table class="AltoTabla160 table table-bordered table-responsive small">
+                  <thead>
+                    <tr>
+                      <th style="width: 10px">#</th>
+                      <th></th>
+                      <th>Estado</th>
+                      <th style="white-space: nowrap;">Fecha Llamar</th>
+                      <th style="white-space: nowrap;">Hora</th>
+                      <th>Cartera</th>
+                      <th>Cliente</th>
+                      <th></th>
+                      <th>Descripción</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let datos of ListaVolverLLamar; let i = index">
+                      <td>{{i + 1}}</td>
+                      <td class="small">
+                        <div class="btn-group small" role="group">
+                          <button class="btnVer" (click)="GestionarVL(datos)">
+                            <i class="fa-regular fa-eye"></i></button>
+                          <button class="ml-2 btnAgregar" (click)="VolverLlamarOk(datos)">
+                            <i class="fa-solid fa-circle-check"></i></button>
+                        </div>
+                      </td>
+                      <td style="white-space: nowrap;">{{datos.contac_descripcion}}</td>
+                      <td>{{datos.gest_fecha_volver_llamar ==
+                        null?null:fechas.fechaCortaAbt(datos.gest_fecha_volver_llamar)}}</td>
+                      <td>{{datos.gest_hora_volver_llamar ==
+                        null?null:fechas.HoraCorta(datos.gest_hora_volver_llamar)}}</td>
+                      <td style="white-space: nowrap;">{{datos.cart_descripcion}}</td>
+                      <td style="white-space: nowrap;">{{datos.cli_identificacion}}</td>
+                      <td style="white-space: nowrap;">{{datos.cli_nombres}}</td>
+                      <td style="white-space: nowrap; font-size: 10px;">{{datos.gest_descripcion}}</td>
+
+                    </tr>
+
+                  </tbody>
+                </table>
+
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-6 col-md-6 col-sm-12 col-12 connectedSortable ui-sortable" *ngIf="ListaCombeniosCompomisos.length > 0">
+            <div class="card">
+              <div class="card-header ui-sortable-handle" style="cursor: move;">
+                <h3 class="card-title">
+                  <i class="fa-solid fa-phone-volume"></i>
+                  Compromiso/Convenios para hoy
+                </h3>
+                <div class="card-tools">
+                  <span title="3 New Messages" class="badge badge-primary">{{ListaCombeniosCompomisos.length}}</span>
+                  <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                    <i class="fas fa-minus"></i>
+                  </button>
+                  <button type="button" class="btn btn-tool" data-card-widget="remove">
+                    <i class="fas fa-times"></i>
+                  </button>
+                </div>
+              </div>
+              <div class="card-body" style="background-color: var(--color-formulario-secundario);">
+                <table class="AltoTabla160 table table-bordered table-responsive small">
+                  <thead>
+                    <tr>
+                      <th style="width: 10px">#</th>
+                      <th></th>
+                      <th>Estado</th>
+                      <th style="white-space: nowrap;">Fecha a pagar</th>
+                      <th>Cartera</th>
+                      <th>Cliente</th>
+                      <th></th>
+                      <th>Descripción</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let datos of ListaCombeniosCompomisos; let i = index">
+                      <td>{{i + 1}}</td>
+                      <td class="small">
+                        <div class="btn-group small" role="group">
+                          <button class="btnVer" (click)="GestionarCC(datos)">
+                            <i class="fa-regular fa-eye"></i></button>
+                        </div>
+                      </td>
+                      <td style="white-space: nowrap;">{{datos.contac_descripcion}}</td>
+                      <td>{{datos.gest_fecha_prox_pago ==
+                        null?null:fechas.fechaCortaAbt(datos.gest_fecha_prox_pago)}}</td>
+                      <td style="white-space: nowrap;">{{datos.cart_descripcion}}</td>
+                      <td style="white-space: nowrap;">{{datos.cli_identificacion}}</td>
+                      <td style="white-space: nowrap;">{{datos.cli_nombres}}</td>
+                      <td style="white-space: nowrap; font-size: 10px;">{{datos.gest_descripcion}}</td>
+
+                    </tr>
+
+                  </tbody>
+                </table>
+
+              </div>
+            </div>
+
+          </div>
+          <div class="col-lg-6 col-md-6 col-sm-12 col-12 connectedSortable ui-sortable" *ngIf="ListaCombeniosCompomisosP.length > 0">
+            <div class="card">
+              <div class="card-header ui-sortable-handle" style="cursor: move;">
+                <h3 class="card-title">
+                  <i class="fa-solid fa-phone-volume"></i>
+                  Compromiso/Convenios pendientes
+                </h3>
+                <div class="card-tools">
+                  <span title="3 New Messages" class="badge badge-primary">{{ListaCombeniosCompomisosP.length}}</span>
+                  <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                    <i class="fas fa-minus"></i>
+                  </button>
+                  <button type="button" class="btn btn-tool" data-card-widget="remove">
+                    <i class="fas fa-times"></i>
+                  </button>
+                </div>
+              </div>
+              <div class="card-body" style="background-color: var(--color-formulario-secundario);">
+                <table class="AltoTabla160 table table-bordered table-responsive small">
+                  <thead>
+                    <tr>
+                      <th style="width: 10px">#</th>
+                      <th></th>
+                      <th>Estado</th>
+                      <th style="white-space: nowrap;">Fecha a pagar</th>
+                      <th>Cartera</th>
+                      <th>Cliente</th>
+                      <th></th>
+                      <th>Descripción</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let datos of ListaCombeniosCompomisosP; let i = index">
+                      <td>{{i + 1}}</td>
+                      <td class="small">
+                        <div class="btn-group small" role="group">
+                          <button class="btnVer" (click)="GestionarCCP(datos)">
+                            <i class="fa-regular fa-eye"></i></button>
+                        </div>
+                      </td>
+                      <td style="white-space: nowrap;">{{datos.contac_descripcion}}</td>
+                      <td>{{datos.gest_fecha_prox_pago ==
+                        null?null:fechas.fechaCortaAbt(datos.gest_fecha_prox_pago)}}</td>
+                      <td style="white-space: nowrap;">{{datos.cart_descripcion}}</td>
+                      <td style="white-space: nowrap;">{{datos.cli_identificacion}}</td>
+                      <td style="white-space: nowrap;">{{datos.cli_nombres}}</td>
+                      <td style="white-space: nowrap; font-size: 10px;">{{datos.gest_descripcion}}</td>
+
+                    </tr>
+
+                  </tbody>
+                </table>
+
+              </div>
+            </div>
+
+          </div>
+          <div class="col-lg-6 col-md-6 col-sm-12 col-12 connectedSortable ui-sortable" *ngIf="ListaCCConPagos.length > 0">
+            <div class="card">
+              <div class="card-header ui-sortable-handle" style="cursor: move;">
+                <h3 class="card-title">
+                  <i class="fa-solid fa-phone-volume"></i>
+                  Compromiso/Convenios con pagos
+                </h3>
+                <div class="card-tools">
+                  <span title="3 New Messages" class="badge badge-primary">{{ListaCCConPagos.length}}</span>
+                  <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                    <i class="fas fa-minus"></i>
+                  </button>
+                  <button type="button" class="btn btn-tool" data-card-widget="remove">
+                    <i class="fas fa-times"></i>
+                  </button>
+                </div>
+              </div>
+              <div class="card-body" style="background-color: var(--color-formulario-secundario);">
+                <table class="AltoTabla160 table table-bordered table-responsive small">
+                  <thead>
+                    <tr>
+                      <th style="width: 10px">#</th>
+                      <th></th>
+                      <th>Estado</th>
+                      <th style="white-space: nowrap;">Fecha a Pagar</th>
+                      <th>Cartera</th>
+                      <th>Cliente</th>
+                      <th></th>
+                      <th>Descripción</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let datos of ListaCCConPagos; let i = index">
+                      <td>{{i + 1}}</td>
+                      <td class="small">
+                        <div class="btn-group small" role="group">
+                          <button class="btnVer" (click)="GestionarCCConPagos(datos)">
+                            <i class="fa-regular fa-eye"></i></button>
+                        </div>
+                      </td>
+                      <td style="white-space: nowrap;">{{datos.gestion == null?'':
+                        datos.gestion.gest_contactabilidad}}</td>
+                      <td>{{datos.pag_fecha_pago ==
+                        null?null:fechas.fechaCortaAbt(datos.pag_fecha_pago)}}</td>
+                      <td style="white-space: nowrap;">{{datos.cart_descripcion}}</td>
+                      <td style="white-space: nowrap;">{{datos.cli_identificacion}}</td>
+                      <td style="white-space: nowrap;">{{datos.cli_nombres}}</td>
+                      <td style="white-space: nowrap; font-size: 10px;">{{datos.gestion == null?'':
+                        datos.gestion.gest_descripcion}}</td>
+
+                    </tr>
+
+                  </tbody>
+                </table>
+
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </section>
+
+
+
+    <router-outlet></router-outlet>
+  </div>
+</div>
+<app-footer></app-footer>
+
+
+<ng-template #loadingOrError>
+  <section>
+    <div class="ContenidoCentrado">
+      <div class="loader"></div>
+    </div>
+  </section>
+</ng-template>
+
+
+<section class="modal" id="Cargando">
+  <section>
+    <div class="CentroSobrepuesto">
+      <div class="loaderLogin"></div>
+    </div>
+  </section>
+</section>
+

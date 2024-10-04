@@ -1,0 +1,11 @@
+@import "src/app/Estilos/Modal.css";
+.FondoImagen {
+    margin: 0;
+    padding: 0 10px;
+    /* background-image: url('../../../../assets/Imagenes/LoginFondo.png'); */
+    background-repeat: no-repeat;
+    background-position: center;
+    height: 100vh;
+    overflow-x: hidden;
+    background-size: cover;
+}

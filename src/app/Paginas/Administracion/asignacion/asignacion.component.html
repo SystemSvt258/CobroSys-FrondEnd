@@ -1,0 +1,389 @@
+<app-header></app-header>
+<app-sidebar></app-sidebar>
+<div class="content-wrapper">
+    <div class="container-fluid">
+        <h4 class="NombrePage">{{PaginaNombre}}</h4>
+        <section class="content">
+            <div class="container-fluid">
+                <div class="card card-default">
+                    <!-- BARRA DE INICIO Y PARA FILTROS DE BUSQUEDA -->
+                    <section class="horizontal-center" *ngIf="TituloFormulario == ''">
+                        <form [formGroup]="BuscarForms">
+                            <div class="card-header" style="background-color: var(--color-formulario-primario);">
+                                <div class="row">
+                                    <div class="col-lg-3 col-md-4 col-sm-6 col-12">
+                                        <div class="form-floating">
+                                            <input type="text" class="form-control" id="identificacion" placeholder=""
+                                                formControlName="identificacion">
+                                            <label class="truncate-text"
+                                                for="identificacion">Cedula/Ruc/Pasaporte</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-3 col-md-5 col-sm-6 col-12 mt-2">
+                                        <button type="button" class="btnBuscar  ml-2" (click)="GetFiltrarElemento()"><i
+                                                class="fa-solid fa-magnifying-glass"></i>&nbsp;Buscar</button>
+                                        <button type="button" class="btnLimpiar ml-2" (click)="ResetClienteForms()"><i
+                                                class="fa-solid fa-trash-can"></i></button>
+                                    </div>
+                                    <div class="col">
+                                        <div class="row  justify-content-end">
+                                            <div class="col">
+                                                <div class="btn-group float-right" role="group">
+
+                                                    <button class="btnFilter collapsed" type="button"
+                                                        data-bs-toggle="collapse"
+                                                        data-bs-target="#MasParametrosBusqueda" aria-expanded="false"
+                                                        aria-controls="MasParametrosBusqueda">
+                                                        <i class="bi bi-funnel"></i>
+                                                    </button>
+
+
+                                                    <button *ngIf="LecturaEscritura != 0" type="button"
+                                                        class="btnAgregar ml-2" (click)="AgregarEditarElemento(1)"><i
+                                                            class="bi bi-plus-circle-dotted"></i></button>
+                                                            <section>
+                                                                <button *ngIf="this.ListaAsignacion.length>0" class="btnImprimir ml-2" data-toggle="dropdown" ><i
+                                                                    class="bi bi-printer"></i></button>
+                                                                <div class="dropdown-menu" role="menu1">
+                                                                    <a class="dropdown-item col-md-4" (click)="GetDescargaPor(d)"
+                                                                        *ngFor="let d of ParametrosDeDescarga">{{d}}</a>
+                                                                </div> 
+                                                            </section>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="row">
+                                <div class="accordion" id="AcordionParametrosBus">
+                                    <div class="accordion-item">
+
+                                        <div id="MasParametrosBusqueda" class="accordion-collapse collapse"
+                                            data-bs-parent="#AcordionParametrosBus">
+                                            <div class="accordion-body">
+                                                <div class="row">
+                                                    <div class="col-md-3 col-12">
+                                                        <div class="form-floating">
+                                                            <input type="text" class="form-control" id="nombres_cliente"
+                                                                placeholder="" formControlName="nombres_cliente">
+                                                            <label class="truncate-text"
+                                                                for="nombres_cliente">Nombres</label>
+                                                        </div>
+                                                    </div>
+                                                     <div class="col-md-3 col-6">
+                                                        <div class="form-group">
+                                                            <span title="Cantidad de meses sin gestión">Cartera</span>
+
+                                                            <select style="height: 35px;" class="form-select"
+                                                            (click)="TodasCarteraList.length == 0?ListarCarteraT():null"
+                                                                formControlName="cartera">
+                                                                <option *ngIf="TodasCarteraList.length == 0" disabled>
+                                                                    Cargando
+                                                                    ...
+                                                                </option>
+                                                                <option [value]="0">Todas</option>
+                                                                <option *ngFor="let s of TodasCarteraList"
+                                                                    [value]="s.id_cartera">
+                                                                    {{s.cart_descripcion+' '+s.cart_tip_descripcion}}
+                                                                </option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-3 col-6">
+                                                        <div class="form-group">
+                                                            <span title="Cantidad de meses sin gestión">Gestor</span>
+
+                                                            <select style="height: 35px;" class="form-select"
+                                                                (click)="TodosGestorList.length == 0?ListarGestorT():null"
+                                                                formControlName="gestor">
+                                                                <option *ngIf="TodosGestorList.length == 0" disabled>
+                                                                    Cargando...
+                                                                </option>
+                                                                <option [value]="0">Todos</option>
+                                                                <option *ngFor="let s of TodosGestorList"
+                                                                    [value]="s.id_gestor">
+                                                                    {{s.ges_nombres+' '+s.ges_apellidos}}
+                                                                </option>
+                                                            </select>
+                                                        </div>
+                                                    </div> 
+
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+
+                            </div>
+                        </form>
+                    </section>
+                    <!-- FORMULARIO PARA AGREGAR ELEMENTOS -->
+                    <section class="vertical-center" *ngIf="TituloFormulario != ''">
+                        <div class="card-body" style="background-color: var(--color-formulario-secundario);">
+                            <div class="card-header" style="background-color: var(--color-formulario-primario);">
+                                <button type="button" (click)="CerrarAgregarEditarElemento()"
+                                    class="btn btn-close float-right"></button>
+                                <h2 class="Centrar">{{TituloFormulario}} {{PaginaNombre.toLocaleLowerCase()}}</h2>
+                            </div>
+                            <div class="card-body" style="background-color: var(--color-formulario-secundario);">
+                                <form [formGroup]="AsignacionForms">
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <div class="form-floating">
+                                                <input type="text" class="form-control" id="cli_identificacion"
+                                                    placeholder="" formControlName="cli_identificacion"
+                                                    (ngModelChange)="BuscarCliente()">
+                                                <label
+                                                    for="cli_identificacion"><small>*</small>Cedula/Ruc/Pasaporte</label>
+                                                <Section>
+                                                    <div class="error-message" *ngIf="AsignacionForms.get('cli_identificacion')?.hasError('required') 
+                                            && AsignacionForms.get('cli_identificacion')?.touched">
+                                                        <span style="color: brown;">*Este campo es
+                                                            obligatorio.</span>
+                                                    </div>
+                                                </Section>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-floating ">
+                                                <input type="text" class="form-control" id="clinombres" placeholder=""
+                                                    [formControl]="ClienteInf">
+                                                <label for="clinombres">Nombres</label>
+                                            </div>
+                                        </div>
+                                         <div class="col-md-4 col-12">
+                                            <div class="form-group">
+                                                <span><small>*</small>Cartera</span>
+                                                <select style="height: 35px;" class="form-select"
+                                                (ngModelChange)="AsignacionForms.get('id_cartera')?.value == ''?null: SeleccionarCartera()"
+                                                    (click)="CarteraList.length != 0?null:NoHayDatos()"
+                                                    formControlName="id_cartera">
+                                                    <option value="" disabled selected>
+                                                        Seleccione ...
+                                                    </option>
+                                                    <option *ngIf="CarteraList.length == 0" disabled>Cargando ...
+                                                    </option>
+                                                    <option *ngFor="let s of CarteraList"
+                                                        [value]="s.id_cartera">
+                                                        {{s.cart_descripcion + ' ' + s.cart_tip_descripcion}}
+                                                    </option>
+                                                </select>
+                                                <Section>
+                                                    <div class="error-message" *ngIf="AsignacionForms.get('id_cartera')?.hasError('required') 
+                                                    && AsignacionForms.get('id_cartera')?.touched">
+                                                        <span style="color: brown;">*Campo obligatorio.</span>
+                                                    </div>
+                                                </Section>
+
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4 col-12">
+                                            <div class="form-group">
+                                                <span><small>*</small>Gestor</span>
+                                                <select style="height: 35px;" class="form-select"
+                                                    formControlName="id_gestor">
+                                                    <option value="" disabled selected>
+                                                        Seleccione ...
+                                                    </option>
+                                                    <option *ngIf="GestorList.length == 0" disabled>Cargando ...
+                                                    </option>
+                                                    <option *ngFor="let s of GestorList"
+                                                        [value]="s.id_gestor">
+                                                        {{s.ges_nombres+' '+s.ges_apellidos}}
+                                                    </option>
+                                                </select>
+                                                <Section>
+                                                    <div class="error-message" *ngIf="AsignacionForms.get('id_gestor')?.hasError('required') 
+                                                    && AsignacionForms.get('id_gestor')?.touched">
+                                                        <span style="color: brown;">*Campo obligatorio.</span>
+                                                    </div>
+                                                </Section>
+
+                                            </div>
+                                        </div> 
+                                        <div class="col-lg-4 col-12">
+                                            <div class="form-floating mb-3">
+                                                <input type="text" class="form-control" id="cgc_observacion"
+                                                    placeholder="" formControlName="cgc_observacion">
+                                                <label class="truncate-text" for="cgc_observacion">Observación</label>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="card-footer" style="background-color: var(--color-formulario-terciario);">
+                                <div class="row Centrar ">
+                                    <small>
+                                        <button class="btnAceptar" [disabled]="AsignacionForms.invalid"
+                                            *ngIf="TituloFormulario != 'Visualizar'" id="btnAgregar"
+                                            (click)="ActDesControles(1);GuardarObjeto(AsignacionForms.value);ActDesControles(0)">Guardar</button>
+                                        <button class="btnCancelar ml-3"
+                                            (click)="CerrarAgregarEditarElemento()">Cancelar</button>
+                                    </small>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- FORMULARIO PARA LISTAR ELEMENTOS -->
+                    <section class="expand-bottom" *ngIf="TituloFormulario == ''">
+                        <div class="card-body" style="background-color: var(--color-formulario-secundario);"
+                            *ngIf="!loading ;else loadingOrError">
+                            <div class="card-footer" style="background-color: var(--color-formulario-terciario);"
+                                *ngIf="ListaAsignacion.length != 0">
+                                <div class="float-right clearfix">
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <button type="button" class="btn btnOk btn-sm dropdown-toggle"
+                                                data-toggle="dropdown" aria-expanded="false">
+                                                {{ FirltroPor}}
+                                            </button>
+                                            <ul class="dropdown-menu" x-placement="top-start">
+                                                <li class="dropdown-item" style="cursor: pointer;"
+                                                    (click)="FiltrarPor('Descripcion')">
+                                                    <a>Descripcion</a>
+                                                </li>
+
+                                            </ul>
+                                        </div>
+
+                                        <input type="text" id="TxtFiltro" (keyup)="FiltrarLista(0)"
+                                            [formControl]="TextoFiltro" class="form-control form-control-sm">
+
+                                        <div class="input-group-append">
+                                            <button type="button" class="btn btnOk btn-sm" (click)="VaciarFiltro()">
+                                                <i class="bi bi-trash"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <table class="table table-bordered table-responsive-md" *ngIf="ListaAsignacion.length != 0">
+                                <thead>
+                                    <tr>
+                                        <th style="width: 10px">#</th>
+                                        <th id="ThDescripcion">Id Asig.</th>
+                                        <th>Cliente</th>
+                                        <th></th>
+                                        <th>Gestor</th>
+                                        <th>Cartera</th>
+                                        <th class="OcultarMax450px">Fecha Asig.</th>
+                                        <th>Acciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let datos of DatosCargaMasiva; let i = index">
+                                        <th>{{InicioPaginacion + i + 1}}</th>
+                                        <th>{{datos.id_cliente_gestor_cartera}}</th>
+                                        <th>{{datos.cli_identificacion}}</th>
+                                        <th>{{datos.cli_nombres}}</th>
+                                        <th>{{datos.gestor}}</th>
+                                        <th>{{datos.cartera}}</th>
+                                        <th class="OcultarMax450px">{{datos.cgc_fecha_in ==
+                                            null?'':Fechas.fechaCortaAbt(datos.cgc_fecha_in)}}</th>
+                                        <th>
+                                            <div class="btn-group" role="group">
+                                                <button *ngIf="LecturaEscritura != 0" class="ml-2 btnEditar"
+                                                    (click)="CargarElemento(datos,2)">
+                                                    <i class="bi bi-pencil-fill"></i></button>
+                                                <button *ngIf="LecturaEscritura != 0" class="ml-2 btnEliminar"
+                                                    (click)="EliminarElemento(datos)">
+                                                    <i class="bi bi-trash"></i></button>
+
+                                            </div>
+                                        </th>
+
+                                    </tr>
+                                </tbody>
+                            </table>
+
+                        </div>
+
+                        <div class="card-footer" style="background-color: var(--color-formulario-terciario);"
+                            *ngIf="ListaAsignacion.length != 0 ">
+                            <div class="row">
+                                <div class="col-lg-2 col-6">
+                                    <p>Total<strong>&nbsp;{{ContadorDatosGeneral}}</strong></p>
+                                </div>
+                                <div class="col-lg-2 col-6">
+                                    <div *ngIf="ContadorDatosGeneral != ContadorDatos">
+                                        <p>Resultado Filtro<strong>&nbsp;{{ContadorDatos}}</strong></p>
+                                    </div>
+
+                                </div>
+                                <div class="col-lg-2 col-6">
+                                    <div>
+                                        <p>Elementos<strong>&nbsp;{{InicioPaginacion+1}}</strong>-<strong>&nbsp;{{InicioPaginacion
+                                                + RangoPaginacion}}</strong></p>
+                                    </div>
+                                </div>
+                                <div class="col-lg-2 col-6">
+                                    <!-- <p>Grupo<strong>&nbsp;1</strong>-<strong>&nbsp;10</strong></p> -->
+
+                                </div>
+                                <div class="col-lg-4 col-12">
+                                    <div class="form-group">
+                                        <div class="float-right">
+                                            <small>
+                                                <button
+                                                    (click)="InicioPaginacion == 0?BtnPreviousUser(1):BtnPreviousUser()"
+                                                    *ngIf="FraccionDatos !== 0||InicioPaginacion !==0" type="button"
+                                                    class="BtnNextPrevious" aria-label=""
+                                                    style="display: inline-block;"><i
+                                                        class="bi bi-arrow-left-circle"></i>
+                                                    Anterior</button>
+
+                                                <button
+                                                    *ngIf="(InicioPaginacion + RangoPaginacion) < ContadorDatos||ContadorDatos == RangoDatos"
+                                                    (click)="(InicioPaginacion + RangoPaginacion) == ContadorDatos?BtnNextUser(1):BtnNextUser()"
+                                                    type="button" class="BtnNextPrevious ml-2 " aria-label=""
+                                                    style="display: inline-block;">Siguiente <i
+                                                        class="bi bi-arrow-right-circle"></i></button>
+                                            </small>
+
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                        </div>
+                    </section>
+
+
+
+
+                </div>
+            </div>
+        </section>
+
+
+        <router-outlet></router-outlet>
+    </div>
+</div>
+<app-footer></app-footer>
+
+
+<ng-template #loadingOrError>
+    <section>
+        <div class="ContenidoCentrado">
+            <div class="loader"></div>
+        </div>
+    </section>
+</ng-template>
+
+
+<section class="modal" id="Cargando">
+    <section>
+        <div class="CentroSobrepuesto">
+            <div class="loaderLogin"></div>
+        </div>
+    </section>
+</section>

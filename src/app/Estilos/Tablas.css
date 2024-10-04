@@ -1,0 +1,13 @@
+
+.AltoTabla350 {
+  max-height: 350px;
+}
+.AltoTabla160 {
+  max-height: 160px;
+}
+.AltoTabla200 {
+  max-height: 200px;
+}
+.card-header {
+  background-color: var(--color-formulario-primario);
+}

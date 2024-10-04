@@ -1,0 +1,203 @@
+
+.loader {
+    width: 100px;
+    aspect-ratio: 1;
+    display: grid;
+    border: 4px solid #0000;
+    border-radius: 50%;
+    border-right-color: #25b09b;
+    animation: l15 1s infinite linear;
+  }
+  .loader::before,
+  .loader::after {    
+    content: "";
+    grid-area: 1/1;
+    margin: 2px;
+    border: inherit;
+    border-radius: 50%;
+    animation: l15 2s infinite;
+  }
+  .loader::after {
+    margin: 8px;
+    animation-duration: 3s;
+  }
+  @keyframes l15{ 
+    100%{transform: rotate(1turn)}
+  }
+
+  /* ///////////////////////////   LOGIN   //////////////////////////////////// */
+  /* HTML: <div class="loader"></div> */
+.loaderLogin {
+  width: 20px;
+  aspect-ratio: 1;
+  background: #25b09b;
+  box-shadow: 0 0 60px 15px #25b09b;
+  transform: translate(-90px);
+  clip-path: inset(0);
+  animation:
+    l4-1 0.5s ease-in-out infinite alternate,
+    l4-2 1s   ease-in-out infinite;
+}
+@keyframes l4-1 {
+  100% {transform: translateX(90px)}
+}
+@keyframes l4-2 {
+   33% {clip-path: inset(0 0 0 -100px)}
+   50% {clip-path: inset(0 0 0 0)     }
+   83% {clip-path: inset(0 -100px 0 0)}
+}
+  /* ///////////////////////////   SECUNDARIO   //////////////////////////////////// */
+.loader1 {
+  width: 50px;
+  aspect-ratio: 1;
+  display: grid;
+  border: 4px solid #0000;
+  border-radius: 50%;
+  border-color: #ccc #0000;
+  animation: l16 1s infinite linear;
+}
+.loader1::before,
+.loader1::after {    
+  content: "";
+  grid-area: 1/1;
+  margin: 2px;
+  border: inherit;
+  border-radius: 50%;
+}
+.loader1::before {
+  border-color: #25b09b #0000;
+  animation: inherit; 
+  animation-duration: .5s;
+  animation-direction: reverse;
+}
+.loader1::after {
+  margin: 8px;
+}
+@keyframes l16 { 
+  100%{transform: rotate(1turn)}
+}
+
+  /* ///////////////////////////   TERCIARIO   //////////////////////////////////// */
+
+/* HTML: <div class="loader"></div> */
+.loaderSecundario {
+  width: 80px;
+  aspect-ratio: 1;
+  display: grid;
+  border: 4px solid #0000;
+  border-radius: 50%;
+  border-right-color: #25b09b;
+  animation: l15 1s infinite linear;
+}
+.loaderSecundario::before,
+.loaderSecundario::after {    
+  content: "";
+  grid-area: 1/1;
+  margin: 2px;
+  border: inherit;
+  border-radius: 50%;
+  animation: l15 2s infinite;
+}
+.loaderSecundario::after {
+  margin: 8px;
+  animation-duration: 3s;
+}
+@keyframes l15{ 
+  100%{transform: rotate(1turn)}
+}
+/* /////////////////////  Bienvenido  ///////////////////////// */
+
+.loader2 {
+  font-weight: bold;
+  font-family: monospace;
+  font-size: 50px;
+  display: inline-grid;
+}
+.loader2:before,
+.loader2:after {
+  content:"Bienvenido";
+  grid-area: 1/1;
+  mask:linear-gradient(90deg,#000 50%,#0000 0) 0 50%/2ch 100%;
+  animation: l11 1s infinite cubic-bezier(0,0,0,0);
+}
+.loader2:after {
+  mask-position:1ch 50%;
+  --s:-1;
+}
+@keyframes l11 {100%{transform: translateY(calc(var(--s,1)*0.1%));}}
+
+/* ////////////////////////////////////////////// */
+.loader3 {
+  width: 80px;
+  height: 50px;
+  border: 5px solid transparent;
+  padding: 0 8px;
+  box-sizing: border-box;
+  background:
+    linear-gradient(#000 0 0) 0    0/8px 20px,
+    linear-gradient(#000 0 0) 100% 0/8px 20px,
+    radial-gradient(farthest-side,#000 90%,transparent) 0 5px/8px 8px content-box,
+    transparent;
+  background-repeat: no-repeat; 
+  animation: l3 2s infinite linear;
+}
+@keyframes l3{
+  25% {background-position: 0 0   ,100% 100%,100% calc(100% - 5px)}
+  50% {background-position: 0 100%,100% 100%,0    calc(100% - 5px)}
+  75% {background-position: 0 100%,100%    0,100% 5px}
+}
+
+/* ////////////////////////////////////////////// */
+.loader4 {
+  width: 70px;
+  height: 50px;
+  box-sizing: border-box;
+  background:
+    conic-gradient(from 135deg at top,transparent, #000 1deg 90deg,transparent 91deg) right -20px bottom 8px/18px 9px,
+    linear-gradient(#000 0 0) bottom/100% 8px,
+    transparent;
+  background-repeat: no-repeat;
+  border-bottom: 8px solid transparent;
+  position: relative;
+  animation: l7-0 2s infinite linear;
+}
+.loader4::before {
+  content: "";
+  position: absolute;
+  width: 10px;
+  height: 14px;
+  background: rgb(88, 203, 242);
+  left: 10px;
+  animation: l7-1 2s infinite cubic-bezier(0,200,1,200);
+}
+@keyframes l7-0{
+  100% { background-position: left -20px bottom 8px,bottom}
+}
+@keyframes l7-1{
+  0%,50%   {bottom: 8px}
+  90%,100% {bottom: 8.1px}
+}
+
+/* ////////////////////////////////////////////// */
+.loader5 {
+  display: inline-flex;
+  gap: 10px;
+}
+.loader5:before,
+.loader5:after {
+  content: "";
+  height: 20px;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background:
+    linear-gradient(#222 0 0) top/100% 0% no-repeat,
+    radial-gradient(farthest-side,#000 95%,#0000) 50%/8px 8px no-repeat
+    #fff;
+  animation: l9 4s infinite ease-in;
+}
+@keyframes l9 {
+  0%  {background-size:100% 0%,8px 8px;background-position:top, 50% 50%}
+  80% {background-size:100% 70%,8px 8px;background-position:top, 50% 70%}
+  84%,
+  100%{background-size:100% 0%,8px 8px;background-position:top, 50% 50%}
+}

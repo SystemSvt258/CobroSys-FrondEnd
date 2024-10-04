@@ -1,0 +1,64 @@
+.footer-contenedor{
+    height: hidden;
+}
+
+
+/* alto maximo */
+@media screen and (max-height: 500px) {
+    .sidenav {padding-top: 5px;}
+    .ContenedorImagen {
+        display: none;
+      }
+   
+   
+   
+}
+
+/* alto minimo */
+@media screen and (mix-height: 501px) {
+    /* .Imagen{
+        height: 20px;
+    } */
+    .ImagenFormato{
+        height: 10%;
+    } 
+   
+   
+}
+/* ancho maximo */
+@media screen and (max-width: 450px) {
+    /* .ImagenFormat {
+        display: block;
+      } */
+      .ContenedorImagen {
+        display: none;
+      }
+}
+
+/* ancho minimo */
+@media screen and (min-width: 768px){
+    .main{
+        margin-left: 40%; 
+    }
+    .login-main-text{
+        margin-top: 10%;
+    }
+   
+    .sidenav{
+        width: 40%;
+        position: fixed;
+        z-index: 1;
+        top: 0;
+        left: 0;
+    }
+
+    .login-form{
+        margin-top: 80%;
+    }
+
+    .register-form{
+        margin-top: 20%;
+    }
+    
+}
+

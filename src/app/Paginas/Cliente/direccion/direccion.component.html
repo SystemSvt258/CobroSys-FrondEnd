@@ -1,0 +1,767 @@
+<app-header></app-header>
+<app-sidebar></app-sidebar>
+<div class="content-wrapper">
+    <div class="container-fluid">
+        <h4 class="NombrePage">{{PaginaNombre}}</h4>
+        <section class="content">
+            <div class="container-fluid">
+                <div class="card card-default">
+                    <!-- BARRA PRINCIPAL -->
+                    <section class="horizontal-center" *ngIf="TituloFormulario == ''">
+                        <div class="card-header" style="background-color: var(--color-formulario-primario);">
+                            <div class="btn-group" role="group">
+                                <button class="btnHome" (click)="ListarElementos(1)"><i
+                                        class="fa-solid fa-house"></i></button>
+
+                            </div>
+                            <div class="btn-group float-right" role="group">
+
+                                <label type="text-info" class="formControl CenterItemColorSecundario center ml-1"
+                                    style="width: 50%;" *ngIf="itemBusqueda.value !== ''">{{itemBusqueda.value}}</label>
+
+                                <button type="button" class="btnFilter ml-1" data-toggle="dropdown"><i
+                                        class="bi bi-funnel"></i></button>
+
+                                <div class="OcultarMax450px" style="width: 50%;">
+                                    <input *ngIf="itemBusqueda.value !== '' && (itemBusqueda.value != 'Estado')"
+                                        id="txtValorBusqueda" [formControl]="txtBusqueda"
+                                        (keydown.enter)="FiltrarElemento()" (keyup)="ConvertirMayusculas()"
+                                        class="form-control ml-2" type="text" placeholder="Buscar" autofocus>
+                                </div>
+                                <div class="ml-2  OcultarMax450px">
+                                    <select class="form-select"
+                                        *ngIf="itemBusqueda.value !== '' && itemBusqueda.value === 'Estado'"
+                                        [formControl]="txtBusqueda" [spellcheck]="false" style="width: 150px;">
+                                        <option *ngFor="let estado of ParametrosEstado" [value]="estado.value">
+                                            {{estado.name}}
+                                        </option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <button type="button" class="btnBuscar ml-2 OcultarMax450px"
+                                        *ngIf="txtBusqueda.value !== ''" (click)="FiltrarElemento()"><i
+                                            class="bi bi-search"></i></button>
+                                </div>
+
+
+                                <button *ngIf="LecturaEscritura != 0" type="button" class="btnAgregar ml-2"
+                                    (click)="AgregarEditarElemento(1)"><i class="bi bi-plus-circle-dotted"></i></button>
+
+                                <div class="dropdown-menu" role="menu">
+                                    <a class="dropdown-item" (click)="GetBusquedaPor(item)"
+                                        *ngFor="let item of ParametrosDeBusqueda">{{item}}</a>
+                                </div>
+                                <section>
+                                    <button *ngIf="this.ListaDirecciones.length>0" class="btnImprimir ml-2" data-toggle="dropdown" ><i
+                                        class="bi bi-printer"></i></button>
+                                    <div class="dropdown-menu" role="menu1">
+                                        <a class="dropdown-item col-md-4" (click)="GetDescargaPor(d)"
+                                            *ngFor="let d of ParametrosDeDescarga">{{d}}</a>
+                                    </div> 
+                                </section>
+                            </div>
+                        </div>
+                        <div class="card-header OcultarMin450px"
+                            style="background-color: var(--color-formulario-primario);">
+
+                            <div class="btn-group float-right" role="group">
+                                <input
+                                    *ngIf="itemBusqueda.value !== '' && (itemBusqueda.value === 'Descripción' ||itemBusqueda.value === 'Descripción Incompleta')"
+                                    id="txtValorBusqueda" style="width: 80%;" [formControl]="txtBusqueda"
+                                    (keydown.enter)="FiltrarElemento()" (keyup)="ConvertirMayusculas()"
+                                    class="form-control ml-2" type="text" placeholder="Buscar" autofocus>
+
+                                <select class="form-select"
+                                    *ngIf="itemBusqueda.value !== '' && itemBusqueda.value === 'Estado'"
+                                    [formControl]="txtBusqueda" [spellcheck]="false" style="width: 150px;">
+                                    <option *ngFor="let estado of ParametrosEstado" [value]="estado.value">
+                                        {{estado.name}}
+                                    </option>
+                                </select>
+
+                                <button type="button" class="btnBuscar ml-2" *ngIf="txtBusqueda.value !== ''"
+                                    (click)="FiltrarElemento()"><i class="bi bi-search"></i></button>
+
+                            </div>
+                        </div>
+
+                    </section>
+                    <!-- FORMULARIO PARA AGREGAR ELEMENTOS -->
+                    <section class="vertical-center" *ngIf="TituloFormulario != ''">
+                        <div class="card-body" style="background-color: var(--color-formulario-secundario);">
+                            <div class="card-header" style="background-color: var(--color-formulario-primario);">
+                                <button type="button" (click)="CerrarAgregarEditarElemento()"
+                                    class="btn btn-close float-right"></button>
+                                <h2 class="Centrar">{{TituloFormulario}} {{PaginaNombre.toLocaleLowerCase()}}</h2>
+                            </div>
+                            <div class="card-body" style="background-color: var(--color-formulario-secundario);">
+                                <form [formGroup]="DireccionesForms">
+                                    <div class="row">
+
+                                        <div class="col-lg-4 col-12" *ngIf="TituloFormulario != 'Agregar'">
+                                            <div class="form-floating mb-3">
+                                                <input type="text" class="form-control" id="id_direccion" placeholder=""
+                                                    formControlName="id_direccion">
+                                                <label for="id_direccion">Id Cliente</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-4 col-12">
+                                            <div class="row mb-3">
+                                                <div class="col-lg-8 col-12">
+                                                    <div class="form-floating">
+                                                        <input type="text" class="form-control" id="cli_identificacion"
+                                                            placeholder="" formControlName="cli_identificacion"
+                                                            (keyup)="Cliente.patchValue('')">
+                                                        <label class="truncate-text" for="cli_identificacion"><small>*</small>Cedula/Ruc/Pasaporte</label>
+                                                        <Section>
+                                                            <div class="error-message" *ngIf="DireccionesForms.get('cli_identificacion')?.hasError('required') 
+                                                                 && DireccionesForms.get('cli_identificacion')?.touched">
+                                                                <span style="color: brown;"><small>*</small>Campo obligatorio.</span>
+                                                            </div>
+                                                        </Section>
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-4 col-6 Centrar" *ngIf="TituloFormulario != 'Visualizar'">
+                                                    <small>
+                                                            <button *ngIf="LecturaEscritura != 0" type="button"
+                                                                class="btnBuscar"
+                                                                [disabled]="DireccionesForms.get('cli_identificacion')!.value! == ''"
+                                                                (click)="BuscarCliente(DireccionesForms.get('cli_identificacion')!.value!)">
+                                                                <i class="fa-solid fa-magnifying-glass"></i>
+                                                            </button>
+                                                            <button *ngIf="LecturaEscritura != 0" type="button"
+                                                                class="btnAgregar" (click)="AbrirModalCliente()">
+                                                                <i class="bi bi-plus-circle-dotted"></i>
+                                                            </button>
+                                                    </small>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-4 col-12">
+                                            <div class="row mb-3">
+                                                <div class="col-lg-10 col-9">
+                                                    <div class="form-floating ">
+                                                        <input type="text" class="form-control" id="clinombres"
+                                                            placeholder="" [formControl]="Cliente">
+                                                        <label for="clinombres">Nombres</label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-2 col-2">
+                                                    <small>
+                                                        <button *ngIf="LecturaEscritura != 0" type="button"
+                                                            class="btnVer" [disabled]="Cliente.value == ''"
+                                                            (click)="VerCliente()">
+                                                            <i class="fa-solid fa-eye"></i>
+                                                        </button>
+                                                    </small>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4 col-12">
+                                            <div class="form-group">
+                                                <span><small>*</small>Tipo de dirección</span>
+                                                <select style="height: 35px;" class="form-select" 
+                                                (click)="TipoDireccionList.length != 0?null:ListarTipoDirecciones()"
+                                                formControlName="dir_id_tipo_direccion">
+                                                <option  value="" disabled selected>
+                                                    Seleccione ...
+                                                </option>
+                                                <option *ngIf="TipoDireccionList.length == 0" disabled>Cargando ...
+                                                </option>
+                                                    <option *ngFor="let s of TipoDireccionList"
+                                                        [value]="s.id_tipo_direccion">
+                                                        {{s.dir_tip_descripcion}}
+                                                    </option>
+                                                </select>
+                                                <Section>
+                                                    <div class="error-message" *ngIf="DireccionesForms.get('dir_id_tipo_direccion')?.hasError('required') 
+                                                    && DireccionesForms.get('dir_id_tipo_direccion')?.touched">
+                                                        <span style="color: brown;">*Campo obligatorio.</span>
+                                                    </div>
+                                                </Section>
+
+                                            </div>
+                                        </div>
+
+                                        
+                                        <div class="col-lg-4 col-12">
+                                            <div class="form-floating mb-3">
+                                                <input type="text" class="form-control" id="dir_completa"
+                                                    placeholder="" formControlName="dir_completa">
+                                                <label for="dir_completa"><small>*</small>Direccion completa</label>
+                                                <Section>
+                                                    <div class="error-message" *ngIf="DireccionesForms.get('dir_completa')?.hasError('required') 
+                                                         && DireccionesForms.get('dir_completa')?.touched">
+                                                        <span style="color: brown;">*Campo obligatorio.</span>
+                                                    </div>
+                                                </Section>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-4 col-12">
+                                            <div class="form-floating mb-3">
+                                                <input type="email" class="form-control" id="dir_calle_principal" placeholder=""
+                                                    formControlName="dir_calle_principal">
+                                                <label for="dir_calle_principal">Calle principal</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-4 col-12">
+                                            <div class="form-floating mb-3">
+                                                <input type="email" class="form-control" id="dir_calle_secundaria" placeholder=""
+                                                    formControlName="dir_calle_secundaria">
+                                                <label for="dir_calle_secundaria">Calle secundaria</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-4 col-12">
+                                            <div class="form-floating mb-3">
+                                                <input type="email" class="form-control" id="dir_numero_casa" placeholder=""
+                                                    formControlName="dir_numero_casa">
+                                                <label for="dir_numero_casa">Numero de casa</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-4 col-12">
+                                            <div class="form-floating mb-3">
+                                                <input type="email" class="form-control" id="dir_referencia" placeholder=""
+                                                    formControlName="dir_referencia">
+                                                <label for="dir_referencia">Referencia</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-4 col-12">
+                                            <div class="form-floating mb-3">
+                                                <input type="email" class="form-control" id="dir_provincia" placeholder=""
+                                                    formControlName="dir_provincia">
+                                                <label for="dir_provincia">Provincia</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-4 col-12">
+                                            <div class="form-floating mb-3">
+                                                <input type="email" class="form-control" id="dir_canton" placeholder=""
+                                                    formControlName="dir_canton">
+                                                <label for="dir_canton">Canton</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-4 col-12">
+                                            <div class="form-floating mb-3">
+                                                <input type="email" class="form-control" id="dir_parroquia" placeholder=""
+                                                    formControlName="dir_parroquia">
+                                                <label for="dir_parroquia">Parroquia</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-4 col-12" *ngIf="TituloFormulario != 'Agregar'">
+                                            <div class="form-floating mb-3">
+                                                <input type="text" class="form-control" id="dir_fecha_act"
+                                                    placeholder="" formControlName="dir_fecha_act">
+                                                <label for="dir_fecha_act">Fecha de Activación</label>
+                                            </div>
+
+                                        </div>
+                                        <div class="col-lg-4 col-12" *ngIf="TituloFormulario != 'Agregar'">
+                                            <div class="form-floating mb-3">
+                                                <input type="text" class="form-control" id="dir_fecha_desact"
+                                                    placeholder="" formControlName="dir_fecha_desact">
+                                                <label for="dir_fecha_desact">Fecha de Desactivación</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-4 col-12" *ngIf="TituloFormulario != 'Agregar'">
+                                            <div class="form-floating mb-3">
+                                                <input type="text" class="form-control" id="dir_fecha_in" placeholder=""
+                                                    formControlName="dir_fecha_in">
+                                                <label for="dir_fecha_in">Fecha de Ingreso</label>
+                                            </div>
+
+                                        </div>
+                                        <div class="col-lg-4 col-12" *ngIf="TituloFormulario != 'Agregar'">
+                                            <div class="form-floating mb-3">
+                                                <input type="text" class="form-control" id="dir_fecha_up" placeholder=""
+                                                    formControlName="dir_fecha_up">
+                                                <label for="dir_fecha_up">Fecha de Actualización</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-4 col-12">
+                                            <div class="Centrar">
+                                                <div class="btn-group">
+                                                    <div class="form-group">
+                                                        <label for="dir_esactivo">Estado</label>&nbsp;
+                                                        <div class="custom-control custom-switch Centrar"
+                                                            title="Estado">
+                                                            <input type="checkbox" class="custom-control-input"
+                                                                formControlName="dir_esactivo" name="estado"
+                                                                id="dir_esactivo">
+                                                            <label class="custom-control-label"
+                                                                for="dir_esactivo">{{DireccionesForms.get('dir_esactivo')!.value
+                                                                == false ?
+                                                                'Inactivo' : 'Activo'}}</label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+
+                            <div class="card-footer" style="background-color: var(--color-formulario-terciario);">
+                                <div class="row Centrar ">
+                                    <small>
+                                        <button class="btnAceptar"
+                                            [disabled]="DireccionesForms.invalid || Cliente.value == ''"
+                                            *ngIf="TituloFormulario != 'Visualizar'" id="btnAgregar"
+                                            (click)="ActDesControles(1);GuardarObjeto(DireccionesForms.value);ActDesControles(0)">Guardar</button>
+                                        <button class="btnCancelar ml-3"
+                                            (click)="CerrarAgregarEditarElemento()">Cancelar</button>
+                                    </small>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                    <!-- FORMULARIO PARA LISTAR ELEMENTOS -->
+                    <section class="expand-bottom" *ngIf="TituloFormulario == ''">
+                        <div class="card-body" style="background-color: var(--color-formulario-secundario);"
+                            *ngIf="!loading ;else loadingOrError">
+                            <div class="card-footer" style="background-color: var(--color-formulario-terciario);"
+                                *ngIf="ListaDirecciones.length != 0">
+                                <div class="float-right clearfix">
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <button type="button" class="btn btnOk btn-sm dropdown-toggle"
+                                                data-toggle="dropdown" aria-expanded="false">
+                                                <label id="lblFiltro0"></label>
+                                            </button>
+                                            <ul class="dropdown-menu" x-placement="top-start">
+                                                <li class="dropdown-item" style="cursor: pointer;"
+                                                    (click)="FiltrarPor('Identificacion',0)">
+                                                    <a>Identificación</a>
+                                                </li>
+                                                <li class="dropdown-item" style="cursor: pointer;"
+                                                    (click)="FiltrarPor('Nombres',0)">
+                                                    <a>Nombres</a>
+                                                </li>
+                                                <li class="dropdown-item" style="cursor: pointer;"
+                                                    (click)="FiltrarPor('Direccion',0)">
+                                                    <a>Dirección</a>
+                                                </li>
+
+
+                                            </ul>
+                                        </div>
+
+                                        <input type="text" id="TxtFiltro0" (keyup)="FiltrarLista(0,0)"
+                                            class="form-control form-control-sm">
+
+                                        <div class="input-group-append">
+                                            <button type="button" class="btn btnOk btn-sm" (click)="VaciarFiltro(0)">
+                                                <i class="bi bi-trash"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <table class="table table-bordered table-responsive-md" *ngIf="ListaDirecciones.length != 0">
+                                <thead>
+                                    <tr>
+                                        <th style="width: 10px">#</th>
+                                        <th id="ThIdentificacion0">Identificacion</th>
+                                        <th id="ThDescripcion0">Nombres</th>
+                                        <th id="ThDireccion0">Direccion</th>
+                                        <th class="OcultarMax450px">Ingreso</th>
+                                        <!-- <th class="OcultarMax450px">Actualización</th> -->
+                                        <th class="OcultarMax450px" *ngIf="LecturaEscritura != 0">Estado</th>
+                                        <th>Acciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let datos of DatosCargaMasiva; let i = index">
+                                        <th>{{InicioPaginacion + i + 1}}</th>
+                                        <th>{{datos.cli_identificacion}}</th>
+                                        <th>{{datos.cli_nombres}}</th>
+                                        <th>{{datos.dir_completa}}</th>
+                                        <th class="OcultarMax450px">{{datos.dir_fecha_in==null?'':Fechas.fechaCortaAbt(datos.dir_fecha_in)}}</th>
+                                        <!-- <th class="OcultarMax450px">{{Fechas.fechaCorta(datos.dir_fecha_up)}}</th> -->
+                                        <th class="OcultarMax450px ContenidoCentrado" *ngIf="LecturaEscritura != 0">
+                                            <div class="custom-switch">
+                                                <input type="checkbox" class="custom-control-input"
+                                                    id="idEstado_{{datos.id_direccion}}"
+                                                    [checked]="datos.dir_esactivo==='1'?true:false" name="estado"
+                                                    (change)="ActualizaEstado(datos)">
+                                                <label class="custom-control-label"
+                                                    for="idEstado_{{datos.id_direccion}}"></label>
+                                            </div>
+                                        </th>
+                                        <th>
+                                            <div class="btn-group" role="group">
+                                                <button class="btnVer" (click)="CargarElemento(datos,3)">
+                                                    <i class="fa-regular fa-eye"></i></button>
+                                                <button *ngIf="LecturaEscritura != 0" class="ml-2 btnEditar"
+                                                    (click)="CargarElemento(datos,2)">
+                                                    <i class="bi bi-pencil-fill"></i></button>
+                                                <button *ngIf="LecturaEscritura != 0" class="ml-2 btnEliminar"
+                                                    (click)="EliminarElemento(datos)">
+                                                    <i class="bi bi-trash"></i></button>
+
+                                            </div>
+                                        </th>
+
+                                    </tr>
+                                </tbody>
+                            </table>
+
+                        </div>
+
+                        <div class="card-footer" style="background-color: var(--color-formulario-terciario);"
+                            *ngIf="ListaDirecciones.length != 0 ">
+                            <div class="row">
+                                <div class="col-lg-2 col-6">
+                                    <p>Total<strong>&nbsp;{{ContadorDatosGeneral}}</strong></p>
+                                </div>
+                                <div class="col-lg-2 col-6">
+                                    <div *ngIf="ContadorDatosGeneral != ContadorDatos">
+                                        <p>Resultado Filtro<strong>&nbsp;{{ContadorDatos}}</strong></p>
+                                    </div>
+
+                                </div>
+                                <div class="col-lg-2 col-6">
+                                    <div>
+                                        <p>Elementos<strong>&nbsp;{{InicioPaginacion+1}}</strong>-<strong>&nbsp;{{InicioPaginacion
+                                                + RangoPaginacion}}</strong></p>
+                                    </div>
+                                </div>
+                                <div class="col-lg-2 col-6">
+                                    <!-- <p>Grupo<strong>&nbsp;1</strong>-<strong>&nbsp;10</strong></p> -->
+
+                                </div>
+                                <div class="col-lg-4 col-12">
+                                    <div class="form-group">
+                                        <div class="float-right">
+                                            <small>
+                                                <button (click)="InicioPaginacion == 0?BtnPrevious(0,1):BtnPrevious(0)"
+                                                    *ngIf="FraccionDatos !== 0||InicioPaginacion !==0" type="button"
+                                                    class="BtnNextPrevious" aria-label=""
+                                                    style="display: inline-block;"><i
+                                                        class="bi bi-arrow-left-circle"></i>
+                                                    Anterior</button>
+
+                                                <button
+                                                    *ngIf="(InicioPaginacion + RangoPaginacion) < ContadorDatos||ContadorDatos == RangoDatos"
+                                                    (click)="(InicioPaginacion + RangoPaginacion) == ContadorDatos?BtnNext(0,1):BtnNext(0)"
+                                                    type="button" class="BtnNextPrevious ml-2 " aria-label=""
+                                                    style="display: inline-block;">Siguiente <i
+                                                        class="bi bi-arrow-right-circle"></i></button>
+                                            </small>
+
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                        </div>
+                    </section>
+                </div>
+            </div>
+        </section>
+
+
+        <router-outlet></router-outlet>
+    </div>
+</div>
+<app-footer></app-footer>
+
+<section class="modal" id="ModalCliente">
+    <div class="modal__container ">
+        <div class="col-sm alert" style="background-color: var(--color-formulario-primario);">
+            <button type="button" (click)="CerrarModalCliente()" class="btn btn-close float-right"></button>
+            <h2 class="modal__title Centrar">{{ModoVistaCliente == true?'Ver':'Agregar'}} Cliente</h2>
+
+            <section class="vertical-center" *ngIf="TituloFormulario != ''">
+                <div class="card-body" style="background-color: var(--color-formulario-secundario);">
+                    <div class="card-body" style="background-color: var(--color-formulario-secundario);">
+                        <form [formGroup]="ClienteForms">
+                            <div class="row">
+                                <div class="col-md-2 col-12">
+                                    <div class="form-group">
+                                        <span><small>*</small>identificacion por</span>
+                                        <select style="height: 35px;" class="form-select" 
+                                        formControlName="cli_tipo_identificacion">
+                                            <option *ngFor="let s of TipoIdentificacion"
+                                                [value]="s.value">
+                                                {{s.name}}
+                                            </option>
+                                        </select>
+                                        <Section>
+                                            <div class="error-message" *ngIf="ClienteForms.get('cli_tipo_identificacion')?.hasError('required') 
+                                            && ClienteForms.get('cli_tipo_identificacion')?.touched">
+                                                <span style="color: brown;">*Campo obligatorio.</span>
+                                            </div>
+                                        </Section>
+
+                                    </div>
+                                </div>
+                                <div class="col-lg-4 col-12">
+                                    <div class="form-floating mb-3">
+                                        <input type="text" class="form-control" id="cli_identificacion"
+                                            placeholder="" formControlName="cli_identificacion">
+                                        <label for="cli_identificacion"><small>*</small>Identificacion</label>
+                                        <Section>
+                                            <div class="error-message" *ngIf="ClienteForms.get('cli_identificacion')?.hasError('required') 
+                                            && ClienteForms.get('cli_identificacion')?.touched">
+                                                <span style="color: brown;">*Campo obligatorio.</span>
+                                            </div>
+                                            <div class="error-message"
+                                                *ngIf="ClienteForms.get('cli_identificacion')?.value != ''
+                                    ? validar.Tipo_Identificacion(ClienteForms.get('cli_identificacion')?.value!,ClienteForms.get('cli_tipo_identificacion')?.value!)  === false:null ">
+                                                <span style="color: brown;">*Dijitos incorrectos</span>
+                                            </div>
+                                        </Section>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 col-12">
+                                    <div class="form-floating mb-3">
+                                        <input type="text" class="form-control" id="cli_nombres" placeholder=""
+                                            formControlName="cli_nombres">
+                                        <label for="cli_nombres"><small>*</small>Nombres</label>
+                                        <Section>
+                                            <div class="error-message" *ngIf="ClienteForms.get('cli_nombres')?.hasError('required') 
+                                            && ClienteForms.get('cli_nombres')?.touched">
+                                                <span style="color: brown;">*Campo obligatorio.</span>
+                                            </div>
+                                        </Section>
+                                    </div>
+                                </div>
+                                <div class="col-md-2 col-12">
+                                    <div class="form-group">
+                                        <span>Genero</span>
+                                        <select style="height: 35px;" class="form-select" 
+                                        formControlName="cli_genero">
+                                            <option *ngFor="let s of Genero"
+                                                [value]="s.value">
+                                                {{s.name}}
+                                            </option>
+                                        </select>
+                                        <Section>
+                                            <div class="error-message" *ngIf="ClienteForms.get('cli_genero')?.hasError('required') 
+                                            && ClienteForms.get('cli_genero')?.touched">
+                                                <span style="color: brown;">*Campo obligatorio.</span>
+                                            </div>
+                                        </Section>
+
+                                    </div>
+                                </div>
+                                <div class="col-md-2 col-12">
+                                    <div class="form-group">
+                                        <span><small>*</small>Estado Civil</span>
+                                        <select style="height: 35px;" class="form-select" 
+                                        formControlName="cli_estado_civil">
+                                            <option *ngFor="let s of EstadoCivil"
+                                                [value]="s.value">
+                                                {{s.name}}
+                                            </option>
+                                        </select>
+                                        <Section>
+                                            <div class="error-message" *ngIf="ClienteForms.get('cli_estado_civil')?.hasError('required') 
+                                            && ClienteForms.get('cli_estado_civil')?.touched">
+                                                <span style="color: brown;">*Campo obligatorio.</span>
+                                            </div>
+                                        </Section>
+
+                                    </div>
+                                </div>
+                                <div class="col-lg-4 col-12">
+                                    <div class="form-floating mb-3">
+                                        <input type="text" class="form-control" id="cli_ocupacion"
+                                            placeholder="" formControlName="cli_ocupacion">
+                                        <label for="cli_ocupacion">Ocupacion</label>
+                                    </div>
+                                </div>
+                                <div class="col-lg-4 col-12">
+                                    <div class="form-floating mb-3">
+                                        <input type="date" class="form-control" id="cli_fecha_nacimiento"
+                                            placeholder="" formControlName="cli_fecha_nacimiento">
+                                        <label for="cli_fecha_nacimiento"><small>*</small>Fecha de Nacimiento</label>
+                                        <Section>
+                                            <div class="error-message" *ngIf="ClienteForms.get('cli_fecha_nacimiento')?.hasError('required') 
+                                            && ClienteForms.get('cli_fecha_nacimiento')?.touched">
+                                                <span style="color: brown;">*Campo obligatorio.</span>
+                                            </div>
+                                        </Section>
+                                    </div>
+                                </div>
+                                <div class="col-lg-4 col-12">
+                                    <div class="form-floating mb-3">
+                                        <input type="text" class="form-control" id="cli_score" placeholder=""
+                                            formControlName="cli_score">
+                                        <label for="cli_score">Calificación</label>
+                                    </div>
+                                </div>
+                                <div class="col-lg-4 col-12">
+                                    <div class="Centrar">
+                                        <div class="btn-group">
+                                            <div class="form-group">
+                                                <label for="cli_fallecido">Fallecido</label>&nbsp;
+                                                <div class="custom-control custom-switch Centrar" title="Fallecido">
+                                                    <input type="checkbox" class="custom-control-input"
+                                                        formControlName="cli_fallecido" name="fallecido"
+                                                        id="cli_fallecido">
+                                                    <label class="custom-control-label"
+                                                        for="cli_fallecido">{{ClienteForms.get('cli_fallecido')!.value
+                                                        == false ?
+                                                        'NO' : 'SI'}}</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-4 col-12">
+                                    <div class="form-floating mb-3">
+                                        <input type="date" class="form-control" id="cli_fecha_fallecido" placeholder=""
+                                            formControlName="cli_fecha_fallecido">
+                                        <label for="cli_fecha_fallecido">Fecha de defuncion</label>
+                                    </div>
+                                </div>
+                                <div class="col-lg-4 col-12">
+                                    <div class="form-floating mb-3">
+                                        <input type="text" class="form-control" id="cli_observacion" placeholder=""
+                                            formControlName="cli_observacion">
+                                        <label for="cli_observacion">Observación</label>
+                                    </div>
+                                </div>
+                                <div class="col-lg-4 col-12">
+                                    <div class="form-floating mb-3">
+                                        <input type="text" class="form-control" id="cli_provincia" placeholder=""
+                                            formControlName="cli_provincia">
+                                        <label for="cli_provincia">Provincia</label>
+                                    </div>
+                                </div>
+                                <div class="col-lg-4 col-12">
+                                    <div class="form-floating mb-3">
+                                        <input type="text" class="form-control" id="cli_canton" placeholder=""
+                                            formControlName="cli_canton">
+                                        <label for="cli_canton">Canton</label>
+                                    </div>
+                                </div>
+                                <div class="col-lg-4 col-12">
+                                    <div class="form-floating mb-3">
+                                        <input type="text" class="form-control" id="cli_parroquia" placeholder=""
+                                            formControlName="cli_parroquia">
+                                        <label for="cli_parroquia">Parroquia</label>
+                                    </div>
+                                </div>
+                                <div class="col-lg-4 col-12">
+                                    <div class="Centrar">
+                                        <div class="btn-group">
+                                            <div class="form-group">
+                                                <label for="cli_esactivo">Estado</label>&nbsp;
+                                                <div class="custom-control custom-switch Centrar" title="Estado">
+                                                    <input type="checkbox" class="custom-control-input"
+                                                        formControlName="cli_esactivo" name="estado" id="cli_esactivo">
+                                                    <label class="custom-control-label"
+                                                        for="cli_esactivo">{{ClienteForms.get('cli_esactivo')!.value
+                                                        == false ?
+                                                        'Inactivo' : 'Activo'}}</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+
+
+                    <div class="card-footer" style="background-color: var(--color-formulario-terciario);">
+                        <div class="row Centrar ">
+                            <small>
+                                <button class="btnAceptar" [disabled]="ClienteForms.invalid" *ngIf="!ModoVistaCliente"
+                                    id="btnAgregar" (click)="GuardarObjetoCliente(ClienteForms.value)">Guardar</button>
+                                <button class="btnCancelar ml-3" (click)="CerrarModalCliente()">Cancelar</button>
+                            </small>
+                        </div>
+                    </div>
+
+
+
+                </div>
+            </section>
+
+        </div>
+    </div>
+</section>
+<section class="modal" id="ModalTipoDirecciones">
+    <div class="modal__container ">
+        <div class="col-sm alert" style="background-color: var(--color-formulario-primario);">
+            <button type="button" (click)="CerrarModalTipoDirecciones()" class="btn btn-close float-right"></button>
+            <h2 class="modal__title Centrar">{{ModoVistaCliente == true?'Ver':'Agregar'}} Cliente</h2>
+
+            <section class="vertical-center" *ngIf="TituloFormulario != ''">
+                <div class="card-body" style="background-color: var(--color-formulario-secundario);">
+                    <div class="card-body" style="background-color: var(--color-formulario-secundario);">
+                        <form [formGroup]="TipoDireccionesForms">
+                            <div class="row">
+                                <div id="descripcion"
+                                    class="{{TituloFormulario == 'Agregar'?'col-lg-8':'col-lg-4'}} col-12">
+                                    <div class="form-floating mb-3">
+                                        <input type="text" class="form-control" id="dir_tip_descripcion"
+                                            placeholder="" formControlName="dir_tip_descripcion">
+                                        <label for="dir_tip_descripcion">Descripcion</label>
+                                    </div>
+
+                                </div>                            
+                                <div class="col-lg-4 col-12">
+                                    <div class="Centrar">
+                                        <div class="btn-group">
+                                            <div class="form-group">
+                                                <label for="dir_tip_esactivo">Estado</label>&nbsp;
+                                                <div class="custom-control custom-switch Centrar"
+                                                    title="Estado">
+                                                    <input type="checkbox" class="custom-control-input"
+                                                        formControlName="dir_tip_esactivo" name="estado"
+                                                        id="dir_tip_esactivo">
+                                                    <label class="custom-control-label"
+                                                        for="dir_tip_esactivo">{{TipoDireccionesForms.get('dir_tip_esactivo')!.value
+                                                        == false ?
+                                                        'Inactivo' : 'Activo'}}</label>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                            </div>
+                        </form>
+                    </div>
+
+
+                    <div class="card-footer" style="background-color: var(--color-formulario-terciario);">
+                        <div class="row Centrar ">
+                            <small>
+                                <button class="btnAceptar" [disabled]="TipoDireccionesForms.invalid" 
+                                    id="btnAgregar" (click)="GuardarObjetoTipoDirecciones(TipoDireccionesForms.value)">Guardar</button>
+                                <button class="btnCancelar ml-3" (click)="CerrarModalTipoDirecciones()">Cancelar</button>
+                            </small>
+                        </div>
+                    </div>
+
+
+
+                </div>
+            </section>
+
+        </div>
+    </div>
+</section>
+
+
+<ng-template #loadingOrError>
+    <section>
+        <div class="ContenidoCentrado">
+            <div class="loader"></div>
+        </div>
+    </section>
+</ng-template>
+<ng-template #loadingOrError1>
+    <section>
+        <div class="ContenidoCentrado">
+            <div class="loader1"></div>
+        </div>
+    </section>
+</ng-template>

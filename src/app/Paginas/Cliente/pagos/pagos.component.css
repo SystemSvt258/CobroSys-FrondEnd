@@ -1,0 +1,8 @@
+@import "src/app/Estilos/Modal.css";
+.verificado {
+    background-color: greenyellow;
+  }
+
+  .ModalTam {
+    max-width: 50px !important;
+}

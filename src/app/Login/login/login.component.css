@@ -1,0 +1,161 @@
+@import "src/app/Estilos/Modal.css";
+
+.login__title {
+  /* font-size: 2.5rem; */
+  color: var(--color-login-primario);
+}
+
+.Lateral {
+  /* height: 100%; */
+  /* background-color: var(--color-login-terciario); */
+  background-image: linear-gradient(
+    20deg,
+    var(--color-login-terciario) 10%,
+    var(--color-login-quinto) 100%
+  );
+  /* overflow-x: hidden; */
+  /* padding-top: 20px; */
+}
+.ContenedorCarousel {
+  height: hidden;
+  display: grid;
+  place-items: center;
+}
+.ImagenFondo {
+  margin: 0;
+  padding: 0 10px;
+  background-image: url("../../../assets/Imagenes/LoginFondo.png");
+  background-repeat: no-repeat;
+  background-position: center;
+  height: 100vh;
+  overflow-x: hidden;
+  background-size: cover;
+}
+
+.ImagenCarousel {
+  margin: 0;
+  padding: 0 10px;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+  height: 350px;
+  overflow-x: hidden;
+}
+
+.login-main-text {
+  margin-top: hidden;
+  /* padding: 60px; */
+  color: var(--color-login-secundario);
+}
+
+.login-main-text h2 {
+  font-weight: 300;
+}
+
+/* ////////////////////////////////////////////////////////// */
+
+.container {
+  height: 100vh;
+  width: 100%;
+  align-content: center;
+}
+
+.card {
+  height: auto;
+  margin-top: auto;
+  margin-bottom: auto;
+  width: 400px;
+  background-color: var(--color-login-degradado);
+}
+
+.social_icon span {
+  font-size: 60px;
+  margin-left: 10px;
+  color: var(--color-login-primario);
+}
+
+.social_icon span:hover {
+  color: var(--color-login-secundario);
+  cursor: pointer;
+}
+
+.card-header h3 {
+  color: var(--color-login-secundario);
+}
+
+.social_icon {
+  position: absolute;
+  right: 20px;
+  top: -45px;
+}
+
+.input-group-prepend span {
+  padding: 10px;
+  height: 100%;
+  width: 50px;
+  background-color: var(--color-login-primario);
+  color: var(--color-login-texto);
+  border: 0 !important;
+}
+
+input:focus {
+  outline: 0 0 0 0 !important;
+  box-shadow: 0 0 0 0 !important;
+}
+
+.login_btn {
+  align-items: end;
+  color: var(--color-login-texto);
+  background-color: var(--color-login-primario);
+  width: 100px;
+}
+
+.login_btn:hover {
+  color: var(--color-login-texto-hover);
+  background-color: var(--color-login-hover);
+}
+
+.links {
+  color: var(--color-login-secundario);
+}
+
+a {
+  margin-left: 4px;
+  color: var(--color-login-cuaternario);
+}
+a:hover {
+  color: var(--color-login-hover);
+}
+
+.custom-tooltip {
+  --bs-tooltip-bg: var(--bd-violet-bg);
+  --bs-tooltip-color: var(--bs-white);
+}
+
+.ImagenFormato {
+  height: hidden;
+  width: 200px;
+}
+
+.slide {
+  color: var(--color-login-cuaternario);
+}
+
+
+/* .btnRecuperar { */
+  /* text-decoration: none; */
+  /* color: #fff; */
+  /* background-color: #f33734; */
+  /* padding: 0.5em 1em; */
+  /* border: 1px solid; */
+  /* border-radius: 8px; */
+  /* display: inline-block; */
+  /* font-weight: 300; */
+  /* transition: background-color 0.3s; */
+/* } */
+
+.btnRecuperar:hover {
+  cursor:pointer;
+  color: #5bf414;
+  /* background-color: #fff; */
+}

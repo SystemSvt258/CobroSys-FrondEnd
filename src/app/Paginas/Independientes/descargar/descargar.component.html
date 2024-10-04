@@ -1,0 +1,502 @@
+<app-header></app-header>
+<app-sidebar></app-sidebar>
+<div class="content-wrapper">
+    <div class="container-fluid">
+        <h4 class="NombrePage">{{PaginaNombre}}</h4>
+        <section class="content">
+            <div class="container-fluid">
+                <div class="card card-default">
+                    <!-- BARRA DE INICIO Y PARA FILTROS DE BUSQUEDA -->
+                    <section class="horizontal-center">
+                        <div class="card-header" style="background-color: var(--color-formulario-primario);">
+                        </div>
+                    </section>
+                    <section class="horizontal-center">
+                            <div class="row">
+                                <div class="accordion" id="AcordionParametrosBus">
+                                    <div class="accordion-item">
+                                        <div id="MasParametrosBusqueda" class="content">
+                                            <div class="accordion-body">
+                                                <div class="row">
+                                                    <section class="horizontal-center">
+                                                        <form [formGroup]="DescargaForms">
+                                                            <div class="row">
+                                                                <div class="col-md-3 col-6">
+                                                                    <div class="form-group">
+                                                                        <span title="Cantidad de meses sin gestión"><strong>Base</strong></span>
+                    
+                                                                        <select style="height: 35px;" class="form-select"
+                                                                        (ngModelChange)="seleccion()"
+                                                                            formControlName="seleccion_base">
+                                                                            <option *ngIf="seleccionBase.length == 0" disabled>
+                                                                                Cargando...
+                                                                            </option>
+                                                                            <option [value]="0">Todos</option>
+                                                                            <option *ngFor="let s of seleccionBase" [value]="s.name">
+                                                                                {{s.name}}
+                                                                            </option>
+                                                                        </select>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-3 col-6">
+                                                                    <div class="form-group">
+                                                                        <span title="Cantidad de meses sin gestión"><strong>Entidad</strong></span>
+                    
+                                                                        <select style="height: 35px;" class="form-select"
+                                                                        (ngModelChange)="seleccion()"
+                                                                            formControlName="seleccion_entidad">
+                                                                            <option *ngIf="seleccionEntidad.length == 0" disabled>
+                                                                                Cargando...
+                                                                            </option>
+                                                                            <option [value]="0">Todos</option>
+                                                                            <option *ngFor="let s of seleccionEntidad" [value]="s.name">
+                                                                                {{s.name}}
+                                                                            </option>
+                                                                        </select>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-3 col-6 d-flex align-items-center justify-content-center"> <!-- Add d-flex align-items-center justify-content-center classes here -->
+                                                                    <button class="btnAgregar" (click)="descargarExcel(this.DescargaForms.value)"><i class="fa-solid fa-download"></i></button>
+                                                                </div>    
+                                                            </div>
+                                                        </form>
+                                                    </section>
+                                                    <section class="horizontal-center" *ngIf="banderaViewFiltro">
+                                                        <form [formGroup]="BuscarForms">
+                                                        <div class="row">
+                                                            <div class="col-md-1 col-3">
+                                                                <button type="button" class="btnBuscar ml-2"
+                                                                (click)="buscarFiltro(BuscarForms.value)">
+                                                                    <i class="bi bi-search"></i>
+                                                                </button>
+                                                            </div>
+                                                            <div class="col-md-2 col-9">
+                                                                <div class="form-floating">
+                                                                    <input type="text" class="form-control" id="identificacion"
+                                                                        placeholder="" formControlName="identificacion">
+                                                                    <label class="truncate-text"
+                                                                        for="identificacion">Identificación</label>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-3 col-12">
+                                                                <div class="form-floating">
+                                                                    <input type="text" class="form-control" id="nombres_cliente"
+                                                                        placeholder="" formControlName="nombres_cliente">
+                                                                    <label class="truncate-text"
+                                                                        for="nombres_cliente">Nombres</label>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-3 col-6">
+                                                                <div class="form-group">
+                                                                    <span title="Cantidad de meses sin gestión">Cartera</span>
+                                                                    <select style="height: 35px;" class="form-select"
+                                                                        formControlName="cartera">
+                                                                        <option *ngIf="CarteraGestor.length == 0" disabled>
+                                                                            Cargando
+                                                                            ...
+                                                                        </option>
+                                                                        <option [value]="0">Todas</option>
+                                                                        <option *ngFor="let s of CarteraGestor"
+                                                                            [value]="s.cart_id">
+                                                                            {{s.cart_descripcion+' '+s.cart_tip_descripcion}}
+                                                                        </option>
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-3 col-6">
+                                                                <div class="form-group">
+                                                                    <span
+                                                                        title="Cantidad de meses sin gestión">Contactabilidad</span>
+        
+                                                                    <select style="height: 35px;" class="form-select"
+                                                                        (click)="ListaContactabilidad.length == 0?ListarContactabilidad():null"
+                                                                        formControlName="estado_contactibilidad">
+                                                                        <option *ngIf="ListaContactabilidad.length == 0"
+                                                                            disabled>
+                                                                            Cargando...
+                                                                        </option>
+                                                                        <option [value]="0">Todas</option>
+                                                                        <option *ngFor="let s of ListaContactabilidad"
+                                                                            [value]="s.contac_descripcion">
+                                                                            {{s.contac_descripcion}}
+                                                                        </option>
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-3 col-6">
+                                                                <div class="form-floating mb-3">
+                                                                    <input type="date" class="form-control small"
+                                                                        id="fecha_inicial_pp" placeholder=""
+                                                                        formControlName="fecha_inicial_pp">
+                                                                    <label class="truncate-text" for="fecha_inicial_pp">Fecha
+                                                                        Inicial</label>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-3 col-6">
+                                                                <div class="form-floating mb-3">
+                                                                    <input type="date" class="form-control small"
+                                                                        id="fecha_final_pp" placeholder=""
+                                                                        formControlName="fecha_final_pp">
+                                                                    <label class="truncate-text" for="fecha_final_pp">Fecha
+                                                                        Final</label>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-3 col-6">
+                                                                <div class="form-floating mb-3">
+                                                                    <input type="date" class="form-control small"
+                                                                        id="fecha_inicial_gestion" placeholder=""
+                                                                        formControlName="fecha_inicial_gestion">
+                                                                    <label class="truncate-text" for="fecha_inicial_gestion">Gestion Inicial</label>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-3 col-6">
+                                                                <div class="form-floating mb-3">
+                                                                    <input type="date" class="form-control small"
+                                                                        id="fecha_final_gestion" placeholder=""
+                                                                        formControlName="fecha_final_gestion">
+                                                                    <label class="truncate-text" for="fecha_final_gestion">Gestion Final</label>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </form>
+                                                    </section>
+                                                    
+                                                    
+                                                </div>
+                                                </div>
+                                            </div>
+                                
+                                    </div>
+
+                                </div>
+                            </div>
+                    </section>
+
+                    <!-- FORMULARIO PARA LISTAR ELEMENTOS -->
+                    <section class="expand-bottom">
+                        <div class="card-body" style="background-color: var(--color-formulario-secundario);"
+                            *ngIf="!loading ;else loadingOrError">
+                            <div class="card-footer" style="background-color: var(--color-formulario-terciario);"
+                                *ngIf="ListaResultado.length != 0">
+                                <div class="float-left">
+                                    <h3 class="card-title"><strong>Vista-Previa</strong></h3>
+                                </div>
+                                <div class="float-right clearfix">
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <button type="button" class="btn btnOk btn-sm dropdown-toggle"
+                                                data-toggle="dropdown" aria-expanded="false">
+                                                {{ FirltroPor}}
+                                            </button>
+                                            <ul class="dropdown-menu" x-placement="top-start">
+                                                <li class="dropdown-item" style="cursor: pointer;"
+                                                    (click)="FiltrarPor('Nombre')">
+                                                    <a>Nombre</a>
+                                                </li>
+                                                <li class="dropdown-item" style="cursor: pointer;"
+                                                    (click)="FiltrarPor('Cedula')">
+                                                    <a>Cedula</a>
+                                                </li>
+                                                <li class="dropdown-item" style="cursor: pointer;"
+                                                    (click)="FiltrarPor('Contactibilidad')">
+                                                    <a>Contactabilidad</a>
+                                                </li>
+                                                <li class="dropdown-item" style="cursor: pointer;"
+                                                    (click)="FiltrarPor('Gestor')">
+                                                    <a>Gestor</a>
+                                                </li>
+                                                <li class="dropdown-item" style="cursor: pointer;"
+                                                (click)="FiltrarPor('Cartera')">
+                                                <a>Cartera</a>
+                                            </li>
+
+                                            </ul>
+                                        </div>
+
+                                        <input type="text" id="TxtFiltro" (keyup)="FiltrarLista(0)"
+                                            [formControl]="TextoFiltro" class="form-control form-control-sm">
+
+                                        <div class="input-group-append">
+                                            <button type="button" class="btn btnOk btn-sm" (click)="VaciarFiltro()">
+                                                <i class="bi bi-trash"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <table class="table table-bordered table-responsive   table-auto small" *ngIf="ListaResultado.length != 0">
+                                <thead>
+                                    <tr>
+                                        <th style="width: 10px">#</th>
+                                        <th *ngFor="let key of this.Cabecera" [id]="'Th' + key">{{ key }}</th>
+                                    </tr>
+                                </thead>
+                                <tbody *ngIf="this.banderaTelefono">
+                                    <tr *ngFor="let datos of DatosCargaMasiva; let i = index">
+                                        <th>{{InicioPaginacion + i + 1}}</th>
+                                        <th>{{datos.cli_identificacion}}</th>
+                                        <th>{{datos.cli_nombres}}</th>
+                                        <th>{{datos.tel_numero}}</th>
+                                        <th>{{datos.tel_tip_descripcion}}</th>
+                                        <th>{{datos.tel_detal_descripcion}}</th>
+                                        <th>{{datos.cli_estado_contacta}}</th>
+                                        <th>{{datos.ope_cod_credito}}</th>
+                                        <th>{{datos.id_cartera}}</th>
+                                        <th>{{datos.cart_descripcion}}</th>
+                                        <th>{{datos.tel_observacion}}</th>
+                                    </tr>
+                                </tbody>
+                                <tbody *ngIf="this.banderaCorreo">
+                                    <tr *ngFor="let datos of DatosCargaMasiva; let i = index">
+                                        <th>{{InicioPaginacion + i + 1}}</th>
+                                        <th>{{datos.cli_identificacion}}</th>
+                                        <th>{{datos.cli_nombres}}</th>
+                                        <th>{{datos.cor_email}}</th>
+                                        <th>{{datos.corr_tip_descripcion}}</th>
+                                        <th>{{datos.cli_estado_contacta}}</th>
+                                        <th>{{datos.ope_cod_credito}}</th>
+                                        <th>{{datos.cart_descripcion}}</th>
+                                        <th>{{datos.cor_descripcion}}</th>
+                                    </tr>
+                                </tbody>
+                                <tbody *ngIf="this.banderaDireccion">
+                                    <tr *ngFor="let datos of DatosCargaMasiva; let i = index">
+                                        <th>{{InicioPaginacion + i + 1}}</th>
+                                        <th>{{datos.cli_identificacion}}</th>
+                                        <th>{{datos.cli_nombres}}</th>
+                                        <th>{{datos.dir_completa}}</th>
+                                        <th>{{datos.dir_referencia}}</th>
+                                        <th>{{datos.dir_numero_casa}}</th>
+                                        <th>{{datos.dir_tip_descripcion}}</th>
+                                        <th>{{datos.cli_estado_contacta}}</th>
+                                        <th>{{datos.ope_cod_credito}}</th>
+                                        <th>{{datos.cart_descripcion}}</th>
+                                        <th>{{datos.dir_observacion}}</th>
+                                    </tr>
+                                </tbody>
+                                <tbody *ngIf="this.banderaBGestionadaTelefono">
+                                    <tr *ngFor="let datos of DatosCargaMasiva; let i = index">
+                                        <th>{{InicioPaginacion + i + 1}}</th>
+                                        <th>{{datos.cli_identificacion}}</th>
+                                        <th>{{datos.cli_nombres}}</th>
+                                        <th>{{datos.tel_numero}}</th>
+                                        <th>{{datos.tel_tip_descripcion}}</th>
+                                        <th>{{datos.tel_detal_descripcion}}</th>
+                                        <th>{{datos.ope_estado_contacta === null?' ':datos.ope_estado_contacta}}</th>
+                                        <th>{{datos.ope_cod_credito}}</th>
+                                        <th>{{datos.cart_descripcion}}</th>
+                                        <th>{{this.Fechas.fechaCorta(datos.gest_fecha_gestion)}}</th>
+                                        <th>{{this.Fechas.fechaCorta(datos.gest_fecha_compromiso)}}</th>
+                                        <th>{{datos.gest_valor_comp}}</th>
+                                        <th>{{datos.tel_observacion}}</th>
+                                        <th>{{this.Fechas.fechaCorta(datos.gest_fecha_prox_pago)}}</th>
+                                    </tr>
+                                </tbody>
+                                <tbody *ngIf="this.banderaBGestionadaTelefonoFiltro">
+                                    <tr *ngFor="let datos of DatosCargaMasiva; let i = index">
+                                        <th>{{InicioPaginacion + i + 1}}</th>
+                                        <th>{{datos.Inf_Gestion.cli_identificacion}}</th>
+                                        <th>{{datos.Inf_Gestion.cli_nombres}}</th>
+                                        <th>{{datos.telefono.tel_numero}}</th>
+                                        <th>{{datos.telefono.tipo}}</th>
+                                        <th>{{datos.telefono.detalle}}</th>
+                                        <th>{{datos.Inf_Gestion.ope_estado_contacta}}</th>
+                                        <th>{{datos.Inf_Gestion.ope_cod_credito}}</th>
+                                        <th>{{datos.Inf_Gestion.cartera}}</th>
+                                        <th>{{datos.Inf_Gestion.gest_fecha_gestion ? this.Fechas.fechaCorta(datos.Inf_Gestion.gest_fecha_gestion) : ''}}</th>
+                                        <th>{{datos.Inf_Gestion.gest_valor_comp}}</th>
+                                        <th>{{datos.Inf_Gestion.gest_fecha_prox_pago ? this.Fechas.fechaCorta(datos.Inf_Gestion.gest_fecha_prox_pago) : ''}}</th>
+                                    </tr>
+                                </tbody>
+                                <tbody *ngIf="this.banderaBGestionadaCorreo">
+                                    <tr *ngFor="let datos of DatosCargaMasiva; let i = index">
+                                        <th>{{InicioPaginacion + i + 1}}t1</th>
+                                        <th>{{datos.cli_identificacion}}</th>
+                                        <th>{{datos.cli_nombres}}</th>
+                                        <th>{{datos.cor_email}}</th>
+                                        <th>{{datos.cor_id_tipo_correo}}</th>
+                                        <th>{{datos.corr_tip_descripcion}}</th>
+                                        <th>{{datos.ope_estado_contacta}}</th>
+                                        <th>{{datos.ope_cod_credito}}</th>
+                                        <th>{{datos.id_cartera}}</th>
+                                        <th>{{datos.cart_descripcion}}</th>
+                                        <th>{{this.Fechas.fechaCorta(datos.gest_fecha_gestion)}}</th>
+                                        <th>{{datos.gest_valor_comp}}</th>
+                                        <th>{{datos.cor_descripcion}}</th>
+                                        <th>{{ this.Fechas.fechaCorta(datos.gest_fecha_prox_pago)}}</th>
+                                    </tr>
+                                </tbody>
+                                <tbody *ngIf="this.banderaBGestionadaCorreoFiltro">
+                                    <tr *ngFor="let datos of DatosCargaMasiva; let i = index">
+                                        <th>{{InicioPaginacion + i + 1}}tf</th>
+                                        <th>{{datos.Inf_Gestion.cli_identificacion}}</th>
+                                        <th>{{datos.Inf_Gestion.cli_nombres}}</th>
+                                        <th>{{datos.correo.cor_email}}</th>
+                                        <th>{{datos.correo.tipo}}</th>
+                                        <th>{{datos.correo.cor_descripcion}}</th>
+                                        <th>{{datos.Inf_Gestion.ope_estado_contacta}}</th>
+                                        <th>{{datos.Inf_Gestion.ope_cod_credito}}</th>
+                                        <th>{{datos.Inf_Gestion.cartera}}</th>
+                                        <th>{{datos.Inf_Gestion.gest_fecha_gestion ? this.Fechas.fechaCorta(datos.Inf_Gestion.gest_fecha_gestion) : ''}}</th>
+                                        <th>{{datos.Inf_Gestion.gest_valor_comp}}</th>
+                                        <th>{{datos.Inf_Gestion.gest_fecha_prox_pago ? this.Fechas.fechaCorta(datos.Inf_Gestion.gest_fecha_prox_pago) : ''}}</th>
+                                    </tr>
+                                </tbody>
+                                <tbody *ngIf="this.banderaBGestionadaDireccion">
+                                    <tr *ngFor="let datos of DatosCargaMasiva; let i = index">
+                                        <th>{{InicioPaginacion + i + 1}}</th>
+                                        <th>{{datos.cli_identificacion}}</th>
+                                        <th>{{datos.cli_nombres}}</th>
+                                        <th>{{datos.dir_completa}}</th>
+                                        <th>{{datos.dir_referencia}}</th>
+                                        <th>{{datos.dir_numero_casa}}</th>
+                                        <th>{{datos.dir_id_tipo_direccion}}</th>
+                                        <th>{{datos.dir_tip_descripcion}}</th>
+                                        <th>{{datos.cli_estado_contacta}}</th>
+                                        <th>{{datos.ope_cod_credito}}</th>
+                                        <th>{{datos.id_cartera}}</th>
+                                        <th>{{datos.cart_descripcion}}</th>
+                                        <th>{{this.Fechas.fechaCorta(datos.gest_fecha_gestion)}}</th>
+                                        <th>{{datos.gest_valor_comp}}</th>
+                                        <th>{{datos.dir_observacion}}</th>
+                                        <th>{{this.Fechas.fechaCorta(datos.gest_fecha_prox_pago) }}</th>
+                                    </tr>
+                                </tbody>
+                                <tbody *ngIf="this.banderaBGestionadaDireccionFiltro">
+                                    <tr *ngFor="let datos of DatosCargaMasiva; let i = index">
+                                        <th>{{InicioPaginacion + i + 1}}</th>
+                                        <th>{{datos.Inf_Gestion.cli_identificacion}}</th>
+                                        <th>{{datos.Inf_Gestion.cli_nombres}}</th>
+                                        <th>{{datos.direccion.dir_completa}}</th>
+                                        <th>{{datos.direccion.tipo}}</th>
+                                        <th>{{datos.direccion.dir_observacion}}</th>
+                                        <th>{{datos.Inf_Gestion.ope_estado_contacta}}</th>
+                                        <th>{{datos.Inf_Gestion.ope_cod_credito}}</th>
+                                        <th>{{datos.Inf_Gestion.cartera}}</th>
+                                        <th>{{datos.Inf_Gestion.gest_fecha_gestion ? this.Fechas.fechaCorta(datos.Inf_Gestion.gest_fecha_gestion) : ''}}</th>
+                                        <th>{{datos.Inf_Gestion.gest_valor_comp}}</th>
+                                        <th>{{datos.Inf_Gestion.gest_fecha_prox_pago ? this.Fechas.fechaCorta(datos.Inf_Gestion.gest_fecha_prox_pago) : ''}}</th>
+                                    </tr>
+                                </tbody>
+                                <tbody *ngIf="this.banderaBaseSinGestionarTelefono">
+                                    <tr *ngFor="let datos of DatosCargaMasiva; let i = index">
+                                        <th>{{InicioPaginacion + i + 1}}</th>
+                                        <th>{{datos.cli_identificacion}}</th>
+                                        <th>{{datos.cli_nombres}}</th>
+                                        <th>{{datos.tel_numero}}</th>
+                                        <th>{{datos.tel_id_tipo_telefono}}</th>
+                                        <th>{{datos.tel_tip_descripcion}}</th>
+                                        <th>{{datos.tel_id_detal_telefono}}</th>
+                                        <th>{{datos.tel_detal_descripcion}}</th>
+                                        <th>{{datos.cli_estado_contacta}}</th>
+                                        <th>{{datos.ope_cod_credito}}</th>
+                                        <th>{{datos.id_cartera}}</th>
+                                        <th>{{datos.cart_descripcion}}</th>
+                                        <th>{{datos.tel_observacion}}</th>
+                                    </tr>
+                                </tbody>
+                                <tbody *ngIf="this.banderaBaseSinGestionarCorreo">
+                                    <tr *ngFor="let datos of DatosCargaMasiva; let i = index">
+                                        <th>{{InicioPaginacion + i + 1}}</th>
+                                        <th>{{datos.cli_identificacion}}</th>
+                                        <th>{{datos.cli_nombres}}</th>
+                                        <th>{{datos.cor_email}}</th>
+                                        <th>{{datos.cor_id_tipo_correo}}</th>
+                                        <th>{{datos.corr_tip_descripcion}}</th>
+                                        <th>{{datos.cli_estado_contacta}}</th>
+                                        <th>{{datos.ope_cod_credito}}</th>
+                                        <th>{{datos.id_cartera}}</th>
+                                        <th>{{datos.cart_descripcion}}</th>
+                                        <th>{{datos.cor_descripcion}}</th>
+                                    </tr>
+                                </tbody>
+                                <tbody *ngIf="this.banderaBaseSinGestionarDireccion">
+                                    <tr *ngFor="let datos of DatosCargaMasiva; let i = index">
+                                        <th>{{InicioPaginacion + i + 1}}</th>
+                                        <th>{{datos.cli_identificacion}}</th>
+                                        <th>{{datos.cli_nombres}}</th>
+                                        <th>{{datos.dir_completa}}</th>
+                                        <th>{{datos.dir_referencia}}</th>
+                                        <th>{{datos.dir_numero_casa}}</th>
+                                        <th>{{datos.dir_id_tipo_direccion}}</th>
+                                        <th>{{datos.dir_tip_descripcion}}</th>
+                                        <th>{{datos.cli_estado_contacta}}</th>
+                                        <th>{{datos.ope_cod_credito}}</th>
+                                        <th>{{datos.id_cartera}}</th>
+                                        <th>{{datos.cart_descripcion}}</th>
+                                        <th>{{datos.dir_observacion}}</th>
+                                    </tr>
+                                </tbody>
+                            </table>
+
+                        </div>
+
+                        <div class="card-footer" style="background-color: var(--color-formulario-terciario);"
+                            *ngIf="ListaResultado.length != 0 ">
+                            <div class="row">
+                                <div class="col-lg-2 col-6">
+                                    <p>Total<strong>&nbsp;{{ContadorDatosGeneral}}</strong></p>
+                                </div>
+                                <div class="col-lg-2 col-6">
+                                    <div *ngIf="ContadorDatosGeneral != ContadorDatos">
+                                        <p>Resultado Filtro<strong>&nbsp;{{ContadorDatos}}</strong></p>
+                                    </div>
+
+                                </div>
+                                <div class="col-lg-2 col-6">
+                                    <div>
+                                        <p>Elementos<strong>&nbsp;{{InicioPaginacion+1}}</strong>-<strong>&nbsp;{{InicioPaginacion
+                                                + RangoPaginacion}}</strong></p>
+                                    </div>
+                                </div>
+                                <div class="col-lg-2 col-6">
+                                    <!-- <p>Grupo<strong>&nbsp;1</strong>-<strong>&nbsp;10</strong></p> -->
+
+                                </div>
+                                <div class="col-lg-4 col-12">
+                                    <div class="form-group">
+                                        <div class="float-right">
+                                            <small>
+                                                <button
+                                                    (click)="InicioPaginacion == 0?BtnPreviousUser(1):BtnPreviousUser()"
+                                                    *ngIf="FraccionDatos !== 0||InicioPaginacion !==0" type="button"
+                                                    class="BtnNextPrevious" aria-label=""
+                                                    style="display: inline-block;"><i
+                                                        class="bi bi-arrow-left-circle"></i>
+                                                    Anterior</button>
+
+                                                <button
+                                                    *ngIf="(InicioPaginacion + RangoPaginacion) < ContadorDatos||ContadorDatos == RangoDatos"
+                                                    (click)="(InicioPaginacion + RangoPaginacion) == ContadorDatos?BtnNextUser(1):BtnNextUser()"
+                                                    type="button" class="BtnNextPrevious ml-2 " aria-label=""
+                                                    style="display: inline-block;">Siguiente <i
+                                                        class="bi bi-arrow-right-circle"></i></button>
+                                            </small>
+
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                        </div>
+                    </section>
+
+                </div>
+            </div>
+        </section>
+
+
+        <router-outlet></router-outlet>
+    </div>
+</div>
+<app-footer></app-footer>
+
+
+<ng-template #loadingOrError>
+    <section>
+        <div class="ContenidoCentrado">
+            <div class="loader"></div>
+        </div>
+    </section>
+</ng-template>
