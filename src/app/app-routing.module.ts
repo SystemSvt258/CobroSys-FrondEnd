@@ -101,7 +101,7 @@ const routes: Routes = [
   { path: 'configuracion', component: ConfiguracionComponent, canActivate: [TokenGuard]},
   { path: 'recargo', component: RecargoComponent, canActivate: [TokenGuard]},
   { path: 'tipo-recargo', component: TipoRecargoComponent, canActivate: [TokenGuard]},
-  { path: 'descargar', component: DescargarComponent, canActivate: [TokenGuard]},
+  { path: 'descargas', component: DescargarComponent, canActivate: [TokenGuard]},
   { path: 'reporte-general', component: GeneralComponent, canActivate: [TokenGuard]},
   { path: 'ultima-gestion', component: UltimaComponent, canActivate: [TokenGuard]},
   { path: 'asignacion', component: AsignacionComponent, canActivate: [TokenGuard]},

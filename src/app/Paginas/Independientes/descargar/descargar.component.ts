@@ -5,7 +5,7 @@ import { ApiService } from 'src/app/service/api.service';
 import { Fechas } from 'src/app/Control/Fechas';
 import { ResultadoCarteraI, ResultadoGestorI, ResultadoMenuI, ResultadoPermisosI } from 'src/app/Modelos/login.interface';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { catchError, map } from 'rxjs';
+import { catchError, map, throwError } from 'rxjs';
 import { ContactabilidadI, FiltroDescarga, FiltroGestion, GestorI } from 'src/app/Modelos/response.interface';
 import * as XLSX from 'xlsx';
 
@@ -19,6 +19,7 @@ export class DescargarComponent implements OnInit{
   {
     this.CarterasGestor();
     this.banderaViewFiltro=false;
+    this.banderaBarrido=false;
   }
   CarterasGestor() {
     for (let datos of this.Cartera) {
@@ -55,7 +56,22 @@ export class DescargarComponent implements OnInit{
     ),
 
   });
+  datosIniciales:any = {
+    cartera: '',
+    estado_contactibilidad: '',
+    fecha_final_gestion: '2024-10-09',
+    fecha_final_pp: '2024-10-09',
+    fecha_inicial_gestion: '2024-10-09',
+    fecha_inicial_pp: '2024-10-09',
+    identificacion: '',
+    nombres_cliente: '',
+  };
+  cambiosDetectados: boolean = false;
+  banderaBarrido:boolean=false;
   ResetClienteForms() {
+    console.log('Se ejecuto')
+    //this.banderaBarrido=true;
+    this.DatosCargaMasiva=[];
     this.BuscarForms.reset({
       identificacion: '',
       nombres_cliente: '',
@@ -109,6 +125,8 @@ export class DescargarComponent implements OnInit{
   DatosTemporalesBusqueda: any[] = [];
   permisos: ResultadoPermisosI = JSON.parse(localStorage.getItem('usuario')!);
   Cartera: ResultadoCarteraI[] = this.permisos.cartera;
+  vRespaldo!:string;
+  
   Usuario: ResultadoGestorI = this.permisos.gestor;
   RangoDatos: number = Number(this.Usuario.usr_rango_datos);
   ConstanteFraccion: number = Number(this.Usuario.usr_fraccion_datos);
@@ -117,400 +135,258 @@ export class DescargarComponent implements OnInit{
   /****************************Obtener la pagina Actual */
   Menu: ResultadoMenuI[] = this.permisos.menu;
   PaginaActual: ResultadoMenuI = this.Menu.find((elemento) => {
-    return elemento.men_url === 'descargar';
+    return elemento.men_url === 'descargas';
   }) as ResultadoMenuI;
   LecturaEscritura: number = Number(this.PaginaActual.men_lectura);
   PaginaNombre: string = this.PaginaActual.men_descripcion;
-  /*****Formulario************************************** */
-  DescargaForms = new FormGroup({
-    seleccion_base: new FormControl(0, Validators.required),
-    seleccion_entidad: new FormControl('', Validators.required)
-  });
-
-  ListarDatos(opcionLlamado:string) 
-  {
-    if (opcionLlamado === 'Base-General Telefono') {
-      this.aux == opcionLlamado;
-      this.banderaTelefono=true;
-      this.banderaCorreo=false;
-      this.banderaDireccion=false;
-      console.log('Entro1');
-      this.ListaResultado = [];
-      this.api
-        .GetDescargaBaseGeneralTelefonoFracionado(this.FraccionDatos, this.RangoDatos)
-        .pipe(
-          map((tracks) => {
-            this.ListaResultado = tracks['data'];
-            this.Cabecera=this.getKeys(this.ListaResultado);
-            console.log("---------------------------------------------------------------------");
-            this.DatosTemporalesBusqueda = tracks['data'];
-            console.log("---------------------------------------------------------------------");
-            if (this.ListaResultado.length === 0) {
-              this.loading = false;
-              this.alerta.NoExistenDatos();
-            } else {
-              this.loading = false;
-              this.ContadorDatosGeneral = this.ListaResultado.length;
-              this.FraccionarValores(this.ListaResultado, this.ConstanteFraccion);
-            }
-          }),
-          catchError((error) => {
-            this.loading = false;
-            this.alerta.ErrorAlRecuperarElementos();
-            throw new Error(error);
-          })
-        )
-        .subscribe();
-    }
-    if (opcionLlamado === 'Base-General Correo') {
-      console.log('Entro2');
-      this.banderaCorreo=true;
-      this.banderaDireccion=false;
-      this.banderaTelefono=false;
-      this.aux == opcionLlamado;
-      this.ListaResultado = [];
-      this.api
-        .GetDescargaBaseGeneralCorreoFracionado(this.FraccionDatos, this.RangoDatos)
-        .pipe(
-          map((tracks) => {
-            this.ListaResultado = tracks['data'];
-            this.Cabecera=this.getKeys(this.ListaResultado);
-            console.log("---------------------------------------------------------------------");
-            this.DatosTemporalesBusqueda = tracks['data'];
-            console.log("---------------------------------------------------------------------");
-            console.log(this.DatosTemporalesBusqueda);
-            if (this.ListaResultado.length === 0) {
-              this.loading = false;
-              this.alerta.NoExistenDatos();
-            } else {
-              this.loading = false;
-              this.ContadorDatosGeneral = this.ListaResultado.length;
-              this.FraccionarValores(this.ListaResultado, this.ConstanteFraccion);
-            }
-          }),
-          catchError((error) => {
-            this.loading = false;
-            this.alerta.ErrorAlRecuperarElementos();
-            throw new Error(error);
-          })
-        )
-        .subscribe();
-    }
-    if (opcionLlamado === 'Base-General Direccion') {
-      console.log('Entro3');
-      this.aux == opcionLlamado;
-      this.banderaDireccion=true;
-      this.banderaCorreo=false;
-      this.banderaTelefono=false;
-      this.ListaResultado = [];
-      this.api
-        .GetDescargaBaseGeneralDireccionFracionado(this.FraccionDatos, this.RangoDatos)
-        .pipe(
-          map((tracks) => {
-            this.ListaResultado = tracks['data'];
-            this.Cabecera=this.getKeys(this.ListaResultado);
-            console.log("---------------------------------------------------------------------");
-            this.DatosTemporalesBusqueda = tracks['data'];
-            console.log("---------------------------------------------------------------------");
-            console.log(this.DatosTemporalesBusqueda);
-            if (this.ListaResultado.length === 0) {
-              this.loading = false;
-              this.alerta.NoExistenDatos();
-            } else {
-              this.loading = false;
-              this.ContadorDatosGeneral = this.ListaResultado.length;
-              this.FraccionarValores(this.ListaResultado, this.ConstanteFraccion);
-            }
-          }),
-          catchError((error) => {
-            this.loading = false;
-            this.alerta.ErrorAlRecuperarElementos();
-            throw new Error(error);
-          })
-        )
-        .subscribe();
-    }
-    if (opcionLlamado === 'Base-Gestionada Telefono') {
-      console.log('Entro4');
-      this.banderaViewFiltro=true;
-      this.aux == opcionLlamado;
-      this.banderaBGestionadaTelefono=true;
-      this.banderaCorreo=false;
-      this.banderaTelefono=false;
-      this.banderaTelefono=false;
-      this.banderaBGestionadaDireccion=false;
-      this.banderaBGestionadaCorreo=false;
-      this.ListaResultado = [];
-      this.api
-        .GetDescargaBaseGestionadaTelefonoFracionado(this.FraccionDatos, this.RangoDatos)
-        .pipe(
-          map((tracks) => {
-            this.ListaResultado = tracks['data'];
-            this.Cabecera=this.getKeys(this.ListaResultado);
-            console.log("---------------------------------------------------------------------");
-            this.DatosTemporalesBusqueda = tracks['data'];
-            console.log("---------------------------------------------------------------------");
-            console.log(this.DatosTemporalesBusqueda);
-            if (this.ListaResultado.length === 0) {
-              this.loading = false;
-              this.alerta.NoExistenDatos();
-            } else {
-              this.loading = false;
-              this.ContadorDatosGeneral = this.ListaResultado.length;
-              this.FraccionarValores(this.ListaResultado, this.ConstanteFraccion);
-            }
-          }),
-          catchError((error) => {
-            this.loading = false;
-            this.alerta.ErrorAlRecuperarElementos();
-            throw new Error(error);
-          })
-        )
-        .subscribe();
+  selecBase = new FormControl('', [Validators.required]);
+  selecEntidad = new FormControl('', [Validators.required]);
+  ListaDescargas:any[]=[];
+  ListarDatos(opcionLlamado: string) {
+        console.log(this.BuscarForms.value);
+        this.loading = true; // Activa el estado de carga
+        this.banderaTelefono = false;
+        this.banderaCorreo = false;
+        this.banderaDireccion = false;
+        this.banderaBGestionadaTelefono = false;
+        this.banderaBGestionadaCorreo = false;
+        this.banderaBGestionadaDireccion = false;
+        this.banderaBaseSinGestionarTelefono = false;
+        this.banderaBaseSinGestionarCorreo = false;
+        this.banderaBaseSinGestionarDireccion = false;
+        this.aux = opcionLlamado;  // Aquí usas '=' para la asignación correcta
+        if (opcionLlamado === 'Base-General Telefono') {
+          this.ListaDescargas=[];
+          this.DatosTemporales=[];
+          this.DatosTemporalesBusqueda=[];
+            this.banderaTelefono = true;
+            console.log(this.banderaTelefono);
+            console.log('entro');
+            this.api.GetDescargaBaseGeneralTelefonoFracionado(this.FraccionDatos, this.RangoDatos)
+                .pipe(
+                    map((tracks) => this.handleTracks(tracks)),
+                    catchError((error) => this.handleError(error))
+                )
+                .subscribe();
+        }
+        if (opcionLlamado === 'Base-General Correo') {
+          this.ListaDescargas=[];
+          this.DatosTemporales=[];
+          this.DatosTemporalesBusqueda=[];
+            this.banderaCorreo = true;
+            console.log(this.banderaCorreo);
+            console.log('entro');
+            this.api.GetDescargaBaseGeneralCorreoFracionado(this.FraccionDatos, this.RangoDatos)
+                .pipe(
+                    map((tracks) => this.handleTracks(tracks)),
+                    catchError((error) => this.handleError(error))
+                )
+                .subscribe();
+        }
+        if (opcionLlamado === 'Base-General Direccion') {
+          this.ListaDescargas=[];
+          this.DatosTemporales=[];
+          this.DatosTemporalesBusqueda=[];
+          this.banderaDireccion = true;
+          console.log(this.banderaDireccion);
+            console.log('entro');
+          this.api.GetDescargaBaseGeneralDireccionFracionado(this.FraccionDatos, this.RangoDatos)
+              .pipe(
+                  map((tracks) => this.handleTracks(tracks)),
+                  catchError((error) => this.handleError(error))
+              )
+              .subscribe();
+      }
+      if (opcionLlamado === 'Base-Gestionada Telefono') {
+        this.banderaBGestionadaTelefono = true;
+        this.banderaViewFiltro=true;
+        if(this.banderaBarrido===true)
+          {
+            console.log('entro bandera')
+            this.ListaDescargas=[];
+            //this.onCleanSelect();
+          }else
+          {
+            console.log('entro bandera')
+            this.api.GetDescargaBaseGestionadaTelefonoFracionado(this.FraccionDatos, this.RangoDatos)
+            .pipe(
+                map((tracks) => this.handleTracks(tracks)),
+                catchError((error) => this.handleError(error))
+            ).subscribe();
+          }
+        console.log(this.BuscarForms.value);
     }
     if (opcionLlamado === 'Base-Gestionada Correo') {
-      console.log('Entro5');
-      this.aux == opcionLlamado;
+      this.banderaBGestionadaCorreo = true;
       this.banderaViewFiltro=true;
-      this.banderaBGestionadaCorreo=true;
-      this.banderaBGestionadaTelefono=false;
-      this.banderaCorreo=false;
-      this.banderaTelefono=false;
-      this.banderaTelefono=false;
-      this.banderaBGestionadaDireccion=false;
-      this.ListaResultado = [];
-      this.api
-        .GetDescargaBaseGestionadaCorreoFracionado(this.FraccionDatos, this.RangoDatos)
-        .pipe(
-          map((tracks) => {
-            this.ListaResultado = tracks['data'];
-            this.Cabecera=this.getKeys(this.ListaResultado);
-            console.log("---------------------------------------------------------------------");
-            this.DatosTemporalesBusqueda = tracks['data'];
-            console.log("---------------------------------------------------------------------");
-            console.log(this.DatosTemporalesBusqueda);
-            if (this.ListaResultado.length === 0) {
-              this.loading = false;
-              this.alerta.NoExistenDatos();
-            } else {
-              this.loading = false;
-              this.ContadorDatosGeneral = this.ListaResultado.length;
-              this.FraccionarValores(this.ListaResultado, this.ConstanteFraccion);
-            }
-          }),
-          catchError((error) => {
-            this.loading = false;
-            this.alerta.ErrorAlRecuperarElementos();
-            throw new Error(error);
-          })
-        )
-        .subscribe();
+      this.api.GetDescargaBaseGestionadaCorreoFracionado(this.FraccionDatos, this.RangoDatos)
+          .pipe(
+              map((tracks) => this.handleTracks(tracks)),
+              catchError((error) => this.handleError(error))
+          )
+          .subscribe();
     }
     if (opcionLlamado === 'Base-Gestionada Direccion') {
-      console.log('Entro6');
+      this.banderaBGestionadaDireccion = true;
       this.banderaViewFiltro=true;
-      this.aux == opcionLlamado;
-      this.banderaBGestionadaDireccion=true;
-      this.banderaBGestionadaCorreo=false;
-      this.banderaBGestionadaTelefono=false;
-      this.banderaCorreo=false;
-      this.banderaTelefono=false;
-      this.banderaTelefono=false;
-      this.ListaResultado = [];
-      this.api
-        .GetDescargaBaseGestionadaDireccionFracionado(this.FraccionDatos, this.RangoDatos)
-        .pipe(
-          map((tracks) => {
-            this.ListaResultado = tracks['data'];
-            this.Cabecera=this.getKeys(this.ListaResultado);
-            console.log("---------------------------------------------------------------------");
-            this.DatosTemporalesBusqueda = tracks['data'];
-            console.log("---------------------------------------------------------------------");
-            console.log(this.DatosTemporalesBusqueda);
-            if (this.ListaResultado.length === 0) {
-              this.loading = false;
-              this.alerta.NoExistenDatos();
-            } else {
-              this.loading = false;
-              this.ContadorDatosGeneral = this.ListaResultado.length;
-              this.FraccionarValores(this.ListaResultado, this.ConstanteFraccion);
-            }
-          }),
-          catchError((error) => {
-            this.loading = false;
-            this.alerta.ErrorAlRecuperarElementos();
-            throw new Error(error);
-          })
-        )
-        .subscribe();
+      console.log(this.BuscarForms.value);
+      this.api.GetDescargaBaseGestionadaDireccionFracionado(this.FraccionDatos, this.RangoDatos)
+          .pipe(
+              map((tracks) => this.handleTracks(tracks)),
+              catchError((error) => this.handleError(error))
+          )
+          .subscribe();
     }
+    /***Base-Sin-Gestionar */
     if (opcionLlamado === 'Base-Sin-Gestionar Telefono') {
-      console.log('Entro7');
-      this.aux == opcionLlamado;
-      this.banderaBaseSinGestionarTelefono=true;
-      this.banderaBGestionadaDireccion=false;
-      this.banderaBGestionadaCorreo=false;
-      this.banderaBGestionadaTelefono=false;
-      this.banderaCorreo=false;
-      this.banderaTelefono=false;
-      this.banderaTelefono=false;
-      this.ListaResultado = [];
-      this.api
-        .GetDescargaBaseSinGestionarTelefonoFracionado(this.FraccionDatos, this.RangoDatos)
-        .pipe(
-          map((tracks) => {
-            this.ListaResultado = tracks['data'];
-            this.Cabecera=this.getKeys(this.ListaResultado);
-            console.log("---------------------------------------------------------------------");
-            this.DatosTemporalesBusqueda = tracks['data'];
-            console.log("---------------------------------------------------------------------");
-            console.log(this.DatosTemporalesBusqueda);
-            if (this.ListaResultado.length === 0) {
-              this.loading = false;
-              this.alerta.NoExistenDatos();
-            } else {
-              this.loading = false;
-              this.ContadorDatosGeneral = this.ListaResultado.length;
-              this.FraccionarValores(this.ListaResultado, this.ConstanteFraccion);
-            }
-          }),
-          catchError((error) => {
-            this.loading = false;
-            this.alerta.ErrorAlRecuperarElementos();
-            throw new Error(error);
-          })
-        )
-        .subscribe();
+      this.banderaBaseSinGestionarTelefono = true;
+      //this.banderaViewFiltro=true;
+      this.api.GetDescargaBaseSinGestionarTelefonoFracionado(this.FraccionDatos, this.RangoDatos)
+          .pipe(
+              map((tracks) => this.handleTracks(tracks)),
+              catchError((error) => this.handleError(error))
+          )
+          .subscribe();
     }
     if (opcionLlamado === 'Base-Sin-Gestionar Correo') {
-      console.log('Entro8');
-      this.banderaBaseSinGestionarCorreo=true;
-      this.banderaBaseSinGestionarTelefono=false;
-      this.banderaBGestionadaDireccion=false;
-      this.banderaBGestionadaCorreo=false;
-      this.banderaBGestionadaTelefono=false;
-      this.banderaCorreo=false;
-      this.banderaTelefono=false;
-      this.banderaTelefono=false;
-      this.ListaResultado = [];
-      this.api
-        .GetDescargaBaseSinGestionarCorreoFracionado(this.FraccionDatos, this.RangoDatos)
-        .pipe(
-          map((tracks) => {
-            this.ListaResultado = tracks['data'];
-            this.Cabecera=this.getKeys(this.ListaResultado);
-            console.log("---------------------------------------------------------------------");
-            this.DatosTemporalesBusqueda = tracks['data'];
-            console.log("---------------------------------------------------------------------");
-            console.log(this.DatosTemporalesBusqueda);
-            if (this.ListaResultado.length === 0) {
-              this.loading = false;
-              this.alerta.NoExistenDatos();
-            } else {
-              this.loading = false;
-              this.ContadorDatosGeneral = this.ListaResultado.length;
-              this.FraccionarValores(this.ListaResultado, this.ConstanteFraccion);
-            }
-          }),
-          catchError((error) => {
-            this.loading = false;
-            this.alerta.ErrorAlRecuperarElementos();
-            throw new Error(error);
-          })
-        )
-        .subscribe();
+      this.banderaBaseSinGestionarCorreo = true;
+      //this.banderaViewFiltro=true;
+      this.api.GetDescargaBaseSinGestionarCorreoFracionado(this.FraccionDatos, this.RangoDatos)
+          .pipe(
+              map((tracks) => this.handleTracks(tracks)),
+              catchError((error) => this.handleError(error))
+          )
+          .subscribe();
     }
     if (opcionLlamado === 'Base-Sin-Gestionar Direccion') {
-      console.log('Entro9');
-      this.banderaBaseSinGestionarDireccion=true;
-      this.banderaBaseSinGestionarCorreo=false;
-      this.banderaBaseSinGestionarTelefono=false;
-      this.banderaBGestionadaDireccion=false;
-      this.banderaBGestionadaCorreo=false;
-      this.banderaBGestionadaTelefono=false;
-      this.banderaCorreo=false;
-      this.banderaTelefono=false;
-      this.banderaTelefono=false;
-      this.ListaResultado = [];
-      this.api
-        .GetDescargaBaseSinGestionarDireccionFracionado(this.FraccionDatos, this.RangoDatos)
-        .pipe(
-          map((tracks) => {
-            this.ListaResultado = tracks['data'];
-            this.Cabecera=this.getKeys(this.ListaResultado);
-            console.log("---------------------------------------------------------------------");
-            this.DatosTemporalesBusqueda = tracks['data'];
-            console.log("---------------------------------------------------------------------");
-            console.log(this.DatosTemporalesBusqueda);
-            if (this.ListaResultado.length === 0) {
-              this.loading = false;
-              this.alerta.NoExistenDatos();
-            } else {
-              this.loading = false;
-              this.ContadorDatosGeneral = this.ListaResultado.length;
-              this.FraccionarValores(this.ListaResultado, this.ConstanteFraccion);
-            }
-          }),
-          catchError((error) => {
-            this.loading = false;
-            this.alerta.ErrorAlRecuperarElementos();
-            throw new Error(error);
-          })
-        )
-        .subscribe();
+      this.banderaBaseSinGestionarDireccion = true;
+      this.api.GetDescargaBaseSinGestionarDireccionFracionado(this.FraccionDatos, this.RangoDatos)
+          .pipe(
+              map((tracks) => this.handleTracks(tracks)),
+              catchError((error) => this.handleError(error))
+          )
+          .subscribe();
     }
+       
+}
+async handleTracks(tracks: any) {
+  this.ListaDescargas=tracks['data'];
+  this.Cabecera=this.getKeys(this.ListaDescargas);
+  this.DatosTemporalesBusqueda = tracks['data'];
+  if (this.ListaDescargas.length === 0) {
+      this.loading = false;
+      this.alerta.NoExistenDatos();
+      await this.onCleanSelect();
+  } else {
+    //this.ListaResultado=tracks['data'];
+      this.loading = false;
+      this.ContadorDatosGeneral = this.ListaDescargas.length;
+      this.FraccionarValores(this.ListaDescargas, this.ConstanteFraccion);
   }
+}
+async handleError(error: any) {
+  this.loading = false;
+  this.alerta.ErrorAlRecuperarElementos();
+  throw new Error(error);
+}
+
+async onCleanSelect()
+{
+  this.DatosTemporalesBusqueda = [];
+  this.selecEntidad.patchValue('')
+  this.banderaViewFiltro = false;
+  this.DatosCargaMasiva = [];
+  this.Cabecera = [];
+  this.ResetClienteForms();
+  this.valorAux2 = '';
+}
+async iniciarBase()
+{
+  try
+  {
+    console.log(this.selecBase.value);
+   if(this.selecBase.value==='0')
+    {
+      console.log('entroif');
+      this.selecionarBase(this.selecBase.value);
+      if(this.valorAux2==='')
+        {
+          console.log('ENtroif2');
+        }
+    }
+    else
+    {
+      this.selecionarBase(this.selecBase.value);
+      if(this.valorAux2==='')
+        {
+          this.ListaDescargas=[];
+          this.onCleanSelect();
+        }
+    }
+    
+  }catch(error)
+  {}
+}
+selecionarBase(valor:any)
+{
+  this.valorAux1='';
+  this.valorAux1=valor;
+  this.valorAux2='';
+  this.DatosCargaMasiva=[];
+}
   seleccion()
   {
-    this.valorAux1=this.DescargaForms.value.seleccion_base!.toString();
-    this.valorAux2 =this.DescargaForms.value.seleccion_entidad!.toString();
-    if (this.valorAux1 === 'Base-General' && this.valorAux2 === 'Telefono') {
-      const llamar = this.valorAux1 +' '+this.valorAux2;
-      this.ListarDatos(llamar);
-      
-    }
-    if (this.valorAux1 === 'Base-General' && this.valorAux2 === 'Correo') {
-      const llamar = this.valorAux1 +' '+this.valorAux2;
-      this.ListarDatos(llamar);
-    }
-    if (this.valorAux1 === 'Base-General' && this.valorAux2 === 'Direccion') {
-      const llamar = this.valorAux1 +' ' +this.valorAux2;
-      this.ListarDatos(llamar);
-    }
-    if (this.valorAux1 === 'Base-Gestionada' && this.valorAux2 === 'Telefono') {
-      const llamar = this.valorAux1 +' '+this.valorAux2;
-      this.ListarDatos(llamar);
-      this.valorBandera=llamar;
-      console.log(this.valorBandera);
-
-    }
-    if (this.valorAux1 === 'Base-Gestionada' && this.valorAux2 === 'Correo') {
-      const llamar = this.valorAux1 +' '+this.valorAux2;
-      this.ListarDatos(llamar);
-      this.valorBandera=llamar;
-      console.log(this.valorBandera);
-    }
-    if (this.valorAux1 === 'Base-Gestionada' && this.valorAux2 === 'Direccion') {
-      const llamar = this.valorAux1 +' ' +this.valorAux2;
-      this.ListarDatos(llamar);
-      this.valorBandera=llamar;
-      console.log(this.valorBandera);
-    }
-    if (this.valorAux1 === 'Base-Sin-Gestionar' && this.valorAux2 === 'Telefono') {
-      const llamar = this.valorAux1 +' '+this.valorAux2;
-      this.ListarDatos(llamar);
-    }
-    if (this.valorAux1 === 'Base-Sin-Gestionar' && this.valorAux2 === 'Correo') {
-      const llamar = this.valorAux1 +' '+this.valorAux2;
-      this.ListarDatos(llamar);
-    }
-    if (this.valorAux1 === 'Base-Sin-Gestionar' && this.valorAux2 === 'Direccion') {
-      const llamar = this.valorAux1 +' ' +this.valorAux2;
-      this.ListarDatos(llamar);
-    }
+    if(this.selecBase.value==='')
+      {
+        this.ListaDescargas=[];
+        this.DatosCargaMasiva=[];
+      }else
+      {
+        this.valorAux2 =this.selecEntidad.value!;
+        if (this.valorAux1 === 'Base-General' && this.valorAux2 === 'Telefono') {
+          const llamar = this.valorAux1 +' '+this.valorAux2;
+          this.ListarDatos(llamar);
+        }
+        if (this.valorAux1 === 'Base-General' && this.valorAux2 === 'Correo') {
+          const llamar = this.valorAux1 +' '+this.valorAux2;
+          this.ListarDatos(llamar);
+        }
+        if (this.valorAux1 === 'Base-General' && this.valorAux2 === 'Direccion') {
+          const llamar = this.valorAux1 +' ' +this.valorAux2;
+          this.ListarDatos(llamar);
+        }
+        if (this.valorAux1 === 'Base-Gestionada' && this.valorAux2 === 'Telefono') {
+          const llamar = this.valorAux1 +' '+this.valorAux2;
+          this.ListarDatos(llamar);
+          this.valorBandera=llamar;
+          console.log(this.valorBandera);
+        }
+        if (this.valorAux1 === 'Base-Gestionada' && this.valorAux2 === 'Correo') {
+          const llamar = this.valorAux1 +' '+this.valorAux2;
+          this.ListarDatos(llamar);
+          this.valorBandera=llamar;
+          console.log(this.valorBandera);
+        }
+        if (this.valorAux1 === 'Base-Gestionada' && this.valorAux2 === 'Direccion') {
+          const llamar = this.valorAux1 +' ' +this.valorAux2;
+          this.ListarDatos(llamar);
+          this.valorBandera=llamar;
+          console.log(this.valorBandera);
+        }
+        if (this.valorAux1 === 'Base-Sin-Gestionar' && this.valorAux2 === 'Telefono') {
+          const llamar = this.valorAux1 +' '+this.valorAux2;
+          this.ListarDatos(llamar);
+        }
+        if (this.valorAux1 === 'Base-Sin-Gestionar' && this.valorAux2 === 'Correo') {
+          const llamar = this.valorAux1 +' '+this.valorAux2;
+          this.ListarDatos(llamar);
+        }
+        if (this.valorAux1 === 'Base-Sin-Gestionar' && this.valorAux2 === 'Direccion') {
+          const llamar = this.valorAux1 +' ' +this.valorAux2;
+          this.ListarDatos(llamar);
+        }
+      }
   }
- 
-
   // ****************************************** PAGINACION *****************************************************************
   DatosCargaMasiva!: any[];
   DatosTemporales: any[] = [];
@@ -519,9 +395,9 @@ export class DescargarComponent implements OnInit{
   InicioPaginacion: number = 0;
   FinalPaginacion: number = 0;
   FraccionarValores(datos?: any, rango?: number ){
-    console.log(datos);
+    //this.ListaResultado=[];
+    //this.DatosCargaMasiva=[];
     if (rango != null && datos != null) {
-
       this.EncerarVariablesPaginacion();
       this.ContadorDatos = datos.length;
       this.DatosTemporales = datos;
@@ -638,9 +514,7 @@ export class DescargarComponent implements OnInit{
         )
         .subscribe();
     }
-    
   }
-
   BtnNextUser(rango?: number) {
     if (rango != null) {
       this.FraccionDatos = this.FraccionDatos + this.RangoDatos;
@@ -675,245 +549,618 @@ export class DescargarComponent implements OnInit{
     const inputElement = document.getElementById(
       'TxtFiltro'
     ) as HTMLInputElement;
-    const ThDescripcion = document.getElementById(
-      'ThDescripcion'
+    const Thcli_identificacion = document.getElementById(
+      'Thcli_identificacion'
     ) as HTMLInputElement;
-    const ThApellido = document.getElementById(
-      'ThApellido'
+    const Thcli_nombres = document.getElementById(
+      'Thcli_nombres'
     ) as HTMLInputElement;
-
-    ThApellido.style.color = '';
-    ThDescripcion.style.color = '';
+    Thcli_identificacion.style.color = '';
+    Thcli_nombres.style.color = '';
     inputElement.disabled = false;
     inputElement.focus();
   }
-
   FiltrarLista(num: number) {
     const contador = this.TextoFiltro.value!.trim().length!;
     this.EncerarVariablesPaginacion();
     this.TextoFiltro.patchValue(this.TextoFiltro.value!.toUpperCase());
-    const ThDescripcion = document.getElementById(
-      'ThDescripcion'
-    ) as HTMLInputElement;
-    const ThApellido = document.getElementById(
-      'ThApellido'
-    ) as HTMLInputElement;
-    if (this.FirltroPor === 'Nombre') {
-      let nombre = this.TextoFiltro.value!;
-      if (num === 0) {
-        const resultado = this.ListaResultado.filter((elemento) => {
-          return elemento.ges_nombres.includes(nombre.toUpperCase());
-        });
-        this.FraccionarValores(resultado, this.ConstanteFraccion);
-      }
+    if(this.selecBase.value==='Base-General'||this.selecBase.value==='Base-Sin-Gestionar')
+      {
+        /*** */
+        const Thcli_identificacion = document.getElementById(
+          'Thcli_identificacion'
+        ) as HTMLInputElement;
+        const Thcli_nombres = document.getElementById(
+          'Thcli_nombres'
+        ) as HTMLInputElement;
+        const Thcart_descripcion = document.getElementById(
+          'Thcart_descripcion'
+        ) as HTMLInputElement;
+        const Thope_cod_credito = document.getElementById(
+          'Thope_cod_credito'
+        ) as HTMLInputElement;
+        const Thcli_estado_contacta = document.getElementById(
+          'Thcli_estado_contacta'
+        ) as HTMLInputElement;
+        if (this.FirltroPor === 'Cedula') {
+          let nombre = this.TextoFiltro.value!;
+          if (num === 0) {
+            const resultado = this.ListaDescargas.filter((elemento) => {
+              return elemento.cli_identificacion.includes(nombre.toUpperCase());
+            });
+            this.FraccionarValores(resultado, this.ConstanteFraccion);
+          }
+    
+          if (contador != 0) {
+            Thcli_identificacion.style.color = 'red';
+          } else {
+            Thcli_identificacion.style.color = '';
+          }
+        }
+        if (this.FirltroPor === 'Nombres') {
+          let nombre = this.TextoFiltro.value!;
+          if (num === 0) {
+            const resultado = this.ListaDescargas.filter((elemento) => {
+              return elemento.cli_nombres.includes(nombre.toUpperCase());
+            });
+            this.FraccionarValores(resultado, this.ConstanteFraccion);
+          }
+    
+          if (contador != 0) {
+            Thcli_nombres.style.color = 'red';
+          } else {
+            Thcli_nombres.style.color = '';
+          }
+        }
+        if (this.FirltroPor === 'Cartera') {
+          let nombre = this.TextoFiltro.value!;
+          if (num === 0) {
+            const resultado = this.ListaDescargas.filter((elemento) => {
+              return elemento.cart_descripcion.includes(nombre.toUpperCase());
+            });
+            this.FraccionarValores(resultado, this.ConstanteFraccion);
+          }
+          if (contador != 0) {
+            Thcart_descripcion.style.color = 'red';
+          } else {
+            Thcart_descripcion.style.color = '';
+          }
+        }
+        if (this.FirltroPor === 'Credito') {
+          let nombre = this.TextoFiltro.value!;
+          if (num === 0) {
+            const resultado = this.ListaDescargas.filter((elemento) => {
+              return elemento.ope_cod_credito.includes(nombre.toUpperCase());
+            });
+            this.FraccionarValores(resultado, this.ConstanteFraccion);
+          }
+          if (contador != 0) {
+            Thope_cod_credito.style.color = 'red';
+          } else {
+            Thope_cod_credito.style.color = '';
+          }
+        }
+        if (this.FirltroPor === 'Contactabilidad') {
+          let nombre = this.TextoFiltro.value!;
+          if (num === 0) {
+            const resultado = this.ListaDescargas.filter((elemento) => {
+              return elemento.cli_estado_contacta.includes(nombre.toUpperCase());
+            });
+            this.FraccionarValores(resultado, this.ConstanteFraccion);
+          }
+          if (contador != 0) {
+            Thcli_estado_contacta.style.color = 'red';
+          } else {
+            Thcli_estado_contacta.style.color = '';
+          }
+        }
 
-      if (contador != 0) {
-        ThDescripcion.style.color = 'red';
-      } else {
-        ThDescripcion.style.color = '';
       }
-    }
-    if (this.FirltroPor === 'Apellido') {
-      let nombre = this.TextoFiltro.value!;
-      if (num === 0) {
-        const resultado = this.ListaResultado.filter((elemento) => {
-          return elemento.ges_apellidos.includes(nombre.toUpperCase());
-        });
-        this.FraccionarValores(resultado, this.ConstanteFraccion);
-      }
-
-      if (contador != 0) {
-        ThApellido.style.color = 'red';
-      } else {
-        ThApellido.style.color = '';
-      }
-    }
+      if(this.selecBase.value==='Base-Gestionada')
+        {
+          /*** */
+          const Thcli_identificacion = document.getElementById(
+            'Thcli_identificacion'
+          ) as HTMLInputElement;
+          const Thcli_nombres = document.getElementById(
+            'Thcli_nombres'
+          ) as HTMLInputElement;
+          const Thcart_descripcion = document.getElementById(
+            'Thcart_descripcion'
+          ) as HTMLInputElement;
+          const Thope_cod_credito = document.getElementById(
+            'Thope_cod_credito'
+          ) as HTMLInputElement;
+          const Thope_estado_contacta = document.getElementById(
+            'Thope_estado_contacta'
+          ) as HTMLInputElement;
+          if (this.FirltroPor === 'Cedula') {
+            let nombre = this.TextoFiltro.value!;
+            if (num === 0) {
+              const resultado = this.ListaDescargas.filter((elemento) => {
+                return elemento.cli_identificacion.includes(nombre.toUpperCase());
+              });
+              this.FraccionarValores(resultado, this.ConstanteFraccion);
+            }
+      
+            if (contador != 0) {
+              Thcli_identificacion.style.color = 'red';
+            } else {
+              Thcli_identificacion.style.color = '';
+            }
+          }
+          if (this.FirltroPor === 'Nombres') {
+            let nombre = this.TextoFiltro.value!;
+            if (num === 0) {
+              const resultado = this.ListaDescargas.filter((elemento) => {
+                return elemento.cli_nombres.includes(nombre.toUpperCase());
+              });
+              this.FraccionarValores(resultado, this.ConstanteFraccion);
+            }
+      
+            if (contador != 0) {
+              Thcli_nombres.style.color = 'red';
+            } else {
+              Thcli_nombres.style.color = '';
+            }
+          }
+          if (this.FirltroPor === 'Cartera') {
+            let nombre = this.TextoFiltro.value!;
+            if (num === 0) {
+              const resultado = this.ListaDescargas.filter((elemento) => {
+                return elemento.cart_descripcion.includes(nombre.toUpperCase());
+              });
+              this.FraccionarValores(resultado, this.ConstanteFraccion);
+            }
+            if (contador != 0) {
+              Thcart_descripcion.style.color = 'red';
+            } else {
+              Thcart_descripcion.style.color = '';
+            }
+          }
+          if (this.FirltroPor === 'Credito') {
+            let nombre = this.TextoFiltro.value!;
+            if (num === 0) {
+              const resultado = this.ListaDescargas.filter((elemento) => {
+                return elemento.ope_cod_credito.includes(nombre.toUpperCase());
+              });
+              this.FraccionarValores(resultado, this.ConstanteFraccion);
+            }
+            if (contador != 0) {
+              Thope_cod_credito.style.color = 'red';
+            } else {
+              Thope_cod_credito.style.color = '';
+            }
+          }
+          if (this.FirltroPor === 'Contactabilidad') {
+            let nombre = this.TextoFiltro.value!;
+            if (num === 0) {
+              const resultado = this.ListaDescargas.filter((elemento) => {
+                return elemento.ope_estado_contacta.includes(nombre.toUpperCase());
+              });
+              this.FraccionarValores(resultado, this.ConstanteFraccion);
+            }
+            if (contador != 0) {
+              Thope_estado_contacta.style.color = 'red';
+            } else {
+              Thope_estado_contacta.style.color = '';
+            }
+          }
+  
+        }
   }
   VaciarFiltro() {
     const inputElement = document.getElementById(
       'TxtFiltro'
     ) as HTMLInputElement;
-    const ThDescripcion = document.getElementById(
-      'ThDescripcion'
-    ) as HTMLInputElement;
-    const ThApellido = document.getElementById(
-      'ThApellido'
-    ) as HTMLInputElement;
-    ThDescripcion.style.color = '';
-    ThApellido.style.color = '';
-    inputElement.disabled = true;
-    this.FirltroPor = '';
-    this.TextoFiltro.patchValue('');
-    this.FraccionarValores(
-      this.DatosTemporalesBusqueda,
-      this.ConstanteFraccion
-    );
+    if(this.selecBase.value==='Base-General'||this.selecBase.value==='Base-Sin-Gestionar')
+      {
+        const Thcli_identificacion = document.getElementById(
+          'Thcli_identificacion'
+        ) as HTMLInputElement;
+        const Thcli_nombres = document.getElementById(
+          'Thcli_nombres'
+        ) as HTMLInputElement;
+        const Thcart_descripcion = document.getElementById(
+          'Thcart_descripcion'
+        ) as HTMLInputElement;
+        const Thope_cod_credito = document.getElementById(
+          'Thope_cod_credito'
+        ) as HTMLInputElement;
+        const Thcli_estado_contacta = document.getElementById(
+          'Thcli_estado_contacta'
+        ) as HTMLInputElement;
+        Thcli_identificacion.style.color = '';
+        Thcli_nombres.style.color = '';
+        Thcart_descripcion.style.color = '';
+        Thope_cod_credito.style.color = '';
+        Thcli_estado_contacta.style.color='';
+        inputElement.disabled = true;
+        this.FirltroPor = '';
+        this.TextoFiltro.patchValue('');
+        this.FraccionarValores(
+          this.DatosTemporalesBusqueda,
+          this.ConstanteFraccion
+        );
+      }
+      if(this.selecBase.value==='Base-Gestionada')
+      {
+        const Thcli_identificacion = document.getElementById(
+          'Thcli_identificacion'
+        ) as HTMLInputElement;
+        const Thcli_nombres = document.getElementById(
+          'Thcli_nombres'
+        ) as HTMLInputElement;
+        const Thcart_descripcion = document.getElementById(
+          'Thcart_descripcion'
+        ) as HTMLInputElement;
+        const Thope_cod_credito = document.getElementById(
+          'Thope_cod_credito'
+        ) as HTMLInputElement;
+        const Thope_estado_contacta = document.getElementById(
+          'Thope_estado_contacta'
+        ) as HTMLInputElement;
+        Thcli_identificacion.style.color = '';
+        Thcli_nombres.style.color = '';
+        Thcart_descripcion.style.color = '';
+        Thope_cod_credito.style.color = '';
+        Thope_estado_contacta.style.color='';
+        inputElement.disabled = true;
+        this.FirltroPor = '';
+        this.TextoFiltro.patchValue('');
+        this.FraccionarValores(
+          this.DatosTemporalesBusqueda,
+          this.ConstanteFraccion
+        );
+
+      }
+    
   }
   getKeys(valor:any[]): string[] {
-    if (this.ListaResultado.length > 0) { // Checks if ListaResultado array has elements
+    if (this.ListaDescargas.length > 0) { // Checks if ListaResultado array has elements
       return Object.keys(valor[0]); // Returns the keys of the first object in ListaResultado array
   }
   return []; // Returns an empty array if ListaResultado is empty
 }
-  descargarExcel(entidad:any) {
-    console.log('entro');
-    const valor:string=entidad['seleccion_entidad'];
+  async descargarExcel(entidad:any) {
+    const valor:string=entidad;
     let array:any[]=[];
     if(valor==='Telefono')
       {
-        array = this.ListaResultado.map((item: any) => ({
-          cli_identificacion: item['cli_identificacion'],
-          cli_nombres: item['cli_nombres'],
-          tel_numero: item['tel_numero'],
-          tel_tip_descripcion: item['tel_tip_descripcion'],
-          tel_detal_descripcion: item['tel_detal_descripcion'],
-          cli_estado_contacta: item['cli_estado_contacta'],
-          ope_cod_credito: item['ope_cod_credito'],
-          tel_observacion: item['tel_observacion']
-        }));
+        if(this.selecBase.value==='Base-General')
+          {
+            array = this.ListaDescargas.map((item: any) => ({
+              cli_identificacion: item['cli_identificacion'],
+              cli_nombres: item['cli_nombres'],
+              tel_numero: item['tel_numero'],
+              tel_tip_descripcion: item['tel_tip_descripcion'],
+              tel_detal_descripcion: item['tel_detal_descripcion'],
+              cli_estado_contacta: item['cli_estado_contacta'],
+              ope_cod_credito: item['ope_cod_credito'],
+              tel_observacion: item['tel_observacion']
+            }));
+          }
+        if(this.selecBase.value==='Base-Gestionada')
+          {
+            array = this.ListaDescargas.map((item: any) => ({
+              cli_identificacion: item['cli_identificacion'],
+              cli_nombres: item['cli_nombres'],
+              tel_numero: item['tel_numero'],
+              tel_tip_descripcion: item['tel_tip_descripcion'],
+              tel_detal_descripcion: item['tel_detal_descripcion'],
+              ope_estado_contacta: item['ope_estado_contacta'],
+              ope_cod_credito: item['ope_cod_credito'],
+              tel_observacion: item['tel_observacion']
+            }));
+          }
+        if(this.selecBase.value==='Base-Sin-Gestionar')
+          {
+            array = this.ListaDescargas.map((item: any) => ({
+              cli_identificacion: item['cli_identificacion'],
+              cli_nombres: item['cli_nombres'],
+              tel_numero: item['tel_numero'],
+              tel_tip_descripcion: item['tel_tip_descripcion'],
+              tel_detal_descripcion: item['tel_detal_descripcion'],
+              ope_estado_contacta: item['ope_estado_contacta'],
+              ope_cod_credito: item['ope_cod_credito'],
+              tel_observacion: item['tel_observacion']
+            }));
+          }
       }
       if(valor==='Correo')
         {
-          array = this.ListaResultado.map((item: any) => ({
-            cli_identificacion: item['cli_identificacion'],
-            cli_nombres: item['cli_nombres'],
-            cor_email: item['cor_email'],
-            corr_tip_descripcion: item['corr_tip_descripcion'],
-            cli_estado_contacta: item['cli_estado_contacta'],
-            ope_cod_credito: item['ope_cod_credito'],
-            cor_descripcion: item['cor_descripcion']
-          }));
+          if(this.selecBase.value==='Base-General')
+            {
+              array = this.ListaDescargas.map((item: any) => ({
+                cli_identificacion: item['cli_identificacion'],
+                cli_nombres: item['cli_nombres'],
+                cor_email: item['cor_email'],
+                corr_tip_descripcion: item['corr_tip_descripcion'],
+                cli_estado_contacta: item['cli_estado_contacta'],
+                ope_cod_credito: item['ope_cod_credito'],
+                cor_descripcion: item['cor_descripcion']
+              }));
+
+            }
+          if(this.selecBase.value==='Base-Gestionada')
+            {
+              array = this.ListaDescargas.map((item: any) => ({
+                cli_identificacion: item['cli_identificacion'],
+                cli_nombres: item['cli_nombres'],
+                cor_email: item['cor_email'],
+                corr_tip_descripcion: item['corr_tip_descripcion'],
+                ope_estado_contacta: item['ope_estado_contacta'],
+                ope_cod_credito: item['ope_cod_credito'],
+                cor_descripcion: item['cor_descripcion']
+              }));
+            }
+          if(this.selecBase.value==='Base-Sin-Gestionar')
+            {
+              array = this.ListaDescargas.map((item: any) => ({
+                cli_identificacion: item['cli_identificacion'],
+                cli_nombres: item['cli_nombres'],
+                cor_email: item['cor_email'],
+                corr_tip_descripcion: item['corr_tip_descripcion'],
+                cli_estado_contacta: item['cli_estado_contacta'],
+                ope_cod_credito: item['ope_cod_credito'],
+                cor_descripcion: item['cor_descripcion']
+              }));
+            }
         }
         if(valor==='Direccion')
           {
-            array = this.ListaResultado.map((item: any) => ({
-              cli_identificacion: item['cli_identificacion'],
-              cli_nombres: item['cli_nombres'],
-              dir_completa: item['dir_completa'],
-              dir_referencia:item['dir_referencia'],
-              dir_numero_casa:item['dir_numero_casa'],
-              dir_tip_descripcion: item['dir_tip_descripcion'],
-              cli_estado_contacta: item['cli_estado_contacta'],
-              ope_cod_credito: item['ope_cod_credito'],
-              dir_observacion: item['dir_observacion']
-            }));
+            if(this.selecBase.value==='Base-General')
+              {
+                array = this.ListaDescargas.map((item: any) => ({
+                  cli_identificacion: item['cli_identificacion'],
+                  cli_nombres: item['cli_nombres'],
+                  dir_completa: item['dir_completa'],
+                  dir_referencia:item['dir_referencia'],
+                  dir_numero_casa:item['dir_numero_casa'],
+                  dir_tip_descripcion: item['dir_tip_descripcion'],
+                  cli_estado_contacta: item['cli_estado_contacta'],
+                  ope_cod_credito: item['ope_cod_credito'],
+                  dir_observacion: item['dir_observacion']
+                }));
+              }
+              if(this.selecBase.value==='Base-Gestionada')
+                {
+                  array = this.ListaDescargas.map((item: any) => ({
+                    cli_identificacion: item['cli_identificacion'],
+                    cli_nombres: item['cli_nombres'],
+                    dir_completa: item['dir_completa'],
+                    dir_referencia:item['dir_referencia'],
+                    dir_numero_casa:item['dir_numero_casa'],
+                    dir_tip_descripcion: item['dir_tip_descripcion'],
+                    ope_estado_contacta: item['ope_estado_contacta'],
+                    ope_cod_credito: item['ope_cod_credito'],
+                    dir_observacion: item['dir_observacion']
+                  }));
+                }
+                if(this.selecBase.value==='Base-Sin-Gestionar')
+                  {
+                    array = this.ListaDescargas.map((item: any) => ({
+                      cli_identificacion: item['cli_identificacion'],
+                      cli_nombres: item['cli_nombres'],
+                      dir_completa: item['dir_completa'],
+                      dir_referencia:item['dir_referencia'],
+                      dir_numero_casa:item['dir_numero_casa'],
+                      dir_tip_descripcion: item['dir_tip_descripcion'],
+                      cli_estado_contacta: item['cli_estado_contacta'],
+                      ope_cod_credito: item['ope_cod_credito'],
+                      dir_observacion: item['dir_observacion']
+                    }));
+                  }
           }
-    
     const wb = XLSX.utils.book_new();
     // Agregar la lista de tipos de correo a una pestaña
     const wsTelefono = XLSX.utils.json_to_sheet(array);
     XLSX.utils.book_append_sheet(wb, wsTelefono, valor);
-    // Agregar la lista de tipos de teléfono a otra pestaña
-    // Escribir el archivo Excel
     XLSX.writeFile(wb, valor + '.xlsx');
+    this.selecBase.patchValue('');
+    await this.onCleanSelect()
   }
   buscarFiltro(dato:any)
   {
-    this.ListaResultado=[];
     this.banderaBGestionadaTelefono=false;//agregar para no se duplique las filas y columnas
     this.banderaBGestionadaCorreo=false;
     this.banderaBGestionadaDireccion=false;
     this.DatosTemporalesBusqueda=[];
     this.Cabecera=[];
     this.DatosTemporales=[];
+    let array:any[]=[];
     console.log(this.valorBandera)
     let filtro:FiltroDescarga=
     {
       tipo:1,identificacion:(dato.identificacion.trim()===''?'0':dato.identificacion.trim())!,
       nombres_cliente:(dato.nombres_cliente.trim()===''?'0':dato.nombres_cliente.trim())!,
-      cartera: dato.cartera == '0' ? 0 : Number(dato.cartera),
+      cartera: dato.cartera=='0'?this.TodasCarteras:[Number(dato.cartera)],
       estado_contactibilidad:(dato.estado_contactibilidad==='Todas'?'0':dato.estado_contactibilidad),
       fecha_inicial_gestion:dato.fecha_inicial_gestion,
       fecha_final_gestion:dato.fecha_final_gestion,
       fecha_inicial_pp:dato.fecha_inicial_pp,
       fecha_final_pp:dato.fecha_final_pp
     }
+    console.log(filtro);
     if(this.valorBandera==='Base-Gestionada Telefono')
-      {
+      {this.ListaDescargas=[];
         console.log('entro1')
         this.banderaBGestionadaTelefonoFiltro=true;
-        const cabTelefono=['Cedula','Nombres','Telefono','Tipo','Detalle','Estado','Credito','Cartera','Fecha_Gestion','Valor','Fecha_Proximo_Pago'];
-        this.Cabecera=cabTelefono;
         this.api.GetDescargaBaseGestionadaTelefonoFracionadoFiltro(filtro)
-      .pipe(
-        map((tracks) => {
-          console.log(tracks['data']);
-          this.ListaResultado = tracks['data'];
-          this.DatosTemporalesBusqueda = tracks['data'];
-          if (this.ListaResultado.length === 0) {
-            this.loading = false;
-            this.alerta.NoExistenDatos();
-          } else {
-            this.loading = false;
-            this.ContadorDatosGeneral = this.ListaResultado.length;
-            this.FraccionarValores(this.ListaResultado, this.ConstanteFraccion);
-          }
-        }),
-        catchError((error) => {
-          this.loading = false;
-          this.alerta.ErrorAlRecuperarElementos();
-          throw new Error(error);
-        })
-      )
-      .subscribe();
-      }
-    if(this.valorBandera==='Base-Gestionada Correo')
-      {
-        console.log('entro2')
-        this.banderaBGestionadaCorreoFiltro=true;
-        const cabTelefono=['Cedula','Nombres','Email','Tipo','Observacion','Estado','Credito','Cartera','Fecha_Gestion','Valor','Fecha_Proximo_Pago'];
-        this.Cabecera=cabTelefono;
-      this.api.GetDescargaBaseGestionadaCorreoFracionadoFiltro(filtro)
         .pipe(
           map((tracks) => {
-            console.log(tracks['data']);
-            this.ListaResultado = tracks['data'];
-            this.DatosTemporalesBusqueda = tracks['data'];
-            if (this.ListaResultado.length === 0) {
-              this.loading = false;
+            const array = tracks.data.map(({ 
+              Inf_Gestion: { 
+                cli_identificacion, 
+                cli_nombres, 
+                ope_estado_contacta, 
+                ope_cod_credito, 
+                cartera, 
+                gest_fecha_gestion, 
+                gest_valor_comp, 
+                gest_fecha_prox_pago 
+              }, 
+              telefono: { 
+                tel_numero, 
+                tipo: tel_tip_descripcion, 
+                detalle: tel_detal_descripcion 
+              } 
+            }: any) => ({
+              cli_identificacion,
+              cli_nombres,
+              tel_numero,
+              tel_tip_descripcion,
+              tel_detal_descripcion,
+              ope_estado_contacta,
+              ope_cod_credito,
+              cart_descripcion: cartera,
+              gest_fecha_gestion,
+              gest_valor_comp,
+              gest_fecha_prox_pago
+            }));
+            const valor = { data: array };
+            this.handleTracks(valor);
+            this.DatosTemporalesBusqueda = tracks.data;
+            this.loading = false;
+      
+            if (this.ListaDescargas.length === 0) {
               this.alerta.NoExistenDatos();
             } else {
-              this.loading = false;
-              this.ContadorDatosGeneral = this.ListaResultado.length;
-              this.FraccionarValores(this.ListaResultado, this.ConstanteFraccion);
+              this.ContadorDatosGeneral = this.ListaDescargas.length;
+              this.FraccionarValores(this.ListaDescargas, this.ConstanteFraccion);
             }
           }),
           catchError((error) => {
             this.loading = false;
             this.alerta.ErrorAlRecuperarElementos();
-            throw new Error(error);
+            console.error('Error retrieving elements:', error); // Log the error for debugging
+            return throwError(error); // Return the error observable
           })
         )
         .subscribe();
       }
+    if(this.valorBandera==='Base-Gestionada Correo')
+      {
+        this.ListaDescargas=[];
+        console.log('entro2')
+        this.banderaBGestionadaCorreoFiltro=true;
+        this.api.GetDescargaBaseGestionadaCorreoFracionadoFiltro(filtro)
+  .pipe(
+    map((tracks) => {
+      const array = tracks.data.map(({ 
+        Inf_Gestion: { 
+          cli_identificacion, 
+          cli_nombres, 
+          ope_estado_contacta, 
+          ope_cod_credito, 
+          cartera, 
+          gest_fecha_gestion, 
+          gest_valor_comp, 
+          gest_fecha_prox_pago 
+        }, 
+        correo: { 
+          cor_email, 
+          tipo: corr_tip_descripcion, 
+          cor_descripcion 
+        } 
+      }: any) => ({
+        cli_identificacion,
+        cli_nombres,
+        cor_email,
+        corr_tip_descripcion,
+        ope_estado_contacta,
+        ope_cod_credito,
+        cart_descripcion: cartera,
+        gest_fecha_gestion,
+        gest_valor_comp,
+        cor_descripcion,
+        gest_fecha_prox_pago
+      }));
+
+      const valor = { data: array };
+      this.handleTracks(valor);
+      this.DatosTemporalesBusqueda = tracks.data;
+
+      this.loading = false;
+
+      if (this.ListaResultado.length === 0) {
+        this.alerta.NoExistenDatos();
+      } else {
+        this.ContadorDatosGeneral = this.ListaResultado.length;
+        this.FraccionarValores(this.ListaResultado, this.ConstanteFraccion);
+      }
+    }),
+    catchError((error) => {
+      this.loading = false;
+      this.handleError(error); // Assuming you have a method for handling errors
+      this.alerta.ErrorAlRecuperarElementos();
+      console.error('Error retrieving elements:', error); // Log the error for debugging
+      return throwError(error); // Return the error observable
+    })
+  )
+  .subscribe();
+      }
       if(this.valorBandera==='Base-Gestionada Direccion')
         {
+          this.ListaDescargas=[];
           console.log('entro3')
           this.banderaBGestionadaDireccionFiltro=true;
-          const cabTelefono=['Cedula','Nombres','Direccion','Tipo','Observacion','Estado','Credito','Cartera','Fecha_Gestion','Valor','Fecha_Proximo_Pago'];
-          this.Cabecera=cabTelefono;
-        this.api.GetDescargaBaseGestionadaDireccionFracionadoFiltro(filtro)
-          .pipe(
-            map((tracks) => {
-              console.log(tracks['data']);
-              this.ListaResultado = tracks['data'];
-              this.DatosTemporalesBusqueda = tracks['data'];
-              if (this.ListaResultado.length === 0) {
-                this.loading = false;
-                this.alerta.NoExistenDatos();
-              } else {
-                this.loading = false;
-                this.ContadorDatosGeneral = this.ListaResultado.length;
-                this.FraccionarValores(this.ListaResultado, this.ConstanteFraccion);
-              }
-            }),
-            catchError((error) => {
-              this.loading = false;
-              this.alerta.ErrorAlRecuperarElementos();
-              throw new Error(error);
-            })
-          )
-          .subscribe();
+          this.api.GetDescargaBaseGestionadaDireccionFracionadoFiltro(filtro)
+  .pipe(
+    map((tracks) => {
+      const array = tracks.data.map(({
+        Inf_Gestion: {
+          cli_identificacion,
+          cli_nombres,
+          ope_estado_contacta,
+          ope_cod_credito,
+          cartera,
+          gest_fecha_gestion,
+          gest_valor_comp,
+          gest_fecha_prox_pago
+        },
+        direccion: {
+          dir_completa,
+          tipo: dir_tip_descripcion,
+          dir_observacion,
+          dir_referencia
+        }
+      }: any) => ({
+        cli_identificacion,
+        cli_nombres,
+        dir_completa,
+        dir_tip_descripcion,
+        ope_estado_contacta,
+        ope_cod_credito,
+        cart_descripcion: cartera,
+        gest_fecha_gestion,
+        gest_valor_comp,
+        dir_observacion,
+        dir_referencia,
+        gest_fecha_prox_pago
+      }));
+
+      const valor = { data: array };
+      this.handleTracks(valor);
+      this.DatosTemporalesBusqueda = tracks.data;
+
+      this.loading = false;
+
+      if (this.ListaResultado.length === 0) {
+        this.alerta.NoExistenDatos();
+      } else {
+        this.ContadorDatosGeneral = this.ListaResultado.length;
+        this.FraccionarValores(this.ListaResultado, this.ConstanteFraccion);
+      }
+    }),
+    catchError((error) => {
+      this.loading = false;
+      this.alerta.ErrorAlRecuperarElementos();
+      console.error('Error retrieving elements:', error); // Log the error for debugging
+      return throwError(error); // Return the error observable
+    })
+  )
+  .subscribe();
 
         }
   }
@@ -959,13 +1206,9 @@ export class DescargarComponent implements OnInit{
             aux2.push(datos[key]);
           }
     }
-   
-
-    
 }
   
 }
-
   atributoBusqueda(valor:string):string
   {
     let val!:string;
@@ -980,7 +1223,6 @@ export class DescargarComponent implements OnInit{
     if(valor==='fechapp_inicial')
       {
         val='gest_fecha_prox_pago';
-
       }
     if(valor==='fechapp_final')
       {
@@ -996,4 +1238,20 @@ export class DescargarComponent implements OnInit{
         }
     return val;
   }
+  compareObjects(obj1: any, obj2: any): boolean {
+    return JSON.stringify(obj1) === JSON.stringify(obj2);
+  }
+  obtenerObjetosValidos(lista:any, cabecera:any):any[] {
+    return lista.filter((obj:any) => {
+        return cabecera.every((attr:any) => attr in obj);
+    });
+}
+vaciarTodo()
+{
+  this.ListaDescargas=[];
+  this.DatosTemporalesBusqueda=[];
+  this.DatosTemporales=[];
+  this.selecBase.patchValue('');
+  this.onCleanSelect()
+}
 }

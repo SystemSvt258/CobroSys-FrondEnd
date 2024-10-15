@@ -638,7 +638,7 @@ export interface FiltroDescarga {
   tipo: number;
   identificacion: string;
   nombres_cliente: string;
-  cartera: number;
+  cartera: number[];
   estado_contactibilidad: string;
   fecha_inicial_gestion: string;
   fecha_final_gestion: string;

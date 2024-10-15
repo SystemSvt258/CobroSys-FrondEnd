@@ -90,7 +90,7 @@ export class SidebarComponent implements OnInit {
 
     this.Menus1 = this.Menus.filter((elemento: any, index: any) => {
       return (
-        elemento.men_url === 'descargar' ||
+        elemento.men_url === 'descargas' ||
         elemento.men_url === 'gestionar' ||
         elemento.men_url === 'gestion' ||
         elemento.men_url === 'pagos' ||

@@ -522,7 +522,7 @@ export class RolesComponent implements OnInit {
       tipo == 0
         ? this.TextoFiltro.value!.trim().length!
         : this.TextoFiltroM.value!.trim().length!;
-    tipo == 0 ?? this.EncerarVariablesPaginacion(); //jkhgcfxdsAzdfghj
+    (tipo == 0 || tipo==null) ?? this.EncerarVariablesPaginacion(); //jkhgcfxdsAzdfghj
     tipo == 0
       ? this.TextoFiltro.patchValue(this.TextoFiltro.value!.toUpperCase())
       : this.TextoFiltroM.patchValue(this.TextoFiltroM.value!.toUpperCase());

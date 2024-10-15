@@ -4232,7 +4232,7 @@ export class ApiService {
     let Encryptado: EntidadEncriptado = {
       valor: this.objeto.encriptarAES(elemento),
     };
-    let direccion = this.url + 'cargaMasica';
+    let direccion = this.url + 'cargaMasiva';
     return this.http.post<any>(direccion, Encryptado).pipe(
       map((data) => {
         return JSON.parse(this.objeto.decrypt(data['valor']));

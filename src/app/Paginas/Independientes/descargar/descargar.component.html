@@ -19,15 +19,14 @@
                                             <div class="accordion-body">
                                                 <div class="row">
                                                     <section class="horizontal-center">
-                                                        <form [formGroup]="DescargaForms">
                                                             <div class="row">
                                                                 <div class="col-md-3 col-6">
                                                                     <div class="form-group">
                                                                         <span title="Cantidad de meses sin gestión"><strong>Base</strong></span>
                     
                                                                         <select style="height: 35px;" class="form-select"
-                                                                        (ngModelChange)="seleccion()"
-                                                                            formControlName="seleccion_base">
+                                                                        [formControl]="selecBase"(ngModelChange)="iniciarBase()"
+                                                                           >
                                                                             <option *ngIf="seleccionBase.length == 0" disabled>
                                                                                 Cargando...
                                                                             </option>
@@ -43,8 +42,8 @@
                                                                         <span title="Cantidad de meses sin gestión"><strong>Entidad</strong></span>
                     
                                                                         <select style="height: 35px;" class="form-select"
-                                                                        (ngModelChange)="seleccion()"
-                                                                            formControlName="seleccion_entidad">
+                                                                        [formControl]="selecEntidad"(ngModelChange)="seleccion()"
+                                                                            >
                                                                             <option *ngIf="seleccionEntidad.length == 0" disabled>
                                                                                 Cargando...
                                                                             </option>
@@ -56,10 +55,12 @@
                                                                     </div>
                                                                 </div>
                                                                 <div class="col-md-3 col-6 d-flex align-items-center justify-content-center"> <!-- Add d-flex align-items-center justify-content-center classes here -->
-                                                                    <button class="btnAgregar" (click)="descargarExcel(this.DescargaForms.value)"><i class="fa-solid fa-download"></i></button>
-                                                                </div>    
+                                                                    <button class="btnAgregar" data-bs-toggle="tooltip" data-bs-placement="top" title="Descargar los Datos" (click)="descargarExcel(this.selecEntidad.value)"><i class="fa-solid fa-download">Descargar</i></button>
+                                                                </div> 
+                                                                <div class="col-md-3 col-6 d-flex align-items-center justify-content-center"> <!-- Add d-flex align-items-center justify-content-center classes here -->
+                                                                    <button class="btnEliminar"  data-bs-toggle="tooltip" data-bs-placement="top" title="Limpiar" (click)="vaciarTodo()"><i class="bi bi-eraser" style="font-size: 20px;"></i>Limpiar</button>                                                                </div> 
+                                                                   
                                                             </div>
-                                                        </form>
                                                     </section>
                                                     <section class="horizontal-center" *ngIf="banderaViewFiltro">
                                                         <form [formGroup]="BuscarForms">
@@ -160,8 +161,6 @@
                                                         </div>
                                                     </form>
                                                     </section>
-                                                    
-                                                    
                                                 </div>
                                                 </div>
                                             </div>
@@ -177,7 +176,7 @@
                         <div class="card-body" style="background-color: var(--color-formulario-secundario);"
                             *ngIf="!loading ;else loadingOrError">
                             <div class="card-footer" style="background-color: var(--color-formulario-terciario);"
-                                *ngIf="ListaResultado.length != 0">
+                                *ngIf="ListaDescargas.length != 0">
                                 <div class="float-left">
                                     <h3 class="card-title"><strong>Vista-Previa</strong></h3>
                                 </div>
@@ -190,24 +189,24 @@
                                             </button>
                                             <ul class="dropdown-menu" x-placement="top-start">
                                                 <li class="dropdown-item" style="cursor: pointer;"
-                                                    (click)="FiltrarPor('Nombre')">
-                                                    <a>Nombre</a>
-                                                </li>
-                                                <li class="dropdown-item" style="cursor: pointer;"
                                                     (click)="FiltrarPor('Cedula')">
                                                     <a>Cedula</a>
                                                 </li>
                                                 <li class="dropdown-item" style="cursor: pointer;"
-                                                    (click)="FiltrarPor('Contactibilidad')">
-                                                    <a>Contactabilidad</a>
-                                                </li>
-                                                <li class="dropdown-item" style="cursor: pointer;"
-                                                    (click)="FiltrarPor('Gestor')">
-                                                    <a>Gestor</a>
+                                                    (click)="FiltrarPor('Nombres')">
+                                                    <a>Nombres</a>
                                                 </li>
                                                 <li class="dropdown-item" style="cursor: pointer;"
                                                 (click)="FiltrarPor('Cartera')">
                                                 <a>Cartera</a>
+                                            </li>
+                                            <li class="dropdown-item" style="cursor: pointer;"
+                                                (click)="FiltrarPor('Credito')">
+                                                <a>Credito</a>
+                                            </li>
+                                            <li class="dropdown-item" style="cursor: pointer;"
+                                                (click)="FiltrarPor('Contactabilidad')">
+                                                <a>Contactabilidad</a>
                                             </li>
 
                                             </ul>
@@ -224,15 +223,15 @@
                                     </div>
                                 </div>
                             </div>
-                            <table class="table table-bordered table-responsive   table-auto small" *ngIf="ListaResultado.length != 0">
+                            <table class="table table-bordered table-responsive table-auto small" *ngIf="ListaDescargas.length != 0">
                                 <thead>
                                     <tr>
                                         <th style="width: 10px">#</th>
                                         <th *ngFor="let key of this.Cabecera" [id]="'Th' + key">{{ key }}</th>
                                     </tr>
                                 </thead>
-                                <tbody *ngIf="this.banderaTelefono">
-                                    <tr *ngFor="let datos of DatosCargaMasiva; let i = index">
+                                <tbody *ngFor="let datos of DatosCargaMasiva; let i = index">
+                                    <tr *ngIf="this.banderaTelefono">
                                         <th>{{InicioPaginacion + i + 1}}</th>
                                         <th>{{datos.cli_identificacion}}</th>
                                         <th>{{datos.cli_nombres}}</th>
@@ -243,11 +242,9 @@
                                         <th>{{datos.ope_cod_credito}}</th>
                                         <th>{{datos.id_cartera}}</th>
                                         <th>{{datos.cart_descripcion}}</th>
-                                        <th>{{datos.tel_observacion}}</th>
+                                        <th>{{datos.tel_observacion===null?'Ninguna':datos.tel_observacion}}</th>
                                     </tr>
-                                </tbody>
-                                <tbody *ngIf="this.banderaCorreo">
-                                    <tr *ngFor="let datos of DatosCargaMasiva; let i = index">
+                                    <tr *ngIf="this.banderaCorreo">
                                         <th>{{InicioPaginacion + i + 1}}</th>
                                         <th>{{datos.cli_identificacion}}</th>
                                         <th>{{datos.cli_nombres}}</th>
@@ -256,11 +253,10 @@
                                         <th>{{datos.cli_estado_contacta}}</th>
                                         <th>{{datos.ope_cod_credito}}</th>
                                         <th>{{datos.cart_descripcion}}</th>
-                                        <th>{{datos.cor_descripcion}}</th>
+                                        <th>{{datos.cor_descripcion===null?'Ninguna':datos.cor_descripcion}}</th>
+                                        <!-- ... -->
                                     </tr>
-                                </tbody>
-                                <tbody *ngIf="this.banderaDireccion">
-                                    <tr *ngFor="let datos of DatosCargaMasiva; let i = index">
+                                    <tr *ngIf="this.banderaDireccion">
                                         <th>{{InicioPaginacion + i + 1}}</th>
                                         <th>{{datos.cli_identificacion}}</th>
                                         <th>{{datos.cli_nombres}}</th>
@@ -271,46 +267,41 @@
                                         <th>{{datos.cli_estado_contacta}}</th>
                                         <th>{{datos.ope_cod_credito}}</th>
                                         <th>{{datos.cart_descripcion}}</th>
-                                        <th>{{datos.dir_observacion}}</th>
+                                        <th>{{datos.dir_observacion===null?'Ninguna':datos.datos.dir_observacion}}</th>
+                                        <!-- ... -->
                                     </tr>
-                                </tbody>
-                                <tbody *ngIf="this.banderaBGestionadaTelefono">
-                                    <tr *ngFor="let datos of DatosCargaMasiva; let i = index">
+                                    <tr *ngIf="this.banderaBGestionadaTelefono">
                                         <th>{{InicioPaginacion + i + 1}}</th>
                                         <th>{{datos.cli_identificacion}}</th>
                                         <th>{{datos.cli_nombres}}</th>
                                         <th>{{datos.tel_numero}}</th>
                                         <th>{{datos.tel_tip_descripcion}}</th>
                                         <th>{{datos.tel_detal_descripcion}}</th>
-                                        <th>{{datos.ope_estado_contacta === null?' ':datos.ope_estado_contacta}}</th>
+                                        <th>{{datos.ope_estado_contacta}}</th>
                                         <th>{{datos.ope_cod_credito}}</th>
                                         <th>{{datos.cart_descripcion}}</th>
                                         <th>{{this.Fechas.fechaCorta(datos.gest_fecha_gestion)}}</th>
-                                        <th>{{this.Fechas.fechaCorta(datos.gest_fecha_compromiso)}}</th>
-                                        <th>{{datos.gest_valor_comp}}</th>
-                                        <th>{{datos.tel_observacion}}</th>
-                                        <th>{{this.Fechas.fechaCorta(datos.gest_fecha_prox_pago)}}</th>
+                                        <th>{{this.Fechas.fechaCorta(datos.gest_fecha_compromiso)==='31-12-1969'?'Ninguno':this.Fechas.fechaCorta(datos.gest_fecha_compromiso)}}</th>
+                                        <th>{{(datos.gest_valor_comp===null||datos.gest_valor_comp==='')?'0':datos.gest_valor_comp}}</th>
+                                        <th>{{datos.tel_observacion===null?'Ninguna':datos.tel_observacion}}</th>
+                                        <th>{{this.Fechas.fechaCorta(datos.gest_fecha_prox_pago)==='31-12-1969'?'Ninguno':this.Fechas.fechaCorta(datos.gest_fecha_prox_pago)}}</th>
                                     </tr>
-                                </tbody>
-                                <tbody *ngIf="this.banderaBGestionadaTelefonoFiltro">
-                                    <tr *ngFor="let datos of DatosCargaMasiva; let i = index">
+                                    <tr *ngIf="this.banderaBGestionadaTelefonoFiltro">
                                         <th>{{InicioPaginacion + i + 1}}</th>
-                                        <th>{{datos.Inf_Gestion.cli_identificacion}}</th>
-                                        <th>{{datos.Inf_Gestion.cli_nombres}}</th>
-                                        <th>{{datos.telefono.tel_numero}}</th>
-                                        <th>{{datos.telefono.tipo}}</th>
-                                        <th>{{datos.telefono.detalle}}</th>
-                                        <th>{{datos.Inf_Gestion.ope_estado_contacta}}</th>
-                                        <th>{{datos.Inf_Gestion.ope_cod_credito}}</th>
-                                        <th>{{datos.Inf_Gestion.cartera}}</th>
-                                        <th>{{datos.Inf_Gestion.gest_fecha_gestion ? this.Fechas.fechaCorta(datos.Inf_Gestion.gest_fecha_gestion) : ''}}</th>
-                                        <th>{{datos.Inf_Gestion.gest_valor_comp}}</th>
-                                        <th>{{datos.Inf_Gestion.gest_fecha_prox_pago ? this.Fechas.fechaCorta(datos.Inf_Gestion.gest_fecha_prox_pago) : ''}}</th>
+                                        <th>{{datos.cli_identificacion}}</th>
+                                        <th>{{datos.cli_nombres}}</th>
+                                        <th>{{datos.tel_numero}}</th>
+                                        <th>{{datos.tel_tip_descripcion}}</th>
+                                        <th>{{datos.tel_detal_descripcion}}</th>
+                                        <th>{{datos.ope_estado_contacta}}</th>
+                                        <th>{{datos.ope_cod_credito}}</th>
+                                        <th>{{datos.cart_descripcion}}</th>
+                                        <th>{{this.Fechas.fechaCorta(datos.gest_fecha_gestion)}}</th>
+                                        <th>{{(datos.gest_valor_comp===null||datos.gest_valor_comp==='')?'0':datos.gest_valor_comp}}</th>         
+                                        <th>{{this.Fechas.fechaCorta(datos.gest_fecha_prox_pago)==='31-12-1969'?'Ninguno':this.Fechas.fechaCorta(datos.gest_fecha_prox_pago)}}</th>
                                     </tr>
-                                </tbody>
-                                <tbody *ngIf="this.banderaBGestionadaCorreo">
-                                    <tr *ngFor="let datos of DatosCargaMasiva; let i = index">
-                                        <th>{{InicioPaginacion + i + 1}}t1</th>
+                                    <tr *ngIf="this.banderaBGestionadaCorreo">
+                                        <th>{{InicioPaginacion + i + 1}}</th>
                                         <th>{{datos.cli_identificacion}}</th>
                                         <th>{{datos.cli_nombres}}</th>
                                         <th>{{datos.cor_email}}</th>
@@ -321,29 +312,25 @@
                                         <th>{{datos.id_cartera}}</th>
                                         <th>{{datos.cart_descripcion}}</th>
                                         <th>{{this.Fechas.fechaCorta(datos.gest_fecha_gestion)}}</th>
-                                        <th>{{datos.gest_valor_comp}}</th>
-                                        <th>{{datos.cor_descripcion}}</th>
-                                        <th>{{ this.Fechas.fechaCorta(datos.gest_fecha_prox_pago)}}</th>
+                                        <th>{{(datos.gest_valor_comp===null||datos.gest_valor_comp==='')?'0':datos.gest_valor_comp}}</th>    
+                                        <th>{{datos.cor_descripcion===null?'Ninguna':datos.cor_descripcion}}</th>        
+                                        <th>{{this.Fechas.fechaCorta(datos.gest_fecha_prox_pago)==='31-12-1969'?'Ninguno':this.Fechas.fechaCorta(datos.gest_fecha_prox_pago)}}</th>
                                     </tr>
-                                </tbody>
-                                <tbody *ngIf="this.banderaBGestionadaCorreoFiltro">
-                                    <tr *ngFor="let datos of DatosCargaMasiva; let i = index">
-                                        <th>{{InicioPaginacion + i + 1}}tf</th>
-                                        <th>{{datos.Inf_Gestion.cli_identificacion}}</th>
-                                        <th>{{datos.Inf_Gestion.cli_nombres}}</th>
-                                        <th>{{datos.correo.cor_email}}</th>
-                                        <th>{{datos.correo.tipo}}</th>
-                                        <th>{{datos.correo.cor_descripcion}}</th>
-                                        <th>{{datos.Inf_Gestion.ope_estado_contacta}}</th>
-                                        <th>{{datos.Inf_Gestion.ope_cod_credito}}</th>
-                                        <th>{{datos.Inf_Gestion.cartera}}</th>
-                                        <th>{{datos.Inf_Gestion.gest_fecha_gestion ? this.Fechas.fechaCorta(datos.Inf_Gestion.gest_fecha_gestion) : ''}}</th>
-                                        <th>{{datos.Inf_Gestion.gest_valor_comp}}</th>
-                                        <th>{{datos.Inf_Gestion.gest_fecha_prox_pago ? this.Fechas.fechaCorta(datos.Inf_Gestion.gest_fecha_prox_pago) : ''}}</th>
+                                    <tr *ngIf="this.banderaBGestionadaCorreoFiltro">
+                                        <th>{{InicioPaginacion + i + 1}}</th>
+                                        <th>{{datos.cli_identificacion}}</th>
+                                        <th>{{datos.cli_nombres}}</th>
+                                        <th>{{datos.cor_email}}</th>
+                                        <th>{{datos.corr_tip_descripcion}}</th>
+                                        <th>{{datos.ope_estado_contacta}}</th>
+                                        <th>{{datos.ope_cod_credito}}</th>
+                                        <th>{{datos.cart_descripcion}}</th>
+                                        <th>{{this.Fechas.fechaCorta(datos.gest_fecha_gestion)}}</th>
+                                        <th>{{(datos.gest_valor_comp===null||datos.gest_valor_comp==='')?'0':datos.gest_valor_comp}}</th>    
+                                        <th>{{datos.cor_descripcion===null?'Ninguna':datos.cor_descripcion}}</th>        
+                                        <th>{{this.Fechas.fechaCorta(datos.gest_fecha_prox_pago)==='31-12-1969'?'Ninguno':this.Fechas.fechaCorta(datos.gest_fecha_prox_pago)}}</th>
                                     </tr>
-                                </tbody>
-                                <tbody *ngIf="this.banderaBGestionadaDireccion">
-                                    <tr *ngFor="let datos of DatosCargaMasiva; let i = index">
+                                    <tr *ngIf="this.banderaBGestionadaDireccion">
                                         <th>{{InicioPaginacion + i + 1}}</th>
                                         <th>{{datos.cli_identificacion}}</th>
                                         <th>{{datos.cli_nombres}}</th>
@@ -352,34 +339,31 @@
                                         <th>{{datos.dir_numero_casa}}</th>
                                         <th>{{datos.dir_id_tipo_direccion}}</th>
                                         <th>{{datos.dir_tip_descripcion}}</th>
-                                        <th>{{datos.cli_estado_contacta}}</th>
+                                        <th>{{datos.ope_estado_contacta}}</th>
                                         <th>{{datos.ope_cod_credito}}</th>
                                         <th>{{datos.id_cartera}}</th>
                                         <th>{{datos.cart_descripcion}}</th>
                                         <th>{{this.Fechas.fechaCorta(datos.gest_fecha_gestion)}}</th>
-                                        <th>{{datos.gest_valor_comp}}</th>
-                                        <th>{{datos.dir_observacion}}</th>
-                                        <th>{{this.Fechas.fechaCorta(datos.gest_fecha_prox_pago) }}</th>
+                                        <th>{{(datos.gest_valor_comp===null||datos.gest_valor_comp==='')?'0':datos.gest_valor_comp}}</th>    
+                                        <th>{{datos.dir_observacion===null?'Ninguna':datos.dir_observacion}}</th>        
+                                        <th>{{this.Fechas.fechaCorta(datos.gest_fecha_prox_pago)==='31-12-1969'?'Ninguno':this.Fechas.fechaCorta(datos.gest_fecha_prox_pago)}}</th>
                                     </tr>
-                                </tbody>
-                                <tbody *ngIf="this.banderaBGestionadaDireccionFiltro">
-                                    <tr *ngFor="let datos of DatosCargaMasiva; let i = index">
+                                    <tr *ngIf="this.banderaBGestionadaDireccionFiltro">
                                         <th>{{InicioPaginacion + i + 1}}</th>
-                                        <th>{{datos.Inf_Gestion.cli_identificacion}}</th>
-                                        <th>{{datos.Inf_Gestion.cli_nombres}}</th>
-                                        <th>{{datos.direccion.dir_completa}}</th>
-                                        <th>{{datos.direccion.tipo}}</th>
-                                        <th>{{datos.direccion.dir_observacion}}</th>
-                                        <th>{{datos.Inf_Gestion.ope_estado_contacta}}</th>
-                                        <th>{{datos.Inf_Gestion.ope_cod_credito}}</th>
-                                        <th>{{datos.Inf_Gestion.cartera}}</th>
-                                        <th>{{datos.Inf_Gestion.gest_fecha_gestion ? this.Fechas.fechaCorta(datos.Inf_Gestion.gest_fecha_gestion) : ''}}</th>
-                                        <th>{{datos.Inf_Gestion.gest_valor_comp}}</th>
-                                        <th>{{datos.Inf_Gestion.gest_fecha_prox_pago ? this.Fechas.fechaCorta(datos.Inf_Gestion.gest_fecha_prox_pago) : ''}}</th>
+                                        <th>{{datos.cli_identificacion}}</th>
+                                        <th>{{datos.cli_nombres}}</th>
+                                        <th>{{datos.dir_completa}}</th>
+                                        <th>{{datos.dir_tip_descripcion}}</th>
+                                        <th>{{datos.ope_estado_contacta}}</th>
+                                        <th>{{datos.ope_cod_credito}}</th>
+                                        <th>{{datos.cart_descripcion}}</th>
+                                        <th>{{this.Fechas.fechaCorta(datos.gest_fecha_gestion)}}</th>
+                                        <th>{{(datos.gest_valor_comp===null||datos.gest_valor_comp==='')?'0':datos.gest_valor_comp}}</th>    
+                                        <th>{{datos.dir_observacion===null?'Ninguna':datos.dir_observacion}}</th>
+                                        <th>{{datos.dir_referencia===null?'Ninguna':datos.dir_referencia}}</th>       
+                                        <th>{{this.Fechas.fechaCorta(datos.gest_fecha_prox_pago)==='31-12-1969'?'Ninguno':this.Fechas.fechaCorta(datos.gest_fecha_prox_pago)}}</th>
                                     </tr>
-                                </tbody>
-                                <tbody *ngIf="this.banderaBaseSinGestionarTelefono">
-                                    <tr *ngFor="let datos of DatosCargaMasiva; let i = index">
+                                    <tr *ngIf="this.banderaBaseSinGestionarTelefono">
                                         <th>{{InicioPaginacion + i + 1}}</th>
                                         <th>{{datos.cli_identificacion}}</th>
                                         <th>{{datos.cli_nombres}}</th>
@@ -392,11 +376,9 @@
                                         <th>{{datos.ope_cod_credito}}</th>
                                         <th>{{datos.id_cartera}}</th>
                                         <th>{{datos.cart_descripcion}}</th>
-                                        <th>{{datos.tel_observacion}}</th>
+                                        <th>{{datos.tel_observacion===null?'Ninguna':datos.tel_observacion}}</th>        
                                     </tr>
-                                </tbody>
-                                <tbody *ngIf="this.banderaBaseSinGestionarCorreo">
-                                    <tr *ngFor="let datos of DatosCargaMasiva; let i = index">
+                                    <tr *ngIf="this.banderaBaseSinGestionarCorreo">
                                         <th>{{InicioPaginacion + i + 1}}</th>
                                         <th>{{datos.cli_identificacion}}</th>
                                         <th>{{datos.cli_nombres}}</th>
@@ -407,32 +389,32 @@
                                         <th>{{datos.ope_cod_credito}}</th>
                                         <th>{{datos.id_cartera}}</th>
                                         <th>{{datos.cart_descripcion}}</th>
-                                        <th>{{datos.cor_descripcion}}</th>
+                                        <th>{{datos.cor_descripcion===null?'Ninguna':datos.cor_descripcion}}</th>        
                                     </tr>
-                                </tbody>
-                                <tbody *ngIf="this.banderaBaseSinGestionarDireccion">
-                                    <tr *ngFor="let datos of DatosCargaMasiva; let i = index">
+                                    <tr *ngIf="this.banderaBaseSinGestionarDireccion">
                                         <th>{{InicioPaginacion + i + 1}}</th>
                                         <th>{{datos.cli_identificacion}}</th>
                                         <th>{{datos.cli_nombres}}</th>
                                         <th>{{datos.dir_completa}}</th>
-                                        <th>{{datos.dir_referencia}}</th>
                                         <th>{{datos.dir_numero_casa}}</th>
+                                        <th>{{datos.dir_referencia}}</th>
                                         <th>{{datos.dir_id_tipo_direccion}}</th>
                                         <th>{{datos.dir_tip_descripcion}}</th>
                                         <th>{{datos.cli_estado_contacta}}</th>
                                         <th>{{datos.ope_cod_credito}}</th>
                                         <th>{{datos.id_cartera}}</th>
                                         <th>{{datos.cart_descripcion}}</th>
-                                        <th>{{datos.dir_observacion}}</th>
+                                        <th>{{datos.dir_observacion===null?'Ninguna':datos.dir_observacion}}</th>        
                                     </tr>
+
                                 </tbody>
                             </table>
+
 
                         </div>
 
                         <div class="card-footer" style="background-color: var(--color-formulario-terciario);"
-                            *ngIf="ListaResultado.length != 0 ">
+                            *ngIf="ListaDescargas.length != 0 ">
                             <div class="row">
                                 <div class="col-lg-2 col-6">
                                     <p>Total<strong>&nbsp;{{ContadorDatosGeneral}}</strong></p>
