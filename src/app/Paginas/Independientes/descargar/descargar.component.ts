@@ -154,6 +154,7 @@ export class DescargarComponent implements OnInit{
         this.banderaBaseSinGestionarTelefono = false;
         this.banderaBaseSinGestionarCorreo = false;
         this.banderaBaseSinGestionarDireccion = false;
+        this.Cabecera=[];
         this.aux = opcionLlamado;  // Aquí usas '=' para la asignación correcta
         if (opcionLlamado === 'Base-General Telefono') {
           this.ListaDescargas=[];
@@ -270,6 +271,9 @@ export class DescargarComponent implements OnInit{
        
 }
 async handleTracks(tracks: any) {
+  this.Cabecera=[];
+  console.log(tracks);
+  this.ListaDescargas=[];
   this.ListaDescargas=tracks['data'];
   this.Cabecera=this.getKeys(this.ListaDescargas);
   this.DatosTemporalesBusqueda = tracks['data'];
@@ -292,6 +296,7 @@ async handleError(error: any) {
 
 async onCleanSelect()
 {
+  this.ListaDescargas=[];
   this.DatosTemporalesBusqueda = [];
   this.selecEntidad.patchValue('')
   this.banderaViewFiltro = false;
@@ -981,14 +986,16 @@ selecionarBase(valor:any)
       fecha_inicial_pp:dato.fecha_inicial_pp,
       fecha_final_pp:dato.fecha_final_pp
     }
+    this.ListaDescargas=[];
+    this.DatosTemporalesBusqueda =[];
     console.log(filtro);
     if(this.valorBandera==='Base-Gestionada Telefono')
-      {this.ListaDescargas=[];
-        console.log('entro1')
+      {
         this.banderaBGestionadaTelefonoFiltro=true;
         this.api.GetDescargaBaseGestionadaTelefonoFracionadoFiltro(filtro)
         .pipe(
           map((tracks) => {
+            this.ListaDescargas=[];
             const array = tracks.data.map(({ 
               Inf_Gestion: { 
                 cli_identificacion, 
@@ -1019,9 +1026,10 @@ selecionarBase(valor:any)
               gest_fecha_prox_pago
             }));
             const valor = { data: array };
+            console.log(valor)
             this.handleTracks(valor);
-            this.DatosTemporalesBusqueda = tracks.data;
-            this.loading = false;
+            //this.DatosTemporalesBusqueda = tracks.data;
+            //this.loading = false;
       
             if (this.ListaDescargas.length === 0) {
               this.alerta.NoExistenDatos();
@@ -1041,12 +1049,12 @@ selecionarBase(valor:any)
       }
     if(this.valorBandera==='Base-Gestionada Correo')
       {
-        this.ListaDescargas=[];
         console.log('entro2')
         this.banderaBGestionadaCorreoFiltro=true;
         this.api.GetDescargaBaseGestionadaCorreoFracionadoFiltro(filtro)
   .pipe(
     map((tracks) => {
+      this.ListaDescargas=[];
       const array = tracks.data.map(({ 
         Inf_Gestion: { 
           cli_identificacion, 
@@ -1079,15 +1087,14 @@ selecionarBase(valor:any)
 
       const valor = { data: array };
       this.handleTracks(valor);
-      this.DatosTemporalesBusqueda = tracks.data;
-
+      //this.DatosTemporalesBusqueda = tracks.data;
       this.loading = false;
 
-      if (this.ListaResultado.length === 0) {
+      if (this.ListaDescargas.length === 0) {
         this.alerta.NoExistenDatos();
       } else {
-        this.ContadorDatosGeneral = this.ListaResultado.length;
-        this.FraccionarValores(this.ListaResultado, this.ConstanteFraccion);
+        this.ContadorDatosGeneral = this.ListaDescargas.length;
+        this.FraccionarValores(this.ListaDescargas, this.ConstanteFraccion);
       }
     }),
     catchError((error) => {
@@ -1108,6 +1115,7 @@ selecionarBase(valor:any)
           this.api.GetDescargaBaseGestionadaDireccionFracionadoFiltro(filtro)
   .pipe(
     map((tracks) => {
+      this.ListaDescargas=[];
       const array = tracks.data.map(({
         Inf_Gestion: {
           cli_identificacion,
@@ -1139,18 +1147,16 @@ selecionarBase(valor:any)
         dir_referencia,
         gest_fecha_prox_pago
       }));
-
       const valor = { data: array };
       this.handleTracks(valor);
-      this.DatosTemporalesBusqueda = tracks.data;
-
+      //this.DatosTemporalesBusqueda = tracks.data;
       this.loading = false;
 
-      if (this.ListaResultado.length === 0) {
+      if (this.ListaDescargas.length === 0) {
         this.alerta.NoExistenDatos();
       } else {
-        this.ContadorDatosGeneral = this.ListaResultado.length;
-        this.FraccionarValores(this.ListaResultado, this.ConstanteFraccion);
+        this.ContadorDatosGeneral = this.ListaDescargas.length;
+        this.FraccionarValores(this.ListaDescargas, this.ConstanteFraccion);
       }
     }),
     catchError((error) => {

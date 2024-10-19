@@ -4516,7 +4516,7 @@ validarDatosRow(row:any):any
     if (this.itemFiles.value === '2') {
       //console.log(row[2]+' '+row[3]);
       this.api
-        .GetCxCFracionadoFiltro(row[1], 10)
+        .GetCxCFracionadoFiltro(row[1], 4)
         .pipe(
           map((tracks) => {
             this.ListaClientes = tracks['data'];
@@ -10809,7 +10809,6 @@ guardarMasiva()
               map((tracks) => {
                 let cont: number = 0;
                 const exito = tracks['exito'];
-                console.log(tracks['data']);
                 if (exito == 1) {
                   for (const row of tracks['data']) {
                     if (row['exito'] === 4) {
@@ -10888,7 +10887,6 @@ guardarMasiva()
               map((tracks) => {
                 let cont: number = 0;
                 const exito = tracks['exito'];
-                console.log(tracks['data']);
                 if (exito == 1) {
                   for (const row of tracks['data']) {
                     if (row['exito'] === 4) {
@@ -11045,7 +11043,6 @@ guardarMasiva()
               map((tracks) => {
                 let cont: number = 0;
                 const exito = tracks['exito'];
-                console.log(tracks['data']);
                 if (exito == 1) {
                   for (const row of tracks['data']) {
                     if (row['exito'] === 4) {
