@@ -69,8 +69,6 @@ export class DescargarComponent implements OnInit{
   cambiosDetectados: boolean = false;
   banderaBarrido:boolean=false;
   ResetClienteForms() {
-    console.log('Se ejecuto')
-    //this.banderaBarrido=true;
     this.DatosCargaMasiva=[];
     this.BuscarForms.reset({
       identificacion: '',
@@ -142,152 +140,7 @@ export class DescargarComponent implements OnInit{
   selecBase = new FormControl('', [Validators.required]);
   selecEntidad = new FormControl('', [Validators.required]);
   ListaDescargas:any[]=[];
-  ListarDatos(opcionLlamado: string) {
-        console.log(this.BuscarForms.value);
-        this.loading = true; // Activa el estado de carga
-        this.banderaTelefono = false;
-        this.banderaCorreo = false;
-        this.banderaDireccion = false;
-        this.banderaBGestionadaTelefono = false;
-        this.banderaBGestionadaCorreo = false;
-        this.banderaBGestionadaDireccion = false;
-        this.banderaBaseSinGestionarTelefono = false;
-        this.banderaBaseSinGestionarCorreo = false;
-        this.banderaBaseSinGestionarDireccion = false;
-        this.Cabecera=[];
-        this.aux = opcionLlamado;  // Aquí usas '=' para la asignación correcta
-        if (opcionLlamado === 'Base-General Telefono') {
-          this.ListaDescargas=[];
-          this.DatosTemporales=[];
-          this.DatosTemporalesBusqueda=[];
-            this.banderaTelefono = true;
-            console.log(this.banderaTelefono);
-            console.log('entro');
-            this.api.GetDescargaBaseGeneralTelefonoFracionado(this.FraccionDatos, this.RangoDatos)
-                .pipe(
-                    map((tracks) => this.handleTracks(tracks)),
-                    catchError((error) => this.handleError(error))
-                )
-                .subscribe();
-        }
-        if (opcionLlamado === 'Base-General Correo') {
-          this.ListaDescargas=[];
-          this.DatosTemporales=[];
-          this.DatosTemporalesBusqueda=[];
-            this.banderaCorreo = true;
-            console.log(this.banderaCorreo);
-            console.log('entro');
-            this.api.GetDescargaBaseGeneralCorreoFracionado(this.FraccionDatos, this.RangoDatos)
-                .pipe(
-                    map((tracks) => this.handleTracks(tracks)),
-                    catchError((error) => this.handleError(error))
-                )
-                .subscribe();
-        }
-        if (opcionLlamado === 'Base-General Direccion') {
-          this.ListaDescargas=[];
-          this.DatosTemporales=[];
-          this.DatosTemporalesBusqueda=[];
-          this.banderaDireccion = true;
-          console.log(this.banderaDireccion);
-            console.log('entro');
-          this.api.GetDescargaBaseGeneralDireccionFracionado(this.FraccionDatos, this.RangoDatos)
-              .pipe(
-                  map((tracks) => this.handleTracks(tracks)),
-                  catchError((error) => this.handleError(error))
-              )
-              .subscribe();
-      }
-      if (opcionLlamado === 'Base-Gestionada Telefono') {
-        this.banderaBGestionadaTelefono = true;
-        this.banderaViewFiltro=true;
-        if(this.banderaBarrido===true)
-          {
-            console.log('entro bandera')
-            this.ListaDescargas=[];
-            //this.onCleanSelect();
-          }else
-          {
-            console.log('entro bandera')
-            this.api.GetDescargaBaseGestionadaTelefonoFracionado(this.FraccionDatos, this.RangoDatos)
-            .pipe(
-                map((tracks) => this.handleTracks(tracks)),
-                catchError((error) => this.handleError(error))
-            ).subscribe();
-          }
-        console.log(this.BuscarForms.value);
-    }
-    if (opcionLlamado === 'Base-Gestionada Correo') {
-      this.banderaBGestionadaCorreo = true;
-      this.banderaViewFiltro=true;
-      this.api.GetDescargaBaseGestionadaCorreoFracionado(this.FraccionDatos, this.RangoDatos)
-          .pipe(
-              map((tracks) => this.handleTracks(tracks)),
-              catchError((error) => this.handleError(error))
-          )
-          .subscribe();
-    }
-    if (opcionLlamado === 'Base-Gestionada Direccion') {
-      this.banderaBGestionadaDireccion = true;
-      this.banderaViewFiltro=true;
-      console.log(this.BuscarForms.value);
-      this.api.GetDescargaBaseGestionadaDireccionFracionado(this.FraccionDatos, this.RangoDatos)
-          .pipe(
-              map((tracks) => this.handleTracks(tracks)),
-              catchError((error) => this.handleError(error))
-          )
-          .subscribe();
-    }
-    /***Base-Sin-Gestionar */
-    if (opcionLlamado === 'Base-Sin-Gestionar Telefono') {
-      this.banderaBaseSinGestionarTelefono = true;
-      //this.banderaViewFiltro=true;
-      this.api.GetDescargaBaseSinGestionarTelefonoFracionado(this.FraccionDatos, this.RangoDatos)
-          .pipe(
-              map((tracks) => this.handleTracks(tracks)),
-              catchError((error) => this.handleError(error))
-          )
-          .subscribe();
-    }
-    if (opcionLlamado === 'Base-Sin-Gestionar Correo') {
-      this.banderaBaseSinGestionarCorreo = true;
-      //this.banderaViewFiltro=true;
-      this.api.GetDescargaBaseSinGestionarCorreoFracionado(this.FraccionDatos, this.RangoDatos)
-          .pipe(
-              map((tracks) => this.handleTracks(tracks)),
-              catchError((error) => this.handleError(error))
-          )
-          .subscribe();
-    }
-    if (opcionLlamado === 'Base-Sin-Gestionar Direccion') {
-      this.banderaBaseSinGestionarDireccion = true;
-      this.api.GetDescargaBaseSinGestionarDireccionFracionado(this.FraccionDatos, this.RangoDatos)
-          .pipe(
-              map((tracks) => this.handleTracks(tracks)),
-              catchError((error) => this.handleError(error))
-          )
-          .subscribe();
-    }
-       
-}
-async handleTracks(tracks: any) {
-  this.Cabecera=[];
-  console.log(tracks);
-  this.ListaDescargas=[];
-  this.ListaDescargas=tracks['data'];
-  this.Cabecera=this.getKeys(this.ListaDescargas);
-  this.DatosTemporalesBusqueda = tracks['data'];
-  if (this.ListaDescargas.length === 0) {
-      this.loading = false;
-      this.alerta.NoExistenDatos();
-      await this.onCleanSelect();
-  } else {
-    //this.ListaResultado=tracks['data'];
-      this.loading = false;
-      this.ContadorDatosGeneral = this.ListaDescargas.length;
-      this.FraccionarValores(this.ListaDescargas, this.ConstanteFraccion);
-  }
-}
+
 async handleError(error: any) {
   this.loading = false;
   this.alerta.ErrorAlRecuperarElementos();
@@ -309,10 +162,9 @@ async iniciarBase()
 {
   try
   {
-    console.log(this.selecBase.value);
    if(this.selecBase.value==='0')
     {
-      console.log('entroif');
+      console.log('entroif===0');
       this.selecionarBase(this.selecBase.value);
       if(this.valorAux2==='')
         {
@@ -324,7 +176,7 @@ async iniciarBase()
       this.selecionarBase(this.selecBase.value);
       if(this.valorAux2==='')
         {
-          this.ListaDescargas=[];
+          this.clearData();
           this.onCleanSelect();
         }
     }
@@ -337,7 +189,9 @@ selecionarBase(valor:any)
   this.valorAux1='';
   this.valorAux1=valor;
   this.valorAux2='';
-  this.DatosCargaMasiva=[];
+  this.clearData();
+  this.resetFlags();
+  this.selecEntidad.patchValue('');
 }
   seleccion()
   {
@@ -350,45 +204,45 @@ selecionarBase(valor:any)
         this.valorAux2 =this.selecEntidad.value!;
         if (this.valorAux1 === 'Base-General' && this.valorAux2 === 'Telefono') {
           const llamar = this.valorAux1 +' '+this.valorAux2;
-          this.ListarDatos(llamar);
+          this.listarDatosMod(llamar);
         }
         if (this.valorAux1 === 'Base-General' && this.valorAux2 === 'Correo') {
           const llamar = this.valorAux1 +' '+this.valorAux2;
-          this.ListarDatos(llamar);
+          this.listarDatosMod(llamar);
         }
         if (this.valorAux1 === 'Base-General' && this.valorAux2 === 'Direccion') {
           const llamar = this.valorAux1 +' ' +this.valorAux2;
-          this.ListarDatos(llamar);
+          this.listarDatosMod(llamar);
         }
         if (this.valorAux1 === 'Base-Gestionada' && this.valorAux2 === 'Telefono') {
           const llamar = this.valorAux1 +' '+this.valorAux2;
-          this.ListarDatos(llamar);
+          this.listarDatosMod(llamar);
           this.valorBandera=llamar;
           console.log(this.valorBandera);
         }
         if (this.valorAux1 === 'Base-Gestionada' && this.valorAux2 === 'Correo') {
           const llamar = this.valorAux1 +' '+this.valorAux2;
-          this.ListarDatos(llamar);
+          this.listarDatosMod(llamar);
           this.valorBandera=llamar;
           console.log(this.valorBandera);
         }
         if (this.valorAux1 === 'Base-Gestionada' && this.valorAux2 === 'Direccion') {
           const llamar = this.valorAux1 +' ' +this.valorAux2;
-          this.ListarDatos(llamar);
+          this.listarDatosMod(llamar);
           this.valorBandera=llamar;
           console.log(this.valorBandera);
         }
         if (this.valorAux1 === 'Base-Sin-Gestionar' && this.valorAux2 === 'Telefono') {
           const llamar = this.valorAux1 +' '+this.valorAux2;
-          this.ListarDatos(llamar);
+          this.listarDatosMod(llamar);
         }
         if (this.valorAux1 === 'Base-Sin-Gestionar' && this.valorAux2 === 'Correo') {
           const llamar = this.valorAux1 +' '+this.valorAux2;
-          this.ListarDatos(llamar);
+          this.listarDatosMod(llamar);
         }
         if (this.valorAux1 === 'Base-Sin-Gestionar' && this.valorAux2 === 'Direccion') {
           const llamar = this.valorAux1 +' ' +this.valorAux2;
-          this.ListarDatos(llamar);
+          this.listarDatosMod(llamar);
         }
       }
   }
@@ -400,8 +254,6 @@ selecionarBase(valor:any)
   InicioPaginacion: number = 0;
   FinalPaginacion: number = 0;
   FraccionarValores(datos?: any, rango?: number ){
-    //this.ListaResultado=[];
-    //this.DatosCargaMasiva=[];
     if (rango != null && datos != null) {
       this.EncerarVariablesPaginacion();
       this.ContadorDatos = datos.length;
@@ -427,7 +279,6 @@ selecionarBase(valor:any)
     this.DatosTemporales = [];
   }
   ListarElementos(num: number) {
-    // this.GetBusquedaPor('');
     if (num === 1) {
       this.ListaResultado = [];
       this.FraccionDatos = 0;
@@ -649,7 +500,7 @@ selecionarBase(valor:any)
           let nombre = this.TextoFiltro.value!;
           if (num === 0) {
             const resultado = this.ListaDescargas.filter((elemento) => {
-              return elemento.cli_estado_contacta.includes(nombre.toUpperCase());
+              return elemento.cli_estado_contacta.includes(nombre);
             });
             this.FraccionarValores(resultado, this.ConstanteFraccion);
           }
@@ -784,7 +635,7 @@ selecionarBase(valor:any)
         this.FirltroPor = '';
         this.TextoFiltro.patchValue('');
         this.FraccionarValores(
-          this.DatosTemporalesBusqueda,
+          this.ListaDescargas,
           this.ConstanteFraccion
         );
       }
@@ -814,12 +665,11 @@ selecionarBase(valor:any)
         this.FirltroPor = '';
         this.TextoFiltro.patchValue('');
         this.FraccionarValores(
-          this.DatosTemporalesBusqueda,
+          this.ListaDescargas,
           this.ConstanteFraccion
         );
 
       }
-    
   }
   getKeys(valor:any[]): string[] {
     if (this.ListaDescargas.length > 0) { // Checks if ListaResultado array has elements
@@ -965,211 +815,6 @@ selecionarBase(valor:any)
     this.selecBase.patchValue('');
     await this.onCleanSelect()
   }
-  buscarFiltro(dato:any)
-  {
-    this.banderaBGestionadaTelefono=false;//agregar para no se duplique las filas y columnas
-    this.banderaBGestionadaCorreo=false;
-    this.banderaBGestionadaDireccion=false;
-    this.DatosTemporalesBusqueda=[];
-    this.Cabecera=[];
-    this.DatosTemporales=[];
-    let array:any[]=[];
-    console.log(this.valorBandera)
-    let filtro:FiltroDescarga=
-    {
-      tipo:1,identificacion:(dato.identificacion.trim()===''?'0':dato.identificacion.trim())!,
-      nombres_cliente:(dato.nombres_cliente.trim()===''?'0':dato.nombres_cliente.trim())!,
-      cartera: dato.cartera=='0'?this.TodasCarteras:[Number(dato.cartera)],
-      estado_contactibilidad:(dato.estado_contactibilidad==='Todas'?'0':dato.estado_contactibilidad),
-      fecha_inicial_gestion:dato.fecha_inicial_gestion,
-      fecha_final_gestion:dato.fecha_final_gestion,
-      fecha_inicial_pp:dato.fecha_inicial_pp,
-      fecha_final_pp:dato.fecha_final_pp
-    }
-    this.ListaDescargas=[];
-    this.DatosTemporalesBusqueda =[];
-    console.log(filtro);
-    if(this.valorBandera==='Base-Gestionada Telefono')
-      {
-        this.banderaBGestionadaTelefonoFiltro=true;
-        this.api.GetDescargaBaseGestionadaTelefonoFracionadoFiltro(filtro)
-        .pipe(
-          map((tracks) => {
-            this.ListaDescargas=[];
-            const array = tracks.data.map(({ 
-              Inf_Gestion: { 
-                cli_identificacion, 
-                cli_nombres, 
-                ope_estado_contacta, 
-                ope_cod_credito, 
-                cartera, 
-                gest_fecha_gestion, 
-                gest_valor_comp, 
-                gest_fecha_prox_pago 
-              }, 
-              telefono: { 
-                tel_numero, 
-                tipo: tel_tip_descripcion, 
-                detalle: tel_detal_descripcion 
-              } 
-            }: any) => ({
-              cli_identificacion,
-              cli_nombres,
-              tel_numero,
-              tel_tip_descripcion,
-              tel_detal_descripcion,
-              ope_estado_contacta,
-              ope_cod_credito,
-              cart_descripcion: cartera,
-              gest_fecha_gestion,
-              gest_valor_comp,
-              gest_fecha_prox_pago
-            }));
-            const valor = { data: array };
-            console.log(valor)
-            this.handleTracks(valor);
-            //this.DatosTemporalesBusqueda = tracks.data;
-            //this.loading = false;
-      
-            if (this.ListaDescargas.length === 0) {
-              this.alerta.NoExistenDatos();
-            } else {
-              this.ContadorDatosGeneral = this.ListaDescargas.length;
-              this.FraccionarValores(this.ListaDescargas, this.ConstanteFraccion);
-            }
-          }),
-          catchError((error) => {
-            this.loading = false;
-            this.alerta.ErrorAlRecuperarElementos();
-            console.error('Error retrieving elements:', error); // Log the error for debugging
-            return throwError(error); // Return the error observable
-          })
-        )
-        .subscribe();
-      }
-    if(this.valorBandera==='Base-Gestionada Correo')
-      {
-        console.log('entro2')
-        this.banderaBGestionadaCorreoFiltro=true;
-        this.api.GetDescargaBaseGestionadaCorreoFracionadoFiltro(filtro)
-  .pipe(
-    map((tracks) => {
-      this.ListaDescargas=[];
-      const array = tracks.data.map(({ 
-        Inf_Gestion: { 
-          cli_identificacion, 
-          cli_nombres, 
-          ope_estado_contacta, 
-          ope_cod_credito, 
-          cartera, 
-          gest_fecha_gestion, 
-          gest_valor_comp, 
-          gest_fecha_prox_pago 
-        }, 
-        correo: { 
-          cor_email, 
-          tipo: corr_tip_descripcion, 
-          cor_descripcion 
-        } 
-      }: any) => ({
-        cli_identificacion,
-        cli_nombres,
-        cor_email,
-        corr_tip_descripcion,
-        ope_estado_contacta,
-        ope_cod_credito,
-        cart_descripcion: cartera,
-        gest_fecha_gestion,
-        gest_valor_comp,
-        cor_descripcion,
-        gest_fecha_prox_pago
-      }));
-
-      const valor = { data: array };
-      this.handleTracks(valor);
-      //this.DatosTemporalesBusqueda = tracks.data;
-      this.loading = false;
-
-      if (this.ListaDescargas.length === 0) {
-        this.alerta.NoExistenDatos();
-      } else {
-        this.ContadorDatosGeneral = this.ListaDescargas.length;
-        this.FraccionarValores(this.ListaDescargas, this.ConstanteFraccion);
-      }
-    }),
-    catchError((error) => {
-      this.loading = false;
-      this.handleError(error); // Assuming you have a method for handling errors
-      this.alerta.ErrorAlRecuperarElementos();
-      console.error('Error retrieving elements:', error); // Log the error for debugging
-      return throwError(error); // Return the error observable
-    })
-  )
-  .subscribe();
-      }
-      if(this.valorBandera==='Base-Gestionada Direccion')
-        {
-          this.ListaDescargas=[];
-          console.log('entro3')
-          this.banderaBGestionadaDireccionFiltro=true;
-          this.api.GetDescargaBaseGestionadaDireccionFracionadoFiltro(filtro)
-  .pipe(
-    map((tracks) => {
-      this.ListaDescargas=[];
-      const array = tracks.data.map(({
-        Inf_Gestion: {
-          cli_identificacion,
-          cli_nombres,
-          ope_estado_contacta,
-          ope_cod_credito,
-          cartera,
-          gest_fecha_gestion,
-          gest_valor_comp,
-          gest_fecha_prox_pago
-        },
-        direccion: {
-          dir_completa,
-          tipo: dir_tip_descripcion,
-          dir_observacion,
-          dir_referencia
-        }
-      }: any) => ({
-        cli_identificacion,
-        cli_nombres,
-        dir_completa,
-        dir_tip_descripcion,
-        ope_estado_contacta,
-        ope_cod_credito,
-        cart_descripcion: cartera,
-        gest_fecha_gestion,
-        gest_valor_comp,
-        dir_observacion,
-        dir_referencia,
-        gest_fecha_prox_pago
-      }));
-      const valor = { data: array };
-      this.handleTracks(valor);
-      //this.DatosTemporalesBusqueda = tracks.data;
-      this.loading = false;
-
-      if (this.ListaDescargas.length === 0) {
-        this.alerta.NoExistenDatos();
-      } else {
-        this.ContadorDatosGeneral = this.ListaDescargas.length;
-        this.FraccionarValores(this.ListaDescargas, this.ConstanteFraccion);
-      }
-    }),
-    catchError((error) => {
-      this.loading = false;
-      this.alerta.ErrorAlRecuperarElementos();
-      console.error('Error retrieving elements:', error); // Log the error for debugging
-      return throwError(error); // Return the error observable
-    })
-  )
-  .subscribe();
-
-        }
-  }
   ListarContactabilidad() {
     this.ListaContactabilidad = [];
     this.api
@@ -1254,10 +899,340 @@ selecionarBase(valor:any)
 }
 vaciarTodo()
 {
-  this.ListaDescargas=[];
-  this.DatosTemporalesBusqueda=[];
-  this.DatosTemporales=[];
+  //this.ListaDescargas=[];
+  //this.DatosTemporalesBusqueda=[];
+  //this.DatosTemporales=[];
   this.selecBase.patchValue('');
+  this.resetFlags();
+  this.clearData();
   this.onCleanSelect()
+}
+resetFlags() {
+  this.banderaTelefono = false;
+  this.banderaCorreo = false;
+  this.banderaDireccion = false;
+  this.banderaBGestionadaTelefono = false;
+  this.banderaBGestionadaCorreo = false;
+  this.banderaBGestionadaDireccion = false;
+  this.banderaBaseSinGestionarTelefono = false;
+  this.banderaBaseSinGestionarCorreo = false;
+  this.banderaBaseSinGestionarDireccion = false;
+  /***banderas para el filtrar */
+  this.banderaBGestionadaTelefonoFiltro=false;
+  this.banderaBGestionadaCorreoFiltro=false;
+  this.banderaBGestionadaDireccionFiltro=false;
+  this.valorBandera="";
+}
+clearData() {
+  this.ListaDescargas = [];
+  this.DatosTemporales = [];
+  this.DatosTemporalesBusqueda = [];
+  this.DatosCargaMasiva=[];
+  this.ResetClienteForms();
+  this.Cabecera = [];
+  this.valorAux2 = '';
+}
+buscarFiltroMod(dato:any)
+{
+    this.resetFlags();
+    this.clearData();
+    let filtro: FiltroDescarga = {
+      tipo: 1,
+      identificacion: dato.identificacion.trim() === '' ? '0' : dato.identificacion.trim(),
+      nombres_cliente: dato.nombres_cliente.trim() === '' ? '0' : dato.nombres_cliente.trim(),
+      cartera: dato.cartera === '0' ? this.TodasCarteras : [Number(dato.cartera)],
+      estado_contactibilidad: dato.estado_contactibilidad === 'Todas' ? '0' : dato.estado_contactibilidad,
+      fecha_inicial_gestion: dato.fecha_inicial_gestion,
+      fecha_final_gestion: dato.fecha_final_gestion,
+      fecha_inicial_pp: dato.fecha_inicial_pp,
+      fecha_final_pp: dato.fecha_final_pp
+    };
+    this.ListaDescargas = [];
+    const opcion:string=this.selecBase.value +' '+this.selecEntidad.value;
+    if (opcion === 'Base-Gestionada Telefono') {
+      this.banderaBGestionadaTelefonoFiltro=true;
+        this.api.GetDescargaBaseGestionadaTelefonoFracionadoFiltro(filtro)
+            .pipe(
+                map((tracks) => this.processTracks(tracks, 'GestionadaTelefonoFiltro')),
+                catchError((error) => this.handleError(error))
+            )
+            .subscribe();
+    }
+    if (opcion === 'Base-Gestionada Correo') {
+      this.banderaBGestionadaCorreoFiltro=true;
+        this.api.GetDescargaBaseGestionadaCorreoFracionadoFiltro(filtro)
+            .pipe(
+                map((tracks) => this.processTracks(tracks, 'GestionadaCorreoFiltro')),
+                catchError((error) => this.handleError(error))
+            )
+            .subscribe();
+    }
+    if (opcion === 'Base-Gestionada Direccion') {
+      this.banderaBGestionadaDireccionFiltro=true;
+        this.api.GetDescargaBaseGestionadaDireccionFracionadoFiltro(filtro)
+            .pipe(
+                map((tracks) => this.processTracks(tracks, 'GestionadaDireccionFiltro')),
+                catchError((error) => this.handleError(error))
+            )
+            .subscribe();
+    }
+
+}
+listarDatosMod(opcion:string)
+{
+  this.resetFlags();
+  this.clearData();
+  if (opcion === 'Base-General Telefono') {
+    this.banderaTelefono = true;
+    this.api.GetDescargaBaseGeneralTelefonoFracionado(this.FraccionDatos, this.RangoDatos)
+      .pipe(map((tracks) => this.processTracks(tracks, 'bdTelefono')),
+        catchError((error) => this.handleError(error))).subscribe();
+  }
+  if (opcion === 'Base-General Correo') {
+    this.banderaCorreo = true;
+    this.api.GetDescargaBaseGeneralCorreoFracionado(this.FraccionDatos, this.RangoDatos)
+      .pipe(map((tracks) => this.processTracks(tracks, 'bdCorreo')),
+        catchError((error) => this.handleError(error))).subscribe();
+  }
+  if (opcion === 'Base-General Direccion') {
+    this.banderaDireccion = true;
+    this.api.GetDescargaBaseGeneralDireccionFracionado(this.FraccionDatos, this.RangoDatos)
+      .pipe(map((tracks) => this.processTracks(tracks, 'bdDireccion')),
+        catchError((error) => this.handleError(error))).subscribe();
+  }
+  if (opcion === 'Base-Gestionada Telefono') {
+    this.banderaBGestionadaTelefono = true;
+    this.banderaViewFiltro = true;
+    this.api.GetDescargaBaseGestionadaTelefonoFracionado(this.FraccionDatos, this.RangoDatos)
+      .pipe(map((tracks) => this.processTracks(tracks, 'GestionadaTelefono')),
+        catchError((error) => this.handleError(error))).subscribe();
+  }
+  if (opcion === 'Base-Gestionada Correo') {
+    this.banderaBGestionadaCorreo = true;
+    this.banderaViewFiltro = true;
+    this.api.GetDescargaBaseGestionadaCorreoFracionado(this.FraccionDatos, this.RangoDatos)
+      .pipe(map((tracks) => this.processTracks(tracks, 'GestionadaCorreo')),
+        catchError((error) => this.handleError(error))).subscribe();
+  }
+  if (opcion === 'Base-Gestionada Direccion') {
+    this.banderaBGestionadaDireccion = true;
+    this.banderaViewFiltro = true;
+    this.api.GetDescargaBaseGestionadaDireccionFracionado(this.FraccionDatos, this.RangoDatos)
+      .pipe(map((tracks) => this.processTracks(tracks, 'GestionadaDireccion')),
+        catchError((error) => this.handleError(error))).subscribe();
+  }
+  if (opcion === 'Base-Sin-Gestionar Telefono') {
+    this.banderaBaseSinGestionarTelefono = true;
+    this.api.GetDescargaBaseSinGestionarTelefonoFracionado(this.FraccionDatos, this.RangoDatos)
+      .pipe(map((tracks) => this.processTracks(tracks, 'sinGestionarTelefono')),
+        catchError((error) => this.handleError(error))).subscribe();
+  }
+  if (opcion === 'Base-Sin-Gestionar Correo') {
+    this.banderaBaseSinGestionarCorreo = true;
+    this.api.GetDescargaBaseSinGestionarCorreoFracionado(this.FraccionDatos, this.RangoDatos)
+      .pipe(map((tracks) => this.processTracks(tracks, 'sinGestionarCorreo')),
+        catchError((error) => this.handleError(error))).subscribe();
+  }
+  if (opcion === 'Base-Sin-Gestionar Direccion') {
+    this.banderaBaseSinGestionarDireccion = true;
+    this.api.GetDescargaBaseSinGestionarDireccionFracionado(this.FraccionDatos, this.RangoDatos)
+      .pipe(map((tracks) => this.processTracks(tracks, 'sinGestionarDireccion')),
+        catchError((error) => this.handleError(error))).subscribe();
+  }
+}
+processTracks(tracks:any,tipo:string)
+{
+  this.ListaDescargas = tracks.data.map(track => {
+    if (tipo === 'bdTelefono') {
+      return {
+        cli_identificacion: track.cli_identificacion,
+        cli_nombres: track.cli_nombres,
+        tel_numero: track.tel_numero,
+        tel_tip_descripcion: track.tel_tip_descripcion,
+        tel_detal_descripcion: track.tel_detal_descripcion,
+        cli_estado_contacta: track.cli_estado_contacta,
+        ope_cod_credito: track.ope_cod_credito,
+        id_cartera: track.id_cartera,
+        cart_descripcion: track.cart_descripcion,
+        tel_observacion: track.tel_observacion,
+        
+      };
+    } else if (tipo === 'bdCorreo') {
+      return {
+        cli_identificacion: track.cli_identificacion,
+        cli_nombres: track.cli_nombres,
+        cor_email: track.cor_email,
+        corr_tip_descripcion: track.corr_tip_descripcion,
+        cli_estado_contacta: track.cli_estado_contacta,
+        ope_cod_credito: track.ope_cod_credito,
+        cart_descripcion: track.cart_descripcion,
+        cor_descripcion: track.cor_descripcion,
+      };
+    } else if (tipo === 'bdDireccion') {
+      return {
+        cli_identificacion: track.cli_identificacion,
+        cli_nombres: track.cli_nombres,
+        dir_completa: track.dir_completa,
+        dir_referencia: track.dir_referencia,
+        dir_numero_casa: track.dir_numero_casa,
+        dir_tip_descripcion: track.dir_tip_descripcion,
+        cli_estado_contacta: track.cli_estado_contacta,
+        ope_cod_credito: track.ope_cod_credito,
+        cart_descripcion: track.cart_descripcion,
+        dir_observacion: track.dir_observacion
+      };
+    } else if (tipo === 'GestionadaTelefono') {
+      return {
+        cli_identificacion: track.cli_identificacion,
+        cli_nombres: track.cli_nombres,
+        tel_numero: track.tel_numero,
+        tel_tip_descripcion: track.tel_tip_descripcion,
+        tel_detal_descripcion: track.tel_detal_descripcion,
+        ope_estado_contacta: track.ope_estado_contacta,
+        ope_cod_credito: track.ope_cod_credito,
+        cart_descripcion: track.cart_descripcion,
+        gest_fecha_gestion: track.gest_fecha_gestion,
+        gest_fecha_compromiso: track.gest_fecha_compromiso,
+        gest_valor_comp: track.gest_valor_comp,
+        tel_observacion: track.tel_observacion,
+        gest_fecha_prox_pago: track.gest_fecha_prox_pago,
+      };
+    } else if (tipo === 'GestionadaTelefonoFiltro') {
+      return {
+        cli_identificacion: track.Inf_Gestion.cli_identificacion,
+        cli_nombres: track.Inf_Gestion.cli_nombres,
+        tel_numero: track.telefono.tel_numero,
+        tel_tip_descripcion: track.telefono.tipo,
+        tel_detal_descripcion: track.telefono.detalle,
+        ope_estado_contacta: track.Inf_Gestion.ope_estado_contacta,
+        ope_cod_credito: track.Inf_Gestion.ope_cod_credito,
+        cart_descripcion: track.Inf_Gestion.cartera,
+        gest_fecha_gestion: track.Inf_Gestion.gest_fecha_gestion,
+        gest_valor_comp: track.Inf_Gestion.gest_valor_comp,
+        gest_fecha_prox_pago: track.Inf_Gestion.gest_fecha_prox_pago
+      };
+    } else if (tipo === 'GestionadaCorreoFiltro') {
+      return {
+        cli_identificacion: track.Inf_Gestion.cli_identificacion,
+        cli_nombres: track.Inf_Gestion.cli_nombres,
+        cor_email: track.correo.cor_email,
+        corr_tip_descripcion: track.correo.tipo,
+        cor_descripcion: track.correo.cor_descripcion,
+        ope_estado_contacta: track.Inf_Gestion.ope_estado_contacta,
+        ope_cod_credito: track.Inf_Gestion.ope_cod_credito,
+        cart_descripcion: track.Inf_Gestion.cartera,
+        gest_fecha_gestion: track.Inf_Gestion.gest_fecha_gestion,
+        gest_valor_comp: track.Inf_Gestion.gest_valor_comp,
+        gest_fecha_prox_pago: track.Inf_Gestion.gest_fecha_prox_pago
+      };
+    } else if (tipo === 'GestionadaDireccionFiltro') {
+      return {
+        cli_identificacion: track.Inf_Gestion.cli_identificacion,
+        cli_nombres: track.Inf_Gestion.cli_nombres,
+        dir_completa: track.direccion.dir_completa,
+        dir_tip_descripcion: track.direccion.tipo,
+        ope_estado_contacta: track.Inf_Gestion.ope_estado_contacta,
+        ope_cod_credito: track.Inf_Gestion.ope_cod_credito,
+        cart_descripcion: track.Inf_Gestion.cartera,
+        gest_fecha_gestion: track.Inf_Gestion.gest_fecha_gestion,
+        gest_valor_comp: track.Inf_Gestion.gest_valor_comp,
+        dir_observacion: track.direccion.dir_observacion,
+        dir_referencia: track.direccion.dir_referencia,
+        dir_numero_casa:track.direccion.dir_numero_casa,
+        gest_fecha_prox_pago: track.Inf_Gestion.gest_fecha_prox_pago
+      };
+    } else if (tipo === 'GestionadaCorreo') {
+      return {
+        cli_identificacion: track.cli_identificacion,
+        cli_nombres: track.cli_nombres,
+        cor_email: track.cor_email,
+        cor_id_tipo_correo: track.cor_id_tipo_correo,
+        corr_tip_descripcion:track.corr_tip_descripcion,
+        ope_estado_contacta: track.ope_estado_contacta,
+        ope_cod_credito: track.ope_cod_credito,
+        id_cartera:track.id_cartera,
+        cart_descripcion: track.cart_descripcion,
+        gest_fecha_gestion: track.gest_fecha_gestion,
+        gest_valor_comp: track.gest_valor_comp,
+        cor_descripcion: track.cor_descripcion,
+        gest_fecha_prox_pago: track.gest_fecha_prox_pago
+      };
+    } else if (tipo === 'GestionadaDireccion') {
+      return {
+        cli_identificacion: track.cli_identificacion,
+        cli_nombres: track.cli_nombres,
+        dir_completa: track.dir_completa,
+        dir_referencia:track.dir_referencia,
+        dir_numero_casa:track.dir_numero_casa,
+        dir_id_tipo_direccion: track.dir_id_tipo_direccion,
+        dir_tip_descripcion:track.dir_tip_descripcion,
+        ope_estado_contacta: track.ope_estado_contacta,
+        ope_cod_credito: track.ope_cod_credito,
+        id_cartera:track.id_cartera,
+        cart_descripcion: track.cart_descripcion,
+        gest_fecha_gestion: track.gest_fecha_gestion,
+        gest_valor_comp: track.gest_valor_comp,
+        dir_observacion: track.dir_observacion,
+        gest_fecha_prox_pago: track.gest_fecha_prox_pago
+      };
+    } else if (tipo === 'sinGestionarTelefono') {
+      return {
+        cli_identificacion: track.cli_identificacion,
+        cli_nombres: track.cli_nombres,
+        tel_numero: track.tel_numero,
+        tel_id_tipo_telefono:track.tel_id_tipo_telefono,
+        tel_tip_descripcion:track.tel_tip_descripcion,
+        tel_id_detal_telefono:track.tel_id_detal_telefono,
+        tel_detal_descripcion:track.tel_detal_descripcion,
+        cli_estado_contacta:track.cli_estado_contacta,
+        ope_cod_credito:track.ope_cod_credito,
+        id_cartera:track.id_cartera,
+        cart_descripcion:track.cart_descripcion,
+        tel_observacion:track.tel_observacion
+      };
+    } else if (tipo === 'sinGestionarCorreo') {
+      return {
+                cli_identificacion: track.cli_identificacion,
+                cli_nombres: track.cli_nombres,
+                cor_email: track.cor_email,
+                cor_id_tipo_correo:track.cor_id_tipo_correo,
+                corr_tip_descripcion:track.corr_tip_descripcion,
+                cli_estado_contacta:track.cli_estado_contacta,
+                ope_cod_credito:track.ope_cod_credito,
+                id_cartera:track.id_cartera,
+                cart_descripcion:track.cart_descripcion,
+                cor_descripcion:track.cor_descripcion
+      };
+    } else if (tipo === 'sinGestionarDireccion') {
+      return {
+        cli_identificacion: track.cli_identificacion,
+        cli_nombres: track.cli_nombres,
+        dir_completa: track.dir_completa,
+        dir_numero_casa:track.dir_numero_casa,
+        dir_referencia:track.dir_referencia,
+        dir_id_tipo_direccion:track.dir_id_tipo_direccion,
+        dir_tip_descripcion:track.dir_tip_descripcion,
+        cli_estado_contacta:track.cli_estado_contacta,
+        ope_cod_credito:track.ope_cod_credito,
+        id_cartera:track.id_cartera,
+        cart_descripcion:track.cart_descripcion,
+        dir_observacion:track.dir_observacion
+      };
+    } else {
+      return null;
+    }
+  });
+  if(this.ListaDescargas.length>0)
+    {
+      this.alerta.ExitoEnLaPeticion("Informacion solicita Recuperada");
+      this.Cabecera=this.getKeys(this.ListaDescargas);
+      this.FraccionarValores(this.ListaDescargas, this.ConstanteFraccion);
+    }else
+    {
+      this.loading = false;
+      this.alerta.ErrorAlRecuperarElementos();
+      this.vaciarTodo();
+    }
+  
 }
 }

@@ -58,7 +58,8 @@
                                                                     <button class="btnAgregar" data-bs-toggle="tooltip" data-bs-placement="top" title="Descargar los Datos" (click)="descargarExcel(this.selecEntidad.value)"><i class="fa-solid fa-download">Descargar</i></button>
                                                                 </div> 
                                                                 <div class="col-md-3 col-6 d-flex align-items-center justify-content-center"> <!-- Add d-flex align-items-center justify-content-center classes here -->
-                                                                    <button class="btnEliminar"  data-bs-toggle="tooltip" data-bs-placement="top" title="Limpiar" (click)="vaciarTodo()"><i class="bi bi-eraser" style="font-size: 20px;"></i>Limpiar</button>                                                                </div> 
+                                                                    <button class="btnEliminar" data-bs-toggle="tooltip" data-bs-placement="top" title="Limpiar" (click)="vaciarTodo()"><i class="fa fa-eraser">Limpiar</i></button>
+                                                                </div> 
                                                                    
                                                             </div>
                                                     </section>
@@ -67,7 +68,7 @@
                                                         <div class="row">
                                                             <div class="col-md-1 col-3">
                                                                 <button type="button" class="btnBuscar ml-2"
-                                                                (click)="buscarFiltro(BuscarForms.value)">
+                                                                (click)="buscarFiltroMod(BuscarForms.value)">
                                                                     <i class="bi bi-search"></i>
                                                                 </button>
                                                             </div>
@@ -268,7 +269,6 @@
                                         <th>{{datos.ope_cod_credito}}</th>
                                         <th>{{datos.cart_descripcion}}</th>
                                         <th>{{datos.dir_observacion===null?'Ninguna':datos.datos.dir_observacion}}</th>
-                                        <!-- ... -->
                                     </tr>
                                     <tr *ngIf="this.banderaBGestionadaTelefono">
                                         <th>{{InicioPaginacion + i + 1}}</th>
@@ -360,7 +360,8 @@
                                         <th>{{this.Fechas.fechaCorta(datos.gest_fecha_gestion)}}</th>
                                         <th>{{(datos.gest_valor_comp===null||datos.gest_valor_comp==='')?'0':datos.gest_valor_comp}}</th>    
                                         <th>{{datos.dir_observacion===null?'Ninguna':datos.dir_observacion}}</th>
-                                        <th>{{datos.dir_referencia===null?'Ninguna':datos.dir_referencia}}</th>       
+                                        <th>{{datos.dir_referencia===null?'Ninguna':datos.dir_referencia}}</th>
+                                        <th>{{datos.dir_numero_casa===null?'Ninguno':datos.dir_numero_casa}}</th>       
                                         <th>{{this.Fechas.fechaCorta(datos.gest_fecha_prox_pago)==='31-12-1969'?'Ninguno':this.Fechas.fechaCorta(datos.gest_fecha_prox_pago)}}</th>
                                     </tr>
                                     <tr *ngIf="this.banderaBaseSinGestionarTelefono">
@@ -412,7 +413,6 @@
 
 
                         </div>
-
                         <div class="card-footer" style="background-color: var(--color-formulario-terciario);"
                             *ngIf="ListaDescargas.length != 0 ">
                             <div class="row">
