@@ -469,9 +469,23 @@ export class DetalleTelefonoComponent  implements OnInit {
           return elemento.tel_detal_descripcion.includes(nombre.toUpperCase());
         });
         this.FraccionarValores(resultado, this.ConstanteFraccion);
+        const o=resultado.map(item=>
+          {
+            return {
+              id:item.id_detalle_telefono,
+              Descripcion:item.tel_detal_descripcion,
+              FIngreso:item.tel_detal_fecha_in ===null?null:this.Fechas.fechaCortaAbt(item.tel_detal_fecha_in.toString()),
+              Estado:item.tel_detal_esactivo==='1'?'ACTIVO':'INACTIVO'
+            };
+        });
+        let om: generarPDF = {
+          entidad: 'detalleTelefono', listado:o
+        };
+        this.gdetalleTelefono=om;
       }
 
       if (contador != 0) {
+        
         ThDescripcion.style.color = 'red';
       } else {
         ThDescripcion.style.color = '';

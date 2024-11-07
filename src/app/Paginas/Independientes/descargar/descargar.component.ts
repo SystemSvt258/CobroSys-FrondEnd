@@ -831,72 +831,72 @@ selecionarBase(valor:any)
       )
       .subscribe();
   }
-  GetFiltrarElemento(datos:any) 
-{
-  console.log(datos)
-  let aux: string[] = [];
-  let aux2: string[] = [];
-  let c=0;
-  for (let key in datos) {
-    if (datos.hasOwnProperty(key)) {
-        if(datos[key]!='0' && key==='cartera'||datos[key]!='0'&&key==='contactabilidad')
-        {
-            const v:string=this.atributoBusqueda(key);
-            const resultado = this.ListaResultado.filter((elemento) => {
-              return elemento[v].includes(datos[key]);
-            });
-            this.FraccionarValores(resultado, this.ConstanteFraccion);
-        }
+//   GetFiltrarElemento(datos:any) 
+// {
+//   console.log(datos)
+//   let aux: string[] = [];
+//   let aux2: string[] = [];
+//   let c=0;
+//   for (let key in datos) {
+//     if (datos.hasOwnProperty(key)) {
+//         if(datos[key]!='0' && key==='cartera'||datos[key]!='0'&&key==='contactabilidad')
+//         {
+//             const v:string=this.atributoBusqueda(key);
+//             const resultado = this.ListaResultado.filter((elemento) => {
+//               return elemento[v].includes(datos[key]);
+//             });
+//             this.FraccionarValores(resultado, this.ConstanteFraccion);
+//         }
        
-      if ((datos[key] !== this.Fechas.fechaActualCorta() && key === 'fechapp_inicial') ||
-        (datos[key] !== this.Fechas.fechaActualCorta() && key === 'fechapp_final') ||
-        (datos[key] !== this.Fechas.fechaActualCorta() && key === 'fecha_inicial') ||
-        (datos[key] !== this.Fechas.fechaActualCorta() && key === 'fecha_final'))
-          {
-            aux.push(key);
-            aux2.push(datos[key]);
-          }
-    }
-}
+//       if ((datos[key] !== this.Fechas.fechaActualCorta() && key === 'fechapp_inicial') ||
+//         (datos[key] !== this.Fechas.fechaActualCorta() && key === 'fechapp_final') ||
+//         (datos[key] !== this.Fechas.fechaActualCorta() && key === 'fecha_inicial') ||
+//         (datos[key] !== this.Fechas.fechaActualCorta() && key === 'fecha_final'))
+//           {
+//             aux.push(key);
+//             aux2.push(datos[key]);
+//           }
+//     }
+// }
   
-}
-  atributoBusqueda(valor:string):string
-  {
-    let val!:string;
-    if(valor==='cartera')
-      {
-        val='cart_descripcion';
-      }
-    if(valor==='contactabilidad')
-      {
-        val='ope_estado_contacta';
-      }
-    if(valor==='fechapp_inicial')
-      {
-        val='gest_fecha_prox_pago';
-      }
-    if(valor==='fechapp_final')
-      {
-        val='gest_fecha_prox_pago';
-      }
-    if(valor==='fecha_inicial')
-      {
-        val='gest_fecha_gestion';
-      }
-      if(valor==='fecha_final')
-        {
-          val='gest_fecha_gestion';
-        }
-    return val;
-  }
-  compareObjects(obj1: any, obj2: any): boolean {
-    return JSON.stringify(obj1) === JSON.stringify(obj2);
-  }
-  obtenerObjetosValidos(lista:any, cabecera:any):any[] {
-    return lista.filter((obj:any) => {
-        return cabecera.every((attr:any) => attr in obj);
-    });
-}
+// }
+  // atributoBusqueda(valor:string):string
+  // {
+  //   let val!:string;
+  //   if(valor==='cartera')
+  //     {
+  //       val='cart_descripcion';
+  //     }
+  //   if(valor==='contactabilidad')
+  //     {
+  //       val='ope_estado_contacta';
+  //     }
+  //   if(valor==='fechapp_inicial')
+  //     {
+  //       val='gest_fecha_prox_pago';
+  //     }
+  //   if(valor==='fechapp_final')
+  //     {
+  //       val='gest_fecha_prox_pago';
+  //     }
+  //   if(valor==='fecha_inicial')
+  //     {
+  //       val='gest_fecha_gestion';
+  //     }
+  //     if(valor==='fecha_final')
+  //       {
+  //         val='gest_fecha_gestion';
+  //       }
+  //   return val;
+  // }
+//   compareObjects(obj1: any, obj2: any): boolean {
+//     return JSON.stringify(obj1) === JSON.stringify(obj2);
+//   }
+//   obtenerObjetosValidos(lista:any, cabecera:any):any[] {
+//     return lista.filter((obj:any) => {
+//         return cabecera.every((attr:any) => attr in obj);
+//     });
+// }
 vaciarTodo()
 {
   //this.ListaDescargas=[];
@@ -1055,7 +1055,6 @@ processTracks(tracks:any,tipo:string)
         id_cartera: track.id_cartera,
         cart_descripcion: track.cart_descripcion,
         tel_observacion: track.tel_observacion,
-        
       };
     } else if (tipo === 'bdCorreo') {
       return {

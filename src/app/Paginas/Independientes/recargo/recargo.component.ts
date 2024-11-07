@@ -554,6 +554,21 @@ FiltrarLista(num: number) {
         return elemento.rec_descripcion.includes(nombre.toUpperCase());
       });
       this.FraccionarValores(resultado, this.ConstanteFraccion);
+      const o=resultado.map(tipoT=>
+        {
+          return {
+      Descripcion:tipoT.rec_descripcion,
+            Valor:tipoT.rec_valor,
+            idCartera:tipoT.rec_id_cartera,
+            FIngreso:tipoT.rec_fecha_in ===null?null:this.Fechas.fechaCortaAbt(tipoT.rec_fecha_in.toString()),
+            Estado:tipoT.rec_esactivo==='1'?'ACTIVO':'INACTIVO'
+          };
+      });
+      let om: generarPDF = {
+        entidad: 'Recargo', listado:o
+      };
+      this.gRecargo=om;
+  
     }
 
     if (contador != 0) {

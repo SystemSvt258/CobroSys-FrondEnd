@@ -483,6 +483,20 @@ export class MenusComponent implements OnInit {
           return elemento.men_descripcion.includes(nombre.toUpperCase());
         });
         this.FraccionarValores(resultado, this.ConstanteFraccion);
+        const o=resultado.map(m=>
+          {
+            return {
+				  Descripcion:m.men_descripcion,
+                Url:m.men_url,
+                Icono:m.men_icono,
+                Fecha:m.men_fecha_in===null?null:this.Fechas.fechaCortaAbt(m.men_fecha_in.toString()),
+                Estado:m.men_esactivo==='1'?'ACTIVO':'INACTIVO'
+            };
+        });
+        let om: generarPDF = {
+          entidad: 'Menu', listado:o
+        };
+        this.gMenu=om;
       }
 
       if (contador != 0) {

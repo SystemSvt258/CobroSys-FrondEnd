@@ -581,6 +581,20 @@ export class GestoresComponent implements OnInit {
           return elemento.ges_nombres.includes(nombre.toUpperCase());
         });
         this.FraccionarValores(resultado, this.ConstanteFraccion);
+        const o=resultado.map(g=>
+          {
+            return {
+				  Nombre:g.ges_nombres,
+                Apellido:g.ges_apellidos,
+                Meta:g.ges_meta,
+                Fecha:g.ges_fecha_in===null?null:this.Fechas.fechaCortaAbt(g.ges_fecha_in),
+                Estado:g.ges_esactivo==='1'?'ACTIVO':'INACTIVO'
+            };
+        });
+        let om: generarPDF = {
+          entidad: 'Gestor', listado:o
+        };
+        this.gGestor=om;
       }
 
       if (contador != 0) {
@@ -596,6 +610,20 @@ export class GestoresComponent implements OnInit {
           return elemento.ges_apellidos.includes(nombre.toUpperCase());
         });
         this.FraccionarValores(resultado, this.ConstanteFraccion);
+        const o=resultado.map(g=>
+          {
+            return {
+				  Nombre:g.ges_nombres,
+                Apellido:g.ges_apellidos,
+                Meta:g.ges_meta,
+                Fecha:g.ges_fecha_in===null?null:this.Fechas.fechaCortaAbt(g.ges_fecha_in),
+                Estado:g.ges_esactivo==='1'?'ACTIVO':'INACTIVO'
+            };
+        });
+        let om: generarPDF = {
+          entidad: 'Gestor', listado:o
+        };
+        this.gGestor=om;
       }
 
       if (contador != 0) {

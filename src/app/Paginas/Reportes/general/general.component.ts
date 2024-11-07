@@ -6,12 +6,13 @@ import { Fechas } from 'src/app/Control/Fechas';
 import { ResultadoCarteraI, ResultadoGestorI, ResultadoMenuI, ResultadoPermisosI } from 'src/app/Modelos/login.interface';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Observable, catchError, map } from 'rxjs';
-import { ContactabilidadI, FiltroGestion2, GestionCG, GestorI } from 'src/app/Modelos/response.interface';
+import { ContactabilidadI, FiltroGestion2, generarPDF, GestionCG, GestorI } from 'src/app/Modelos/response.interface';
 import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
 import * as XLSX from 'xlsx';
 import { ngxCsv } from 'ngx-csv';
 import autotable from 'jspdf-autotable';
+import { GeneradorReporte } from 'src/app/Control/GeneradoReporte';
 
 @Component({
   selector: 'app-general',
@@ -48,7 +49,7 @@ export class GeneralComponent implements OnInit {
     
   }
   @ViewChild('contenido',{static:false})el!:ElementRef
-  constructor(private api: ApiService,private alerta: Alertas,public Fechas: Fechas,private router: Router) {}
+  constructor(private api: ApiService,private alerta: Alertas,public Fechas: Fechas,private router: Router,public reporte:GeneradorReporte) {}
   BuscarForms = new FormGroup({
     identificacion: new FormControl('', Validators.required),
     nombres_cliente: new FormControl('', Validators.required),
@@ -147,6 +148,7 @@ export class GeneralComponent implements OnInit {
   LecturaEscritura: number = Number(this.PaginaActual.men_lectura);
   PaginaNombre: string = this.PaginaActual.men_descripcion;
   loading: boolean = false;
+  gReporteG!:generarPDF;
   // ****************************************** PAGINACION *****************************************************************
   DatosCargaMasiva!: any[];
   DatosTemporales: any[] = [];
@@ -196,7 +198,14 @@ export class GeneralComponent implements OnInit {
         map((tracks) => {
           this.banderaDescargar=true;
           this.ListaGestion = tracks['data'];
+          //console.log(this.ListaGestion)
           this.valorD=this.getKeys2(this.ListaGestion).length;
+          const o:any[] =this.getProductData2(this.valorD);
+          console.log(o)
+          let om: generarPDF = {
+            entidad: 'ReporteGeneral', listado:o
+          };
+          this.gReporteG=om;
           this.DatosTemporalesBusqueda = tracks['data'];
           if (this.ListaGestion.length === 0) {
             this.loading = false;
@@ -214,7 +223,6 @@ export class GeneralComponent implements OnInit {
         })
       )
       .subscribe();
-      //this.getElementosSinGestionar2();
   }
   buscarFiltro(dato:any)
   {
@@ -244,6 +252,12 @@ export class GeneralComponent implements OnInit {
           this.ListaGestion = tracks['data'];
           this.banderaDescargar=true;
           this.valorD=this.getKeys2(this.ListaGestion).length;
+          const o:any[] =this.getProductData2(this.valorD);
+          console.log(o)
+          let om: generarPDF = {
+            entidad: 'ReporteGeneralFiltro', listado:o
+          };
+          this.gReporteG=om;
           this.DatosTemporalesBusqueda = tracks['data'];
           if (this.ListaGestion.length === 0) {
             this.loading = false;
@@ -261,6 +275,8 @@ export class GeneralComponent implements OnInit {
         })
       )
       .subscribe();
+      const auxA:any[] =this.getProductData2(this.valorD);
+      
 
     // if(this.BuscarForms.value.identificacion===''&&this.BuscarForms.value.nombres_cliente===''&&this.BuscarForms.value.cartera==='0'&&this.BuscarForms.value.gestor==='0'&&this.BuscarForms.value.contactabilidad==='0'&&this.BuscarForms.value.fecha_inicial===this.Fechas.fechaActualCorta()&&this.BuscarForms.value.fecha_final===this.Fechas.fechaActualCorta())
     //   {
@@ -403,9 +419,33 @@ export class GeneralComponent implements OnInit {
   FiltrarLista(num: number) {
     const contador = this.TextoFiltro.value!.trim().length!;
     this.EncerarVariablesPaginacion();
-    this.TextoFiltro.patchValue(this.TextoFiltro.value!.toUpperCase());
+    this.TextoFiltro.patchValue(this.TextoFiltro.value!);
     const ThNombres = document.getElementById(
       'ThNombres'
+    ) as HTMLInputElement;
+    const ThCartera = document.getElementById(
+      'ThCartera'
+    ) as HTMLInputElement;
+    const ThCXC = document.getElementById(
+      'ThCXC'
+    ) as HTMLInputElement;
+    const ThCedula = document.getElementById(
+      'ThCedula'
+    ) as HTMLInputElement;
+    const ThConectividad = document.getElementById(
+      'ThConectividad'
+    ) as HTMLInputElement;
+    const ThGestor = document.getElementById(
+      'ThGestor'
+    ) as HTMLInputElement;
+    const ThTipoGestion = document.getElementById(
+      'ThTipoGestion'
+    ) as HTMLInputElement;
+    const ThGestionMediante = document.getElementById(
+      'ThGestionMediante'
+    ) as HTMLInputElement;
+    const ThContactabilidad = document.getElementById(
+      'ThContactabilidad'
     ) as HTMLInputElement;
     if(this.banderaTodad===true&&this.banderaFiltro===false)
       {
@@ -416,12 +456,141 @@ export class GeneralComponent implements OnInit {
               return elemento['cli_nombres'].includes(nombre.toUpperCase());
             });
             this.FraccionarValores(resultado, this.ConstanteFraccion);
+            console.log(resultado);
           }
-    
+           
           if (contador != 0) {
             ThNombres.style.color = 'red';
           } else {
             ThNombres.style.color = '';
+          }
+        }
+        if (this.FirltroPor === 'Cartera') {
+          let nombre = this.TextoFiltro.value!;
+          if (num === 0) {
+            const resultado = this.ListaGestion.filter((elemento) => {
+              return elemento['cart_descripcion'].includes(nombre.toUpperCase());
+            });
+            this.FraccionarValores(resultado, this.ConstanteFraccion);
+            console.log(resultado);
+          }
+           
+          if (contador != 0) {
+            ThCartera.style.color = 'red';
+          } else {
+            ThCartera.style.color = '';
+          }
+        }
+        if (this.FirltroPor === 'Cedula') {
+          let nombre = this.TextoFiltro.value!;
+          if (num === 0) {
+            const resultado = this.ListaGestion.filter((elemento) => {
+              return elemento['cli_identificacion'].includes(nombre.trim());
+            });
+            this.FraccionarValores(resultado, this.ConstanteFraccion);
+            console.log(resultado);
+          }
+           
+          if (contador != 0) {
+            ThCedula.style.color = 'red';
+          } else {
+            ThCedula.style.color = '';
+          }
+        }
+        if (this.FirltroPor === 'Credito') {
+          let nombre = this.TextoFiltro.value!;
+          if (num === 0) {
+            const resultado = this.ListaGestion.filter((elemento) => {
+              return elemento['ope_cod_credito'].includes(nombre.trim());
+            });
+            this.FraccionarValores(resultado, this.ConstanteFraccion);
+            console.log(resultado);
+          }
+           
+          if (contador != 0) {
+            ThCXC.style.color = 'red';
+          } else {
+            ThCXC.style.color = '';
+          }
+        }
+        if (this.FirltroPor === 'Gestor') {
+          let nombre = this.TextoFiltro.value!;
+          if (num === 0) {
+            const resultado = this.ListaGestion.filter((elemento) => {
+              return elemento['nombreGest'].includes(nombre.toUpperCase());
+            });
+            this.FraccionarValores(resultado, this.ConstanteFraccion);
+            console.log(resultado);
+          }
+           
+          if (contador != 0) {
+            ThGestor.style.color = 'red';
+          } else {
+            ThGestor.style.color = '';
+          }
+        }
+        if (this.FirltroPor === 'Conectividad') {
+          let nombre = this.TextoFiltro.value!;
+          if (num === 0) {
+            const resultado = this.ListaGestion.filter((elemento) => {
+              return elemento['conec_descripcion'].includes(nombre.toUpperCase());
+            });
+            this.FraccionarValores(resultado, this.ConstanteFraccion);
+            console.log(resultado);
+          }
+           
+          if (contador != 0) {
+            ThConectividad.style.color = 'red';
+          } else {
+            ThConectividad.style.color = '';
+          }
+        }
+        if (this.FirltroPor === 'TipoGestion') {
+          let nombre = this.TextoFiltro.value!;
+          if (num === 0) {
+            const resultado = this.ListaGestion.filter((elemento) => {
+              return elemento['gestion_tip_descripcion'].includes(nombre.toUpperCase());
+            });
+            this.FraccionarValores(resultado, this.ConstanteFraccion);
+            console.log(resultado);
+          }
+           
+          if (contador != 0) {
+            ThTipoGestion.style.color = 'red';
+          } else {
+            ThTipoGestion.style.color = '';
+          }
+        }
+        if (this.FirltroPor === 'GestionMediante') {
+          let nombre = this.TextoFiltro.value!;
+          if (num === 0) {
+            const resultado = this.ListaGestion.filter((elemento) => {
+              return elemento['gest_num_contacto'].includes(nombre);
+            });
+            this.FraccionarValores(resultado, this.ConstanteFraccion);
+            console.log(resultado);
+          }
+           
+          if (contador != 0) {
+            ThGestionMediante.style.color = 'red';
+          } else {
+            ThGestionMediante.style.color = '';
+          }
+        }
+        if (this.FirltroPor === 'Contactabilidad') {
+          let nombre = this.TextoFiltro.value!;
+          if (num === 0) {
+            const resultado = this.ListaGestion.filter((elemento) => {
+              return elemento['cli_estado_contacta'].includes(nombre);
+            });
+            this.FraccionarValores(resultado, this.ConstanteFraccion);
+            console.log(resultado);
+          }
+           
+          if (contador != 0) {
+            ThContactabilidad.style.color = 'red';
+          } else {
+            ThContactabilidad.style.color = '';
           }
         }
 
@@ -451,14 +620,43 @@ export class GeneralComponent implements OnInit {
     const inputElement = document.getElementById(
       'TxtFiltro'
     ) as HTMLInputElement;
-    const ThDescripcion = document.getElementById(
-      'ThDescripcion'
+    const ThNombres = document.getElementById(
+      'ThNombres'
     ) as HTMLInputElement;
-    // const ThApellido = document.getElementById(
-    //   'ThApellido'
-    // ) as HTMLInputElement;
-    ThDescripcion.style.color = '';
-    //ThApellido.style.color = '';
+    const ThCartera = document.getElementById(
+      'ThCartera'
+    ) as HTMLInputElement;
+    const ThCXC = document.getElementById(
+      'ThCXC'
+    ) as HTMLInputElement;
+    const ThCedula = document.getElementById(
+      'ThCedula'
+    ) as HTMLInputElement;
+    const ThConectividad = document.getElementById(
+      'ThConectividad'
+    ) as HTMLInputElement;
+    const ThGestor = document.getElementById(
+      'ThGestor'
+    ) as HTMLInputElement;
+    const ThTipoGestion = document.getElementById(
+      'ThTipoGestion'
+    ) as HTMLInputElement;
+    const ThGestionMediante = document.getElementById(
+      'ThGestionMediante'
+    ) as HTMLInputElement;
+    const ThContactabilidad = document.getElementById(
+      'ThContactabilidad'
+    ) as HTMLInputElement;
+    ThNombres.style.color = '';
+    ThCartera.style.color = '';
+    ThCXC.style.color = '';
+    ThCedula.style.color = '';
+    ThConectividad.style.color = '';
+    ThGestor.style.color = '';
+    ThTipoGestion.style.color = '';
+    ThGestionMediante.style.color = '';
+    ThContactabilidad.style.color = '';
+
     inputElement.disabled = true;
     this.FirltroPor = '';
     this.TextoFiltro.patchValue('');
@@ -493,15 +691,15 @@ export class GeneralComponent implements OnInit {
   {
     if(val==='PDF')
     {
-      this.generarPDF();
+      this.reporte.generarPDF(this.gReporteG);
     }
     if(val==='EXCEL')
     {
-      this.excel();
+      this.reporte.generarExcel(this.gReporteG);
     }
     if(val==='CSV')
     {
-      this.csv();
+      this.reporte.generarCSV(this.gReporteG);
     }
   }
   csv() {
@@ -715,6 +913,79 @@ export class GeneralComponent implements OnInit {
     }
     
   }
+  getProductData2(valor:number):any[] {
+    if(valor===48)
+    {
+      console.log('1')
+      return this.ListaGestion.map((gestion:any) => (
+              {
+                cartera:gestion.cart_descripcion,
+                cedula:gestion.cli_identificacion,
+                ope_cod_credito:gestion.ope_cod_credito,
+                ope_descripcion:gestion.ope_descripcion,
+                ope_producto:gestion.ope_producto,
+                cli_nombres:gestion.cli_nombres,
+                tipo_gestion:gestion.gestion_tip_descripcion,
+                cli_estado_contacta:gestion.cli_estado_contacta,
+                Conectividad:gestion.conec_descripcion,
+                gest_num_contacto:gestion.gest_num_contacto,
+                ope_saldo_cxc_actual:gestion.ope_saldo_cxc_actual,
+                ope_dias_mora:gestion.ope_dias_mora,
+                ope_gastos_cobranzas:gestion.ope_gastos_cobranzas,
+                ope_interes_mora:gestion.ope_interes_mora,
+                ope_liquidar:gestion.ope_liquidar=== '1'?'Si':'No',
+                gest_fecha_gestion:this.Fechas.fechaCorta(gestion.gest_fecha_gestion),
+                gest_fecha_compromiso:this.Fechas.fechaCorta(gestion.gest_fecha_compromiso)==='31-12-1969' ? ' ' :this.Fechas.fechaCorta(gestion.gest_fecha_compromiso),
+                gest_valor_a_cobrar:gestion.gest_valor_a_cobrar,
+                gest_couta:gestion.gest_couta,
+                gest_fecha_prox_pago:this.Fechas.fechaCorta(gestion.gest_fecha_prox_pago)==='31-12-1969' ? ' ' :this.Fechas.fechaCorta(gestion.gest_fecha_prox_pago),
+                gest_fecha_incumplido:this.Fechas.fechaCorta(gestion.gest_fecha_incumplido)==='31-12-1969' ? ' ' :this.Fechas.fechaCorta(gestion.gest_fecha_incumplido),
+                gest_valor_incumplido:gestion.gest_valor_incumplido,
+                Gestionado:gestion.nombreGest,
+                gest_fecha_volver_llamar:this.Fechas.fechaCorta(gestion.gest_fecha_volver_llamar)==='31-12-1969' ? ' ' :this.Fechas.fechaCorta(gestion.gest_fecha_volver_llamar),
+                gest_hora_volver_llamar:gestion.gest_hora_volver_llamar,
+                volver_llamar:gestion.gest_volver_llamar === '1'?'Si':'No',
+                contac_descripcion:gestion.contac_descripcion,
+                GestorAsignado:gestion.nombreGestorAsig
+      }));
+    }else
+    {
+      console.log('2')
+      return this.ListaGestion.map((item: any) => ({
+        cartera:item.Cartera,
+        cedula:item.Gestion.Cliente.cli_identificacion,
+        ope_cod_credito:item.Gestion.CXC_Operacion.ope_cod_credito,
+        ope_descripcion:item.Gestion.CXC_Operacion.ope_descripcion,
+        ope_producto: item.Gestion.CXC_Operacion.ope_producto,
+        cli_nombres:item.Gestion.Cliente.cli_nombres,
+        tipo_gestion: item.TipoGestion,
+        cli_estado_contacta: item.Gestion.Cliente.cli_estado_contacta,
+        Conectividad: item.Conectividad,
+        gest_num_contacto:item.Gestion.gest_num_contacto,
+        ope_saldo_cxc_actual:item.Gestion.CXC_Operacion.ope_saldo_cxc_actual,
+        ope_dias_mora:item.Gestion.CXC_Operacion.ope_dias_mora,
+        ope_gastos_cobranzas:item.Gestion.CXC_Operacion.ope_gastos_cobranzas,
+        ope_interes_mora: item.Gestion.CXC_Operacion.ope_interes_mora,
+        ope_liquidar:item.Gestion.CXC_Operacion.ope_liquidar=== '1'?'Si':'No',
+        gest_fecha_gestion: this.Fechas.fechaCorta(item.Gestion.gest_fecha_gestion),
+        gest_fecha_compromiso:this.Fechas.fechaCorta(item.Gestion.gest_fecha_compromiso)==='31-12-1969' ? ' ' :this.Fechas.fechaCorta(item.Gestion.gest_fecha_compromiso),
+        gest_valor_a_cobrar:item.Gestion.gest_valor_a_cobrar,
+        gest_couta:item.Gestion.gest_couta,
+        gest_fecha_prox_pago:this.Fechas.fechaCorta(item.Gestion.gest_fecha_prox_pago)==='31-12-1969' ? ' ' :this.Fechas.fechaCorta(item.Gestion.gest_fecha_prox_pago),
+        gest_fecha_incumplido:this.Fechas.fechaCorta(item.Gestion.gest_fecha_incumplido)==='31-12-1969' ? ' ' :this.Fechas.fechaCorta(item.Gestion.gest_fecha_incumplido),
+        gest_valor_incumplido:item.Gestion.gest_valor_incumplido,
+        Gestionado:item.Gestion.Gestor.ges_nombres+' '+item.Gestion.Gestor.ges_apellidos,
+        gest_fecha_volver_llamar:this.Fechas.fechaCorta(item.Gestion.gest_fecha_volver_llamar)==='31-12-1969' ? ' ' :this.Fechas.fechaCorta(item.Gestion.gest_fecha_volver_llamar),
+        gest_hora_volver_llamar:item.Gestion.gest_hora_volver_llamar,
+        volver_llamar:item.Gestion.gest_volver_llamar === '1'?'Si':'No',
+        contac_descripcion:item.Contactabilidad.contac_descripcion,
+        GestorAsignado:item.GestorAsignado
+      }));
+    }
+    
+  }
+
+
   generarPDF() {
     const fechaActual = new Date();
     const opciones = { timeZone: 'America/Guayaquil' };

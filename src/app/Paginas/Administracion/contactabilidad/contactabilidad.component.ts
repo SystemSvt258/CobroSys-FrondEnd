@@ -473,6 +473,19 @@ export class ContactabilidadComponent implements OnInit {
           return elemento.contac_descripcion.includes(nombre.toUpperCase());
         });
         this.FraccionarValores(resultado, this.ConstanteFraccion);
+        const o=resultado.map(c=>
+          {
+            return {
+				        id:c.id_contactabilidad,
+                Descripcion:c.contac_descripcion,
+                FIngreso:c.contac_fecha_in ===null?null:this.Fechas.fechaCortaAbt(c.contac_fecha_in.toString()),
+                Estado:c.contac_esactivo==='1'?'ACTIVO':'INACTIVO'
+            };
+        });
+        let om: generarPDF = {
+          entidad: 'Contactabilidad', listado:o
+        };
+        this.gContactabilidad=om;
       }
 
       if (contador != 0) {

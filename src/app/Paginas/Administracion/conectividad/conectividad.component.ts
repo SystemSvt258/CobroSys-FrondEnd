@@ -486,6 +486,20 @@ export class ConectividadComponent implements OnInit {
           return elemento.conec_descripcion.includes(nombre.toUpperCase());
         });
         this.FraccionarValores(resultado, this.ConstanteFraccion);
+        const o=resultado.map(c=>
+          {
+            return {
+				id:c.id_conectividad,
+                Descripcion:c.conec_descripcion,
+                FIngreso:c.conec_fecha_in ===null?null:this.Fechas.fechaCortaAbt(c.conec_fecha_in.toString()),
+                Estado:c.conec_esactivo==='1'?'ACTIVO':'INACTIVO'
+            };
+        });
+        let om: generarPDF = {
+          entidad: 'Conectividad', listado:o
+        };
+        this.gConectividad=om;
+		
       }
 
       if (contador != 0) {

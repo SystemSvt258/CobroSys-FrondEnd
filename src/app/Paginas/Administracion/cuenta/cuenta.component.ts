@@ -491,6 +491,21 @@ export class CuentaComponent implements OnInit {
           return elemento.cuent_nombre.includes(nombre.toUpperCase());
         });
         this.FraccionarValores(resultado, this.ConstanteFraccion);
+        const o=resultado.map(c=>
+          {
+            return {
+				        Nombre:c['cuent_nombre'],
+                Entidad:c['cuent_entidadfinanciera'],
+                Numero:c['cuent_numero'],
+                Fecha:c['cuent_fecha_in'] ===null?null:this.Fechas.fechaCortaAbt(c['cuent_fecha_in'].toString()),
+                Estado:c['cuent_esactivo']==='1'?'ACTIVO':'INACTIVO'
+            };
+        });
+        console.log(o);
+        let om: generarPDF = {
+          entidad: 'Cuenta', listado:o
+        };
+        this.gCuenta=om;
       }
 
       if (contador != 0) {
@@ -507,7 +522,6 @@ export class CuentaComponent implements OnInit {
         });
         this.FraccionarValores(resultado, this.ConstanteFraccion);
       }
-
       if (contador != 0) {
         ThApellido.style.color = 'red';
       } else {

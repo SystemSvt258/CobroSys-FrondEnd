@@ -553,6 +553,21 @@ if (resultado) {
           return elemento.cart_descripcion.includes(nombre.toUpperCase());
         });
         this.FraccionarValores(resultado, this.ConstanteFraccion);
+        const o=resultado.map(c=>
+          {
+            return {
+				            id:c['id_cartera'],
+                    Descripcion:c['cart_descripcion'],
+                    Tipo:c['cart_tip_descripcion'],
+                    Observacion:c['cart_observacion'],
+                    Fecha:c['cart_fecha_in'] ===null?null:this.Fechas.fechaCortaAbt(c['cart_fecha_in']),
+                    Estado:c['cart_esactivo']==='1'?'ACTIVO':'INACTIVO'
+            };
+        });
+        let om: generarPDF = {
+          entidad: 'Cartera', listado:o
+        };
+        this.gCartera=om;
       }
 
       if (contador != 0) {

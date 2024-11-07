@@ -103,10 +103,6 @@ export class CuentaCarteraComponent implements OnInit {
                 };
                 listadoObjeto.push(ocD);
               }
-              let om: generarPDF = {
-                entidad: 'CuentaCartera', listado: listadoObjeto
-              };
-              this.gCuentaC=om;
             if (this.ListaCuentas.length > 0) {
               this.ContadorDatosGeneral = this.ListaCuentas.length;
               this.FraccionarValores(
@@ -118,6 +114,11 @@ export class CuentaCarteraComponent implements OnInit {
         })
       )
       .subscribe();
+      let om: generarPDF = {
+        entidad: 'CuentaCartera', listado:listadoObjeto
+      };
+      this.gCuentaC=om;
+
   }
 
   FiltrarElemento() {
@@ -403,7 +404,6 @@ export class CuentaCarteraComponent implements OnInit {
       );
     }
   }
-
   BtnNextUser(rango?: number) {
     if (rango != null) {
       this.FraccionDatos =
@@ -496,6 +496,21 @@ export class CuentaCarteraComponent implements OnInit {
         resultado,
         Number(this.PaginaActual.Usuario.usr_fraccion_datos)
       );
+      const o=resultado.map(c=>
+        {
+          return {
+        Cuenta:c.cuenta.cuent_nombre,
+                Entidad:c.cuenta.cuent_entidadfinanciera,
+                Numero:c.cuenta.cuent_numero,
+                Cartera:c.cartera,
+                Fecha:c.ctipcar_fecha_in===null?null:this.Fechas.fechaCortaAbt(c.ctipcar_fecha_in.toString()),
+                Estado:c.ctipcar_esactivo==='1'?'ACTIVO':'INACTIVO'
+          };
+      });
+      let om: generarPDF = {
+        entidad: 'CuentaCartera', listado:o
+      };
+      this.gCuentaC=om;
     }
     if (EtqFiltro.texto == 'Entidad') {
       let nombre = this.TextoFiltro.value!;
@@ -508,6 +523,21 @@ export class CuentaCarteraComponent implements OnInit {
         resultado,
         Number(this.PaginaActual.Usuario.usr_fraccion_datos)
       );
+      const o=resultado.map(c=>
+        {
+          return {
+        Cuenta:c.cuenta.cuent_nombre,
+                Entidad:c.cuenta.cuent_entidadfinanciera,
+                Numero:c.cuenta.cuent_numero,
+                Cartera:c.cartera,
+                Fecha:c.ctipcar_fecha_in===null?null:this.Fechas.fechaCortaAbt(c.ctipcar_fecha_in.toString()),
+                Estado:c.ctipcar_esactivo==='1'?'ACTIVO':'INACTIVO'
+          };
+      });
+      let om: generarPDF = {
+        entidad: 'CuentaCartera', listado:o
+      };
+      this.gCuentaC=om;
     }
     if (EtqFiltro.texto == 'Numero de cuenta') {
       let nombre = this.TextoFiltro.value!;
@@ -518,6 +548,21 @@ export class CuentaCarteraComponent implements OnInit {
         resultado,
         Number(this.PaginaActual.Usuario.usr_fraccion_datos)
       );
+      const o=resultado.map(c=>
+        {
+          return{
+                 Cuenta:c.cuenta.cuent_nombre,
+                Entidad:c.cuenta.cuent_entidadfinanciera,
+                Numero:c.cuenta.cuent_numero,
+                Cartera:c.cartera,
+                Fecha:c.ctipcar_fecha_in===null?null:this.Fechas.fechaCortaAbt(c.ctipcar_fecha_in.toString()),
+                Estado:c.ctipcar_esactivo==='1'?'ACTIVO':'INACTIVO'
+          };
+      });
+      let om: generarPDF = {
+        entidad: 'CuentaCartera', listado:o
+      };
+      this.gCuentaC=om;
     }
   }
   VaciarFiltro() {
