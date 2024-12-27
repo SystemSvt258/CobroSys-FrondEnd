@@ -22,7 +22,7 @@ export class SignalRService {
       .then(() => console.log('Conectado'))      
       .catch(err => console.log('Sin Coneccion'));
   }
-
+ 
   EnvioMensaje = async (message: string) => {
     this.api.GetEnvioMensaje(message, 'juan',0).pipe(map(x => {console.log(x)})).subscribe()
   };
