@@ -3096,7 +3096,7 @@ export class GestionarComponent implements OnInit {
     }
     if (num == 13) {
       this.FraccionarValoresFamilia(this.DatosHijosPoliticos);
-      this.txtParentezco = 'YERNO' || 'NUERA';
+      this.txtParentezco = 'YERNO/NUERA';
     }
     if (num == 14) {
       this.FraccionarValoresFamilia(this.DatosTiosPoliticos);

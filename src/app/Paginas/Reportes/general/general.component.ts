@@ -456,7 +456,39 @@ export class GeneralComponent implements OnInit {
               return elemento['cli_nombres'].includes(nombre.toUpperCase());
             });
             this.FraccionarValores(resultado, this.ConstanteFraccion);
-            console.log(resultado);
+            const j=resultado.map((gestion:any) => (
+              {
+                cartera:gestion.cart_descripcion,
+                cedula:gestion.cli_identificacion,
+                ope_cod_credito:gestion.ope_cod_credito,
+                ope_descripcion:gestion.ope_descripcion,
+                ope_producto:gestion.ope_producto,
+                cli_nombres:gestion.cli_nombres,
+                tipo_gestion:gestion.gestion_tip_descripcion,
+                cli_estado_contacta:gestion.cli_estado_contacta,
+                Conectividad:gestion.conec_descripcion,
+                gest_num_contacto:gestion.gest_num_contacto,
+                ope_saldo_cxc_actual:gestion.ope_saldo_cxc_actual,
+                ope_dias_mora:gestion.ope_dias_mora,
+                ope_gastos_cobranzas:gestion.ope_gastos_cobranzas,
+                ope_interes_mora:gestion.ope_interes_mora,
+                ope_liquidar:gestion.ope_liquidar=== '1'?'Si':'No',
+                gest_fecha_gestion:this.Fechas.fechaCorta(gestion.gest_fecha_gestion),
+                gest_fecha_compromiso:this.Fechas.fechaCorta(gestion.gest_fecha_compromiso)==='31-12-1969' ? ' ' :this.Fechas.fechaCorta(gestion.gest_fecha_compromiso),
+                gest_valor_a_cobrar:gestion.gest_valor_a_cobrar,
+                gest_couta:gestion.gest_couta,
+                gest_fecha_prox_pago:this.Fechas.fechaCorta(gestion.gest_fecha_prox_pago)==='31-12-1969' ? ' ' :this.Fechas.fechaCorta(gestion.gest_fecha_prox_pago),
+                Gestionado:gestion.nombreGest,
+                gest_fecha_volver_llamar:this.Fechas.fechaCorta(gestion.gest_fecha_volver_llamar)==='31-12-1969' ? ' ' :this.Fechas.fechaCorta(gestion.gest_fecha_volver_llamar),
+                gest_hora_volver_llamar:gestion.gest_hora_volver_llamar,
+                volver_llamar:gestion.gest_volver_llamar === '1'?'Si':'No',
+                contac_descripcion:gestion.contac_descripcion,
+                GestorAsignado:gestion.nombreGestorAsig
+              }));
+              let om: generarPDF = {
+                entidad: 'ReporteGeneral', listado:j
+              };
+              this.gReporteG=om;
           }
            
           if (contador != 0) {
@@ -472,7 +504,39 @@ export class GeneralComponent implements OnInit {
               return elemento['cart_descripcion'].includes(nombre.toUpperCase());
             });
             this.FraccionarValores(resultado, this.ConstanteFraccion);
-            console.log(resultado);
+            const j=resultado.map((gestion:any) => (
+              {
+                cartera:gestion.cart_descripcion,
+                cedula:gestion.cli_identificacion,
+                ope_cod_credito:gestion.ope_cod_credito,
+                ope_descripcion:gestion.ope_descripcion,
+                ope_producto:gestion.ope_producto,
+                cli_nombres:gestion.cli_nombres,
+                tipo_gestion:gestion.gestion_tip_descripcion,
+                cli_estado_contacta:gestion.cli_estado_contacta,
+                Conectividad:gestion.conec_descripcion,
+                gest_num_contacto:gestion.gest_num_contacto,
+                ope_saldo_cxc_actual:gestion.ope_saldo_cxc_actual,
+                ope_dias_mora:gestion.ope_dias_mora,
+                ope_gastos_cobranzas:gestion.ope_gastos_cobranzas,
+                ope_interes_mora:gestion.ope_interes_mora,
+                ope_liquidar:gestion.ope_liquidar=== '1'?'Si':'No',
+                gest_fecha_gestion:this.Fechas.fechaCorta(gestion.gest_fecha_gestion),
+                gest_fecha_compromiso:this.Fechas.fechaCorta(gestion.gest_fecha_compromiso)==='31-12-1969' ? ' ' :this.Fechas.fechaCorta(gestion.gest_fecha_compromiso),
+                gest_valor_a_cobrar:gestion.gest_valor_a_cobrar,
+                gest_couta:gestion.gest_couta,
+                gest_fecha_prox_pago:this.Fechas.fechaCorta(gestion.gest_fecha_prox_pago)==='31-12-1969' ? ' ' :this.Fechas.fechaCorta(gestion.gest_fecha_prox_pago),
+                Gestionado:gestion.nombreGest,
+                gest_fecha_volver_llamar:this.Fechas.fechaCorta(gestion.gest_fecha_volver_llamar)==='31-12-1969' ? ' ' :this.Fechas.fechaCorta(gestion.gest_fecha_volver_llamar),
+                gest_hora_volver_llamar:gestion.gest_hora_volver_llamar,
+                volver_llamar:gestion.gest_volver_llamar === '1'?'Si':'No',
+                contac_descripcion:gestion.contac_descripcion,
+                GestorAsignado:gestion.nombreGestorAsig
+              }));
+              let om: generarPDF = {
+                entidad: 'ReporteGeneral', listado:j
+              };
+              this.gReporteG=om;
           }
            
           if (contador != 0) {
@@ -488,7 +552,39 @@ export class GeneralComponent implements OnInit {
               return elemento['cli_identificacion'].includes(nombre.trim());
             });
             this.FraccionarValores(resultado, this.ConstanteFraccion);
-            console.log(resultado);
+            const j=resultado.map((gestion:any) => (
+              {
+                cartera:gestion.cart_descripcion,
+                cedula:gestion.cli_identificacion,
+                ope_cod_credito:gestion.ope_cod_credito,
+                ope_descripcion:gestion.ope_descripcion,
+                ope_producto:gestion.ope_producto,
+                cli_nombres:gestion.cli_nombres,
+                tipo_gestion:gestion.gestion_tip_descripcion,
+                cli_estado_contacta:gestion.cli_estado_contacta,
+                Conectividad:gestion.conec_descripcion,
+                gest_num_contacto:gestion.gest_num_contacto,
+                ope_saldo_cxc_actual:gestion.ope_saldo_cxc_actual,
+                ope_dias_mora:gestion.ope_dias_mora,
+                ope_gastos_cobranzas:gestion.ope_gastos_cobranzas,
+                ope_interes_mora:gestion.ope_interes_mora,
+                ope_liquidar:gestion.ope_liquidar=== '1'?'Si':'No',
+                gest_fecha_gestion:this.Fechas.fechaCorta(gestion.gest_fecha_gestion),
+                gest_fecha_compromiso:this.Fechas.fechaCorta(gestion.gest_fecha_compromiso)==='31-12-1969' ? ' ' :this.Fechas.fechaCorta(gestion.gest_fecha_compromiso),
+                gest_valor_a_cobrar:gestion.gest_valor_a_cobrar,
+                gest_couta:gestion.gest_couta,
+                gest_fecha_prox_pago:this.Fechas.fechaCorta(gestion.gest_fecha_prox_pago)==='31-12-1969' ? ' ' :this.Fechas.fechaCorta(gestion.gest_fecha_prox_pago),
+                Gestionado:gestion.nombreGest,
+                gest_fecha_volver_llamar:this.Fechas.fechaCorta(gestion.gest_fecha_volver_llamar)==='31-12-1969' ? ' ' :this.Fechas.fechaCorta(gestion.gest_fecha_volver_llamar),
+                gest_hora_volver_llamar:gestion.gest_hora_volver_llamar,
+                volver_llamar:gestion.gest_volver_llamar === '1'?'Si':'No',
+                contac_descripcion:gestion.contac_descripcion,
+                GestorAsignado:gestion.nombreGestorAsig
+              }));
+              let om: generarPDF = {
+                entidad: 'ReporteGeneral', listado:j
+              };
+              this.gReporteG=om;
           }
            
           if (contador != 0) {
@@ -504,7 +600,39 @@ export class GeneralComponent implements OnInit {
               return elemento['ope_cod_credito'].includes(nombre.trim());
             });
             this.FraccionarValores(resultado, this.ConstanteFraccion);
-            console.log(resultado);
+            const j=resultado.map((gestion:any) => (
+              {
+                cartera:gestion.cart_descripcion,
+                cedula:gestion.cli_identificacion,
+                ope_cod_credito:gestion.ope_cod_credito,
+                ope_descripcion:gestion.ope_descripcion,
+                ope_producto:gestion.ope_producto,
+                cli_nombres:gestion.cli_nombres,
+                tipo_gestion:gestion.gestion_tip_descripcion,
+                cli_estado_contacta:gestion.cli_estado_contacta,
+                Conectividad:gestion.conec_descripcion,
+                gest_num_contacto:gestion.gest_num_contacto,
+                ope_saldo_cxc_actual:gestion.ope_saldo_cxc_actual,
+                ope_dias_mora:gestion.ope_dias_mora,
+                ope_gastos_cobranzas:gestion.ope_gastos_cobranzas,
+                ope_interes_mora:gestion.ope_interes_mora,
+                ope_liquidar:gestion.ope_liquidar=== '1'?'Si':'No',
+                gest_fecha_gestion:this.Fechas.fechaCorta(gestion.gest_fecha_gestion),
+                gest_fecha_compromiso:this.Fechas.fechaCorta(gestion.gest_fecha_compromiso)==='31-12-1969' ? ' ' :this.Fechas.fechaCorta(gestion.gest_fecha_compromiso),
+                gest_valor_a_cobrar:gestion.gest_valor_a_cobrar,
+                gest_couta:gestion.gest_couta,
+                gest_fecha_prox_pago:this.Fechas.fechaCorta(gestion.gest_fecha_prox_pago)==='31-12-1969' ? ' ' :this.Fechas.fechaCorta(gestion.gest_fecha_prox_pago),
+                Gestionado:gestion.nombreGest,
+                gest_fecha_volver_llamar:this.Fechas.fechaCorta(gestion.gest_fecha_volver_llamar)==='31-12-1969' ? ' ' :this.Fechas.fechaCorta(gestion.gest_fecha_volver_llamar),
+                gest_hora_volver_llamar:gestion.gest_hora_volver_llamar,
+                volver_llamar:gestion.gest_volver_llamar === '1'?'Si':'No',
+                contac_descripcion:gestion.contac_descripcion,
+                GestorAsignado:gestion.nombreGestorAsig
+              }));
+              let om: generarPDF = {
+                entidad: 'ReporteGeneral', listado:j
+              };
+              this.gReporteG=om;
           }
            
           if (contador != 0) {
@@ -520,7 +648,39 @@ export class GeneralComponent implements OnInit {
               return elemento['nombreGest'].includes(nombre.toUpperCase());
             });
             this.FraccionarValores(resultado, this.ConstanteFraccion);
-            console.log(resultado);
+            const j=resultado.map((gestion:any) => (
+              {
+                cartera:gestion.cart_descripcion,
+                cedula:gestion.cli_identificacion,
+                ope_cod_credito:gestion.ope_cod_credito,
+                ope_descripcion:gestion.ope_descripcion,
+                ope_producto:gestion.ope_producto,
+                cli_nombres:gestion.cli_nombres,
+                tipo_gestion:gestion.gestion_tip_descripcion,
+                cli_estado_contacta:gestion.cli_estado_contacta,
+                Conectividad:gestion.conec_descripcion,
+                gest_num_contacto:gestion.gest_num_contacto,
+                ope_saldo_cxc_actual:gestion.ope_saldo_cxc_actual,
+                ope_dias_mora:gestion.ope_dias_mora,
+                ope_gastos_cobranzas:gestion.ope_gastos_cobranzas,
+                ope_interes_mora:gestion.ope_interes_mora,
+                ope_liquidar:gestion.ope_liquidar=== '1'?'Si':'No',
+                gest_fecha_gestion:this.Fechas.fechaCorta(gestion.gest_fecha_gestion),
+                gest_fecha_compromiso:this.Fechas.fechaCorta(gestion.gest_fecha_compromiso)==='31-12-1969' ? ' ' :this.Fechas.fechaCorta(gestion.gest_fecha_compromiso),
+                gest_valor_a_cobrar:gestion.gest_valor_a_cobrar,
+                gest_couta:gestion.gest_couta,
+                gest_fecha_prox_pago:this.Fechas.fechaCorta(gestion.gest_fecha_prox_pago)==='31-12-1969' ? ' ' :this.Fechas.fechaCorta(gestion.gest_fecha_prox_pago),
+                Gestionado:gestion.nombreGest,
+                gest_fecha_volver_llamar:this.Fechas.fechaCorta(gestion.gest_fecha_volver_llamar)==='31-12-1969' ? ' ' :this.Fechas.fechaCorta(gestion.gest_fecha_volver_llamar),
+                gest_hora_volver_llamar:gestion.gest_hora_volver_llamar,
+                volver_llamar:gestion.gest_volver_llamar === '1'?'Si':'No',
+                contac_descripcion:gestion.contac_descripcion,
+                GestorAsignado:gestion.nombreGestorAsig
+              }));
+              let om: generarPDF = {
+                entidad: 'ReporteGeneral', listado:j
+              };
+              this.gReporteG=om;
           }
            
           if (contador != 0) {
@@ -536,7 +696,39 @@ export class GeneralComponent implements OnInit {
               return elemento['conec_descripcion'].includes(nombre.toUpperCase());
             });
             this.FraccionarValores(resultado, this.ConstanteFraccion);
-            console.log(resultado);
+            const j=resultado.map((gestion:any) => (
+              {
+                cartera:gestion.cart_descripcion,
+                cedula:gestion.cli_identificacion,
+                ope_cod_credito:gestion.ope_cod_credito,
+                ope_descripcion:gestion.ope_descripcion,
+                ope_producto:gestion.ope_producto,
+                cli_nombres:gestion.cli_nombres,
+                tipo_gestion:gestion.gestion_tip_descripcion,
+                cli_estado_contacta:gestion.cli_estado_contacta,
+                Conectividad:gestion.conec_descripcion,
+                gest_num_contacto:gestion.gest_num_contacto,
+                ope_saldo_cxc_actual:gestion.ope_saldo_cxc_actual,
+                ope_dias_mora:gestion.ope_dias_mora,
+                ope_gastos_cobranzas:gestion.ope_gastos_cobranzas,
+                ope_interes_mora:gestion.ope_interes_mora,
+                ope_liquidar:gestion.ope_liquidar=== '1'?'Si':'No',
+                gest_fecha_gestion:this.Fechas.fechaCorta(gestion.gest_fecha_gestion),
+                gest_fecha_compromiso:this.Fechas.fechaCorta(gestion.gest_fecha_compromiso)==='31-12-1969' ? ' ' :this.Fechas.fechaCorta(gestion.gest_fecha_compromiso),
+                gest_valor_a_cobrar:gestion.gest_valor_a_cobrar,
+                gest_couta:gestion.gest_couta,
+                gest_fecha_prox_pago:this.Fechas.fechaCorta(gestion.gest_fecha_prox_pago)==='31-12-1969' ? ' ' :this.Fechas.fechaCorta(gestion.gest_fecha_prox_pago),
+                Gestionado:gestion.nombreGest,
+                gest_fecha_volver_llamar:this.Fechas.fechaCorta(gestion.gest_fecha_volver_llamar)==='31-12-1969' ? ' ' :this.Fechas.fechaCorta(gestion.gest_fecha_volver_llamar),
+                gest_hora_volver_llamar:gestion.gest_hora_volver_llamar,
+                volver_llamar:gestion.gest_volver_llamar === '1'?'Si':'No',
+                contac_descripcion:gestion.contac_descripcion,
+                GestorAsignado:gestion.nombreGestorAsig
+              }));
+              let om: generarPDF = {
+                entidad: 'ReporteGeneral', listado:j
+              };
+              this.gReporteG=om;
           }
            
           if (contador != 0) {
@@ -552,7 +744,39 @@ export class GeneralComponent implements OnInit {
               return elemento['gestion_tip_descripcion'].includes(nombre.toUpperCase());
             });
             this.FraccionarValores(resultado, this.ConstanteFraccion);
-            console.log(resultado);
+            const j=resultado.map((gestion:any) => (
+              {
+                cartera:gestion.cart_descripcion,
+                cedula:gestion.cli_identificacion,
+                ope_cod_credito:gestion.ope_cod_credito,
+                ope_descripcion:gestion.ope_descripcion,
+                ope_producto:gestion.ope_producto,
+                cli_nombres:gestion.cli_nombres,
+                tipo_gestion:gestion.gestion_tip_descripcion,
+                cli_estado_contacta:gestion.cli_estado_contacta,
+                Conectividad:gestion.conec_descripcion,
+                gest_num_contacto:gestion.gest_num_contacto,
+                ope_saldo_cxc_actual:gestion.ope_saldo_cxc_actual,
+                ope_dias_mora:gestion.ope_dias_mora,
+                ope_gastos_cobranzas:gestion.ope_gastos_cobranzas,
+                ope_interes_mora:gestion.ope_interes_mora,
+                ope_liquidar:gestion.ope_liquidar=== '1'?'Si':'No',
+                gest_fecha_gestion:this.Fechas.fechaCorta(gestion.gest_fecha_gestion),
+                gest_fecha_compromiso:this.Fechas.fechaCorta(gestion.gest_fecha_compromiso)==='31-12-1969' ? ' ' :this.Fechas.fechaCorta(gestion.gest_fecha_compromiso),
+                gest_valor_a_cobrar:gestion.gest_valor_a_cobrar,
+                gest_couta:gestion.gest_couta,
+                gest_fecha_prox_pago:this.Fechas.fechaCorta(gestion.gest_fecha_prox_pago)==='31-12-1969' ? ' ' :this.Fechas.fechaCorta(gestion.gest_fecha_prox_pago),
+                Gestionado:gestion.nombreGest,
+                gest_fecha_volver_llamar:this.Fechas.fechaCorta(gestion.gest_fecha_volver_llamar)==='31-12-1969' ? ' ' :this.Fechas.fechaCorta(gestion.gest_fecha_volver_llamar),
+                gest_hora_volver_llamar:gestion.gest_hora_volver_llamar,
+                volver_llamar:gestion.gest_volver_llamar === '1'?'Si':'No',
+                contac_descripcion:gestion.contac_descripcion,
+                GestorAsignado:gestion.nombreGestorAsig
+              }));
+              let om: generarPDF = {
+                entidad: 'ReporteGeneral', listado:j
+              };
+              this.gReporteG=om;
           }
            
           if (contador != 0) {
@@ -568,7 +792,39 @@ export class GeneralComponent implements OnInit {
               return elemento['gest_num_contacto'].includes(nombre);
             });
             this.FraccionarValores(resultado, this.ConstanteFraccion);
-            console.log(resultado);
+            const j=resultado.map((gestion:any) => (
+              {
+                cartera:gestion.cart_descripcion,
+                cedula:gestion.cli_identificacion,
+                ope_cod_credito:gestion.ope_cod_credito,
+                ope_descripcion:gestion.ope_descripcion,
+                ope_producto:gestion.ope_producto,
+                cli_nombres:gestion.cli_nombres,
+                tipo_gestion:gestion.gestion_tip_descripcion,
+                cli_estado_contacta:gestion.cli_estado_contacta,
+                Conectividad:gestion.conec_descripcion,
+                gest_num_contacto:gestion.gest_num_contacto,
+                ope_saldo_cxc_actual:gestion.ope_saldo_cxc_actual,
+                ope_dias_mora:gestion.ope_dias_mora,
+                ope_gastos_cobranzas:gestion.ope_gastos_cobranzas,
+                ope_interes_mora:gestion.ope_interes_mora,
+                ope_liquidar:gestion.ope_liquidar=== '1'?'Si':'No',
+                gest_fecha_gestion:this.Fechas.fechaCorta(gestion.gest_fecha_gestion),
+                gest_fecha_compromiso:this.Fechas.fechaCorta(gestion.gest_fecha_compromiso)==='31-12-1969' ? ' ' :this.Fechas.fechaCorta(gestion.gest_fecha_compromiso),
+                gest_valor_a_cobrar:gestion.gest_valor_a_cobrar,
+                gest_couta:gestion.gest_couta,
+                gest_fecha_prox_pago:this.Fechas.fechaCorta(gestion.gest_fecha_prox_pago)==='31-12-1969' ? ' ' :this.Fechas.fechaCorta(gestion.gest_fecha_prox_pago),
+                Gestionado:gestion.nombreGest,
+                gest_fecha_volver_llamar:this.Fechas.fechaCorta(gestion.gest_fecha_volver_llamar)==='31-12-1969' ? ' ' :this.Fechas.fechaCorta(gestion.gest_fecha_volver_llamar),
+                gest_hora_volver_llamar:gestion.gest_hora_volver_llamar,
+                volver_llamar:gestion.gest_volver_llamar === '1'?'Si':'No',
+                contac_descripcion:gestion.contac_descripcion,
+                GestorAsignado:gestion.nombreGestorAsig
+              }));
+              let om: generarPDF = {
+                entidad: 'ReporteGeneral', listado:j
+              };
+              this.gReporteG=om;
           }
            
           if (contador != 0) {
@@ -584,7 +840,39 @@ export class GeneralComponent implements OnInit {
               return elemento['cli_estado_contacta'].includes(nombre);
             });
             this.FraccionarValores(resultado, this.ConstanteFraccion);
-            console.log(resultado);
+            const j=resultado.map((gestion:any) => (
+              {
+                cartera:gestion.cart_descripcion,
+                cedula:gestion.cli_identificacion,
+                ope_cod_credito:gestion.ope_cod_credito,
+                ope_descripcion:gestion.ope_descripcion,
+                ope_producto:gestion.ope_producto,
+                cli_nombres:gestion.cli_nombres,
+                tipo_gestion:gestion.gestion_tip_descripcion,
+                cli_estado_contacta:gestion.cli_estado_contacta,
+                Conectividad:gestion.conec_descripcion,
+                gest_num_contacto:gestion.gest_num_contacto,
+                ope_saldo_cxc_actual:gestion.ope_saldo_cxc_actual,
+                ope_dias_mora:gestion.ope_dias_mora,
+                ope_gastos_cobranzas:gestion.ope_gastos_cobranzas,
+                ope_interes_mora:gestion.ope_interes_mora,
+                ope_liquidar:gestion.ope_liquidar=== '1'?'Si':'No',
+                gest_fecha_gestion:this.Fechas.fechaCorta(gestion.gest_fecha_gestion),
+                gest_fecha_compromiso:this.Fechas.fechaCorta(gestion.gest_fecha_compromiso)==='31-12-1969' ? ' ' :this.Fechas.fechaCorta(gestion.gest_fecha_compromiso),
+                gest_valor_a_cobrar:gestion.gest_valor_a_cobrar,
+                gest_couta:gestion.gest_couta,
+                gest_fecha_prox_pago:this.Fechas.fechaCorta(gestion.gest_fecha_prox_pago)==='31-12-1969' ? ' ' :this.Fechas.fechaCorta(gestion.gest_fecha_prox_pago),
+                Gestionado:gestion.nombreGest,
+                gest_fecha_volver_llamar:this.Fechas.fechaCorta(gestion.gest_fecha_volver_llamar)==='31-12-1969' ? ' ' :this.Fechas.fechaCorta(gestion.gest_fecha_volver_llamar),
+                gest_hora_volver_llamar:gestion.gest_hora_volver_llamar,
+                volver_llamar:gestion.gest_volver_llamar === '1'?'Si':'No',
+                contac_descripcion:gestion.contac_descripcion,
+                GestorAsignado:gestion.nombreGestorAsig
+              }));
+              let om: generarPDF = {
+                entidad: 'ReporteGeneral', listado:j
+              };
+              this.gReporteG=om;
           }
            
           if (contador != 0) {
@@ -593,7 +881,6 @@ export class GeneralComponent implements OnInit {
             ThContactabilidad.style.color = '';
           }
         }
-
       }
       if(this.banderaFiltro===true&&this.banderaTodad===false)
         {
@@ -604,6 +891,7 @@ export class GeneralComponent implements OnInit {
                 return elemento.Gestion.Cliente['cli_nombres'].includes(nombre.toUpperCase());
               });
               this.FraccionarValores(resultado, this.ConstanteFraccion);
+              console.log(resultado);
             }
       
             if (contador != 0) {
@@ -612,9 +900,382 @@ export class GeneralComponent implements OnInit {
               ThNombres.style.color = '';
             }
           }
+          if (this.FirltroPor === 'Cartera') {
+            let nombre = this.TextoFiltro.value!;
+            if (num === 0) {
+              const resultado = this.ListaGestion.filter((elemento) => {
+                return elemento.Cartera.includes(nombre.toUpperCase());
+              });
+              this.FraccionarValores(resultado, this.ConstanteFraccion);
+               const j=resultado.map((item: any) => ({
+                cartera:item.Cartera,
+                cedula:item.Gestion.Cliente.cli_identificacion,
+                ope_cod_credito:item.Gestion.CXC_Operacion.ope_cod_credito,
+                ope_descripcion:item.Gestion.CXC_Operacion.ope_descripcion,
+                ope_producto: item.Gestion.CXC_Operacion.ope_producto,
+                cli_nombres:item.Gestion.Cliente.cli_nombres,
+                tipo_gestion: item.TipoGestion,
+                cli_estado_contacta: item.Gestion.Cliente.cli_estado_contacta,
+                Conectividad: item.Conectividad,
+                gest_num_contacto:item.Gestion.gest_num_contacto,
+                ope_saldo_cxc_actual:item.Gestion.CXC_Operacion.ope_saldo_cxc_actual,
+                ope_dias_mora:item.Gestion.CXC_Operacion.ope_dias_mora,
+                ope_gastos_cobranzas:item.Gestion.CXC_Operacion.ope_gastos_cobranzas,
+                ope_interes_mora: item.Gestion.CXC_Operacion.ope_interes_mora,
+                ope_liquidar:item.Gestion.CXC_Operacion.ope_liquidar=== '1'?'Si':'No',
+                gest_fecha_gestion: this.Fechas.fechaCorta(item.Gestion.gest_fecha_gestion),
+                gest_fecha_compromiso:this.Fechas.fechaCorta(item.Gestion.gest_fecha_compromiso)==='31-12-1969' ? ' ' :this.Fechas.fechaCorta(item.Gestion.gest_fecha_compromiso),
+                gest_valor_a_cobrar:item.Gestion.gest_valor_a_cobrar,
+                gest_couta:item.Gestion.gest_couta,
+                gest_fecha_prox_pago:this.Fechas.fechaCorta(item.Gestion.gest_fecha_prox_pago)==='31-12-1969' ? ' ' :this.Fechas.fechaCorta(item.Gestion.gest_fecha_prox_pago),
+                Gestionado:item.Gestion.Gestor.ges_nombres+' '+item.Gestion.Gestor.ges_apellidos,
+                gest_fecha_volver_llamar:this.Fechas.fechaCorta(item.Gestion.gest_fecha_volver_llamar)==='31-12-1969' ? ' ' :this.Fechas.fechaCorta(item.Gestion.gest_fecha_volver_llamar),
+                gest_hora_volver_llamar:item.Gestion.gest_hora_volver_llamar,
+                volver_llamar:item.Gestion.gest_volver_llamar === '1'?'Si':'No',
+                contac_descripcion:item.Contactabilidad.contac_descripcion,
+                GestorAsignado:item.GestorAsignado
+              }));
+                let om: generarPDF = {
+                  entidad: 'ReporteGeneralFiltro', listado:j
+                };
+                this.gReporteG=om;
+            }
+            if (contador != 0) {
+              ThCartera.style.color = 'red';
+            } else {
+              ThCartera.style.color = '';
+            }
+          }
+          if (this.FirltroPor === 'Cedula') {
+            let nombre = this.TextoFiltro.value!;
+            if (num === 0) {
+              const resultado = this.ListaGestion.filter((elemento) => {
+                return elemento.Gestion.Cliente['cli_identificacion'].includes(nombre.trim());
+              });
+              this.FraccionarValores(resultado, this.ConstanteFraccion);
+              const j=resultado.map((item: any) => ({
+                cartera:item.Cartera,
+                cedula:item.Gestion.Cliente.cli_identificacion,
+                ope_cod_credito:item.Gestion.CXC_Operacion.ope_cod_credito,
+                ope_descripcion:item.Gestion.CXC_Operacion.ope_descripcion,
+                ope_producto: item.Gestion.CXC_Operacion.ope_producto,
+                cli_nombres:item.Gestion.Cliente.cli_nombres,
+                tipo_gestion: item.TipoGestion,
+                cli_estado_contacta: item.Gestion.Cliente.cli_estado_contacta,
+                Conectividad: item.Conectividad,
+                gest_num_contacto:item.Gestion.gest_num_contacto,
+                ope_saldo_cxc_actual:item.Gestion.CXC_Operacion.ope_saldo_cxc_actual,
+                ope_dias_mora:item.Gestion.CXC_Operacion.ope_dias_mora,
+                ope_gastos_cobranzas:item.Gestion.CXC_Operacion.ope_gastos_cobranzas,
+                ope_interes_mora: item.Gestion.CXC_Operacion.ope_interes_mora,
+                ope_liquidar:item.Gestion.CXC_Operacion.ope_liquidar=== '1'?'Si':'No',
+                gest_fecha_gestion: this.Fechas.fechaCorta(item.Gestion.gest_fecha_gestion),
+                gest_fecha_compromiso:this.Fechas.fechaCorta(item.Gestion.gest_fecha_compromiso)==='31-12-1969' ? ' ' :this.Fechas.fechaCorta(item.Gestion.gest_fecha_compromiso),
+                gest_valor_a_cobrar:item.Gestion.gest_valor_a_cobrar,
+                gest_couta:item.Gestion.gest_couta,
+                gest_fecha_prox_pago:this.Fechas.fechaCorta(item.Gestion.gest_fecha_prox_pago)==='31-12-1969' ? ' ' :this.Fechas.fechaCorta(item.Gestion.gest_fecha_prox_pago),
+                Gestionado:item.Gestion.Gestor.ges_nombres+' '+item.Gestion.Gestor.ges_apellidos,
+                gest_fecha_volver_llamar:this.Fechas.fechaCorta(item.Gestion.gest_fecha_volver_llamar)==='31-12-1969' ? ' ' :this.Fechas.fechaCorta(item.Gestion.gest_fecha_volver_llamar),
+                gest_hora_volver_llamar:item.Gestion.gest_hora_volver_llamar,
+                volver_llamar:item.Gestion.gest_volver_llamar === '1'?'Si':'No',
+                contac_descripcion:item.Contactabilidad.contac_descripcion,
+                GestorAsignado:item.GestorAsignado
+              }));
+                let om: generarPDF = {
+                  entidad: 'ReporteGeneralFiltro', listado:j
+                };
+                this.gReporteG=om;
+            }
+             
+            if (contador != 0) {
+              ThCedula.style.color = 'red';
+            } else {
+              ThCedula.style.color = '';
+            }
+          }
+          if (this.FirltroPor === 'Credito') {
+            let nombre = this.TextoFiltro.value!;
+            if (num === 0) {
+              const resultado = this.ListaGestion.filter((elemento) => {
+                return elemento.Gestion['ope_cod_credito'].includes(nombre.trim());
+              });
+              this.FraccionarValores(resultado, this.ConstanteFraccion);
+              const j=resultado.map((item: any) => ({
+                cartera:item.Cartera,
+                cedula:item.Gestion.Cliente.cli_identificacion,
+                ope_cod_credito:item.Gestion.CXC_Operacion.ope_cod_credito,
+                ope_descripcion:item.Gestion.CXC_Operacion.ope_descripcion,
+                ope_producto: item.Gestion.CXC_Operacion.ope_producto,
+                cli_nombres:item.Gestion.Cliente.cli_nombres,
+                tipo_gestion: item.TipoGestion,
+                cli_estado_contacta: item.Gestion.Cliente.cli_estado_contacta,
+                Conectividad: item.Conectividad,
+                gest_num_contacto:item.Gestion.gest_num_contacto,
+                ope_saldo_cxc_actual:item.Gestion.CXC_Operacion.ope_saldo_cxc_actual,
+                ope_dias_mora:item.Gestion.CXC_Operacion.ope_dias_mora,
+                ope_gastos_cobranzas:item.Gestion.CXC_Operacion.ope_gastos_cobranzas,
+                ope_interes_mora: item.Gestion.CXC_Operacion.ope_interes_mora,
+                ope_liquidar:item.Gestion.CXC_Operacion.ope_liquidar=== '1'?'Si':'No',
+                gest_fecha_gestion: this.Fechas.fechaCorta(item.Gestion.gest_fecha_gestion),
+                gest_fecha_compromiso:this.Fechas.fechaCorta(item.Gestion.gest_fecha_compromiso)==='31-12-1969' ? ' ' :this.Fechas.fechaCorta(item.Gestion.gest_fecha_compromiso),
+                gest_valor_a_cobrar:item.Gestion.gest_valor_a_cobrar,
+                gest_couta:item.Gestion.gest_couta,
+                gest_fecha_prox_pago:this.Fechas.fechaCorta(item.Gestion.gest_fecha_prox_pago)==='31-12-1969' ? ' ' :this.Fechas.fechaCorta(item.Gestion.gest_fecha_prox_pago),
+                Gestionado:item.Gestion.Gestor.ges_nombres+' '+item.Gestion.Gestor.ges_apellidos,
+                gest_fecha_volver_llamar:this.Fechas.fechaCorta(item.Gestion.gest_fecha_volver_llamar)==='31-12-1969' ? ' ' :this.Fechas.fechaCorta(item.Gestion.gest_fecha_volver_llamar),
+                gest_hora_volver_llamar:item.Gestion.gest_hora_volver_llamar,
+                volver_llamar:item.Gestion.gest_volver_llamar === '1'?'Si':'No',
+                contac_descripcion:item.Contactabilidad.contac_descripcion,
+                GestorAsignado:item.GestorAsignado
+              }));
+                let om: generarPDF = {
+                  entidad: 'ReporteGeneralFiltro', listado:j
+                };
+                this.gReporteG=om;
+            }
+             
+            if (contador != 0) {
+              ThCXC.style.color = 'red';
+            } else {
+              ThCXC.style.color = '';
+            }
+          }
+          if (this.FirltroPor === 'Gestor') {
+            let nombre = this.TextoFiltro.value!;
+            if (num === 0) {
+              const resultado = this.ListaGestion.filter((elemento) => {
+                return elemento['GestorAsignado'].includes(nombre.toUpperCase());
+              });
+              this.FraccionarValores(resultado, this.ConstanteFraccion);
+              const j=resultado.map((item: any) => ({
+                cartera:item.Cartera,
+                cedula:item.Gestion.Cliente.cli_identificacion,
+                ope_cod_credito:item.Gestion.CXC_Operacion.ope_cod_credito,
+                ope_descripcion:item.Gestion.CXC_Operacion.ope_descripcion,
+                ope_producto: item.Gestion.CXC_Operacion.ope_producto,
+                cli_nombres:item.Gestion.Cliente.cli_nombres,
+                tipo_gestion: item.TipoGestion,
+                cli_estado_contacta: item.Gestion.Cliente.cli_estado_contacta,
+                Conectividad: item.Conectividad,
+                gest_num_contacto:item.Gestion.gest_num_contacto,
+                ope_saldo_cxc_actual:item.Gestion.CXC_Operacion.ope_saldo_cxc_actual,
+                ope_dias_mora:item.Gestion.CXC_Operacion.ope_dias_mora,
+                ope_gastos_cobranzas:item.Gestion.CXC_Operacion.ope_gastos_cobranzas,
+                ope_interes_mora: item.Gestion.CXC_Operacion.ope_interes_mora,
+                ope_liquidar:item.Gestion.CXC_Operacion.ope_liquidar=== '1'?'Si':'No',
+                gest_fecha_gestion: this.Fechas.fechaCorta(item.Gestion.gest_fecha_gestion),
+                gest_fecha_compromiso:this.Fechas.fechaCorta(item.Gestion.gest_fecha_compromiso)==='31-12-1969' ? ' ' :this.Fechas.fechaCorta(item.Gestion.gest_fecha_compromiso),
+                gest_valor_a_cobrar:item.Gestion.gest_valor_a_cobrar,
+                gest_couta:item.Gestion.gest_couta,
+                gest_fecha_prox_pago:this.Fechas.fechaCorta(item.Gestion.gest_fecha_prox_pago)==='31-12-1969' ? ' ' :this.Fechas.fechaCorta(item.Gestion.gest_fecha_prox_pago),
+                Gestionado:item.Gestion.Gestor.ges_nombres+' '+item.Gestion.Gestor.ges_apellidos,
+                gest_fecha_volver_llamar:this.Fechas.fechaCorta(item.Gestion.gest_fecha_volver_llamar)==='31-12-1969' ? ' ' :this.Fechas.fechaCorta(item.Gestion.gest_fecha_volver_llamar),
+                gest_hora_volver_llamar:item.Gestion.gest_hora_volver_llamar,
+                volver_llamar:item.Gestion.gest_volver_llamar === '1'?'Si':'No',
+                contac_descripcion:item.Contactabilidad.contac_descripcion,
+                GestorAsignado:item.GestorAsignado
+              }));
+                let om: generarPDF = {
+                  entidad: 'ReporteGeneralFiltro', listado:j
+                };
+                this.gReporteG=om;
+            }
+             
+            if (contador != 0) {
+              ThGestor.style.color = 'red';
+            } else {
+              ThGestor.style.color = '';
+            }
+          }
+          if (this.FirltroPor === 'Conectividad') {
+            let nombre = this.TextoFiltro.value!;
+            if (num === 0) {
+              const resultado = this.ListaGestion.filter((elemento) => {
+                return elemento['Conectividad'].includes(nombre.toUpperCase());
+              });
+              this.FraccionarValores(resultado, this.ConstanteFraccion);
+              const j=resultado.map((item: any) => ({
+                cartera:item.Cartera,
+                cedula:item.Gestion.Cliente.cli_identificacion,
+                ope_cod_credito:item.Gestion.CXC_Operacion.ope_cod_credito,
+                ope_descripcion:item.Gestion.CXC_Operacion.ope_descripcion,
+                ope_producto: item.Gestion.CXC_Operacion.ope_producto,
+                cli_nombres:item.Gestion.Cliente.cli_nombres,
+                tipo_gestion: item.TipoGestion,
+                cli_estado_contacta: item.Gestion.Cliente.cli_estado_contacta,
+                Conectividad: item.Conectividad,
+                gest_num_contacto:item.Gestion.gest_num_contacto,
+                ope_saldo_cxc_actual:item.Gestion.CXC_Operacion.ope_saldo_cxc_actual,
+                ope_dias_mora:item.Gestion.CXC_Operacion.ope_dias_mora,
+                ope_gastos_cobranzas:item.Gestion.CXC_Operacion.ope_gastos_cobranzas,
+                ope_interes_mora: item.Gestion.CXC_Operacion.ope_interes_mora,
+                ope_liquidar:item.Gestion.CXC_Operacion.ope_liquidar=== '1'?'Si':'No',
+                gest_fecha_gestion: this.Fechas.fechaCorta(item.Gestion.gest_fecha_gestion),
+                gest_fecha_compromiso:this.Fechas.fechaCorta(item.Gestion.gest_fecha_compromiso)==='31-12-1969' ? ' ' :this.Fechas.fechaCorta(item.Gestion.gest_fecha_compromiso),
+                gest_valor_a_cobrar:item.Gestion.gest_valor_a_cobrar,
+                gest_couta:item.Gestion.gest_couta,
+                gest_fecha_prox_pago:this.Fechas.fechaCorta(item.Gestion.gest_fecha_prox_pago)==='31-12-1969' ? ' ' :this.Fechas.fechaCorta(item.Gestion.gest_fecha_prox_pago),
+                Gestionado:item.Gestion.Gestor.ges_nombres+' '+item.Gestion.Gestor.ges_apellidos,
+                gest_fecha_volver_llamar:this.Fechas.fechaCorta(item.Gestion.gest_fecha_volver_llamar)==='31-12-1969' ? ' ' :this.Fechas.fechaCorta(item.Gestion.gest_fecha_volver_llamar),
+                gest_hora_volver_llamar:item.Gestion.gest_hora_volver_llamar,
+                volver_llamar:item.Gestion.gest_volver_llamar === '1'?'Si':'No',
+                contac_descripcion:item.Contactabilidad.contac_descripcion,
+                GestorAsignado:item.GestorAsignado
+              }));
+                let om: generarPDF = {
+                  entidad: 'ReporteGeneralFiltro', listado:j
+                };
+                this.gReporteG=om;
+            }
+             
+            if (contador != 0) {
+              ThConectividad.style.color = 'red';
+            } else {
+              ThConectividad.style.color = '';
+            }
+          }
+          if (this.FirltroPor === 'Contactabilidad') {
+            let nombre = this.TextoFiltro.value!;
+            if (num === 0) {
+              const resultado = this.ListaGestion.filter((elemento) => {
+                return elemento.Gestion.Cliente['cli_estado_contacta'].includes(nombre.toUpperCase());
+              });
+              this.FraccionarValores(resultado, this.ConstanteFraccion);
+              const j=resultado.map((item: any) => ({
+                cartera:item.Cartera,
+                cedula:item.Gestion.Cliente.cli_identificacion,
+                ope_cod_credito:item.Gestion.CXC_Operacion.ope_cod_credito,
+                ope_descripcion:item.Gestion.CXC_Operacion.ope_descripcion,
+                ope_producto: item.Gestion.CXC_Operacion.ope_producto,
+                cli_nombres:item.Gestion.Cliente.cli_nombres,
+                tipo_gestion: item.TipoGestion,
+                cli_estado_contacta: item.Gestion.Cliente.cli_estado_contacta,
+                Conectividad: item.Conectividad,
+                gest_num_contacto:item.Gestion.gest_num_contacto,
+                ope_saldo_cxc_actual:item.Gestion.CXC_Operacion.ope_saldo_cxc_actual,
+                ope_dias_mora:item.Gestion.CXC_Operacion.ope_dias_mora,
+                ope_gastos_cobranzas:item.Gestion.CXC_Operacion.ope_gastos_cobranzas,
+                ope_interes_mora: item.Gestion.CXC_Operacion.ope_interes_mora,
+                ope_liquidar:item.Gestion.CXC_Operacion.ope_liquidar=== '1'?'Si':'No',
+                gest_fecha_gestion: this.Fechas.fechaCorta(item.Gestion.gest_fecha_gestion),
+                gest_fecha_compromiso:this.Fechas.fechaCorta(item.Gestion.gest_fecha_compromiso)==='31-12-1969' ? ' ' :this.Fechas.fechaCorta(item.Gestion.gest_fecha_compromiso),
+                gest_valor_a_cobrar:item.Gestion.gest_valor_a_cobrar,
+                gest_couta:item.Gestion.gest_couta,
+                gest_fecha_prox_pago:this.Fechas.fechaCorta(item.Gestion.gest_fecha_prox_pago)==='31-12-1969' ? ' ' :this.Fechas.fechaCorta(item.Gestion.gest_fecha_prox_pago),
+                Gestionado:item.Gestion.Gestor.ges_nombres+' '+item.Gestion.Gestor.ges_apellidos,
+                gest_fecha_volver_llamar:this.Fechas.fechaCorta(item.Gestion.gest_fecha_volver_llamar)==='31-12-1969' ? ' ' :this.Fechas.fechaCorta(item.Gestion.gest_fecha_volver_llamar),
+                gest_hora_volver_llamar:item.Gestion.gest_hora_volver_llamar,
+                volver_llamar:item.Gestion.gest_volver_llamar === '1'?'Si':'No',
+                contac_descripcion:item.Contactabilidad.contac_descripcion,
+                GestorAsignado:item.GestorAsignado
+              }));
+                let om: generarPDF = {
+                  entidad: 'ReporteGeneralFiltro', listado:j
+                };
+                this.gReporteG=om;
+            }
+             
+            if (contador != 0) {
+              ThContactabilidad.style.color = 'red';
+            } else {
+              ThContactabilidad.style.color = '';
+            }
+          }
+          if (this.FirltroPor === 'TipoGestion') {
+            let nombre = this.TextoFiltro.value!;
+            if (num === 0) {
+              const resultado = this.ListaGestion.filter((elemento) => {
+                return elemento['TipoGestion'].includes(nombre.toUpperCase());
+              });
+              this.FraccionarValores(resultado, this.ConstanteFraccion);
+              const j=resultado.map((item: any) => ({
+                cartera:item.Cartera,
+                cedula:item.Gestion.Cliente.cli_identificacion,
+                ope_cod_credito:item.Gestion.CXC_Operacion.ope_cod_credito,
+                ope_descripcion:item.Gestion.CXC_Operacion.ope_descripcion,
+                ope_producto: item.Gestion.CXC_Operacion.ope_producto,
+                cli_nombres:item.Gestion.Cliente.cli_nombres,
+                tipo_gestion: item.TipoGestion,
+                cli_estado_contacta: item.Gestion.Cliente.cli_estado_contacta,
+                Conectividad: item.Conectividad,
+                gest_num_contacto:item.Gestion.gest_num_contacto,
+                ope_saldo_cxc_actual:item.Gestion.CXC_Operacion.ope_saldo_cxc_actual,
+                ope_dias_mora:item.Gestion.CXC_Operacion.ope_dias_mora,
+                ope_gastos_cobranzas:item.Gestion.CXC_Operacion.ope_gastos_cobranzas,
+                ope_interes_mora: item.Gestion.CXC_Operacion.ope_interes_mora,
+                ope_liquidar:item.Gestion.CXC_Operacion.ope_liquidar=== '1'?'Si':'No',
+                gest_fecha_gestion: this.Fechas.fechaCorta(item.Gestion.gest_fecha_gestion),
+                gest_fecha_compromiso:this.Fechas.fechaCorta(item.Gestion.gest_fecha_compromiso)==='31-12-1969' ? ' ' :this.Fechas.fechaCorta(item.Gestion.gest_fecha_compromiso),
+                gest_valor_a_cobrar:item.Gestion.gest_valor_a_cobrar,
+                gest_couta:item.Gestion.gest_couta,
+                gest_fecha_prox_pago:this.Fechas.fechaCorta(item.Gestion.gest_fecha_prox_pago)==='31-12-1969' ? ' ' :this.Fechas.fechaCorta(item.Gestion.gest_fecha_prox_pago),
+                Gestionado:item.Gestion.Gestor.ges_nombres+' '+item.Gestion.Gestor.ges_apellidos,
+                gest_fecha_volver_llamar:this.Fechas.fechaCorta(item.Gestion.gest_fecha_volver_llamar)==='31-12-1969' ? ' ' :this.Fechas.fechaCorta(item.Gestion.gest_fecha_volver_llamar),
+                gest_hora_volver_llamar:item.Gestion.gest_hora_volver_llamar,
+                volver_llamar:item.Gestion.gest_volver_llamar === '1'?'Si':'No',
+                contac_descripcion:item.Contactabilidad.contac_descripcion,
+                GestorAsignado:item.GestorAsignado
+              }));
+                let om: generarPDF = {
+                  entidad: 'ReporteGeneralFiltro', listado:j
+                };
+                this.gReporteG=om;
+            }
+             
+            if (contador != 0) {
+              ThTipoGestion.style.color = 'red';
+            } else {
+              ThTipoGestion.style.color = '';
+            }
+          }
+          if (this.FirltroPor === 'GestionMediante') {
+            let nombre = this.TextoFiltro.value!;
+            if (num === 0) {
+              const resultado = this.ListaGestion.filter((elemento) => {
+                return elemento.Gestion['gest_num_contacto'].includes(nombre);
+              });
+              this.FraccionarValores(resultado, this.ConstanteFraccion);
+              const j=resultado.map((item: any) => ({
+                cartera:item.Cartera,
+                cedula:item.Gestion.Cliente.cli_identificacion,
+                ope_cod_credito:item.Gestion.CXC_Operacion.ope_cod_credito,
+                ope_descripcion:item.Gestion.CXC_Operacion.ope_descripcion,
+                ope_producto: item.Gestion.CXC_Operacion.ope_producto,
+                cli_nombres:item.Gestion.Cliente.cli_nombres,
+                tipo_gestion: item.TipoGestion,
+                cli_estado_contacta: item.Gestion.Cliente.cli_estado_contacta,
+                Conectividad: item.Conectividad,
+                gest_num_contacto:item.Gestion.gest_num_contacto,
+                ope_saldo_cxc_actual:item.Gestion.CXC_Operacion.ope_saldo_cxc_actual,
+                ope_dias_mora:item.Gestion.CXC_Operacion.ope_dias_mora,
+                ope_gastos_cobranzas:item.Gestion.CXC_Operacion.ope_gastos_cobranzas,
+                ope_interes_mora: item.Gestion.CXC_Operacion.ope_interes_mora,
+                ope_liquidar:item.Gestion.CXC_Operacion.ope_liquidar=== '1'?'Si':'No',
+                gest_fecha_gestion: this.Fechas.fechaCorta(item.Gestion.gest_fecha_gestion),
+                gest_fecha_compromiso:this.Fechas.fechaCorta(item.Gestion.gest_fecha_compromiso)==='31-12-1969' ? ' ' :this.Fechas.fechaCorta(item.Gestion.gest_fecha_compromiso),
+                gest_valor_a_cobrar:item.Gestion.gest_valor_a_cobrar,
+                gest_couta:item.Gestion.gest_couta,
+                gest_fecha_prox_pago:this.Fechas.fechaCorta(item.Gestion.gest_fecha_prox_pago)==='31-12-1969' ? ' ' :this.Fechas.fechaCorta(item.Gestion.gest_fecha_prox_pago),
+                Gestionado:item.Gestion.Gestor.ges_nombres+' '+item.Gestion.Gestor.ges_apellidos,
+                gest_fecha_volver_llamar:this.Fechas.fechaCorta(item.Gestion.gest_fecha_volver_llamar)==='31-12-1969' ? ' ' :this.Fechas.fechaCorta(item.Gestion.gest_fecha_volver_llamar),
+                gest_hora_volver_llamar:item.Gestion.gest_hora_volver_llamar,
+                volver_llamar:item.Gestion.gest_volver_llamar === '1'?'Si':'No',
+                contac_descripcion:item.Contactabilidad.contac_descripcion,
+                GestorAsignado:item.GestorAsignado
+              }));
+                let om: generarPDF = {
+                  entidad: 'ReporteGeneralFiltro', listado:j
+                };
+                this.gReporteG=om;
+            }
+             
+            if (contador != 0) {
+              ThGestionMediante.style.color = 'red';
+            } else {
+              ThGestionMediante.style.color = '';
+            }
+          }
         }
-    
-    
   }
   VaciarFiltro() {
     const inputElement = document.getElementById(
@@ -916,7 +1577,6 @@ export class GeneralComponent implements OnInit {
   getProductData2(valor:number):any[] {
     if(valor===48)
     {
-      console.log('1')
       return this.ListaGestion.map((gestion:any) => (
               {
                 cartera:gestion.cart_descripcion,
@@ -939,8 +1599,6 @@ export class GeneralComponent implements OnInit {
                 gest_valor_a_cobrar:gestion.gest_valor_a_cobrar,
                 gest_couta:gestion.gest_couta,
                 gest_fecha_prox_pago:this.Fechas.fechaCorta(gestion.gest_fecha_prox_pago)==='31-12-1969' ? ' ' :this.Fechas.fechaCorta(gestion.gest_fecha_prox_pago),
-                gest_fecha_incumplido:this.Fechas.fechaCorta(gestion.gest_fecha_incumplido)==='31-12-1969' ? ' ' :this.Fechas.fechaCorta(gestion.gest_fecha_incumplido),
-                gest_valor_incumplido:gestion.gest_valor_incumplido,
                 Gestionado:gestion.nombreGest,
                 gest_fecha_volver_llamar:this.Fechas.fechaCorta(gestion.gest_fecha_volver_llamar)==='31-12-1969' ? ' ' :this.Fechas.fechaCorta(gestion.gest_fecha_volver_llamar),
                 gest_hora_volver_llamar:gestion.gest_hora_volver_llamar,
@@ -950,7 +1608,6 @@ export class GeneralComponent implements OnInit {
       }));
     }else
     {
-      console.log('2')
       return this.ListaGestion.map((item: any) => ({
         cartera:item.Cartera,
         cedula:item.Gestion.Cliente.cli_identificacion,
@@ -972,8 +1629,6 @@ export class GeneralComponent implements OnInit {
         gest_valor_a_cobrar:item.Gestion.gest_valor_a_cobrar,
         gest_couta:item.Gestion.gest_couta,
         gest_fecha_prox_pago:this.Fechas.fechaCorta(item.Gestion.gest_fecha_prox_pago)==='31-12-1969' ? ' ' :this.Fechas.fechaCorta(item.Gestion.gest_fecha_prox_pago),
-        gest_fecha_incumplido:this.Fechas.fechaCorta(item.Gestion.gest_fecha_incumplido)==='31-12-1969' ? ' ' :this.Fechas.fechaCorta(item.Gestion.gest_fecha_incumplido),
-        gest_valor_incumplido:item.Gestion.gest_valor_incumplido,
         Gestionado:item.Gestion.Gestor.ges_nombres+' '+item.Gestion.Gestor.ges_apellidos,
         gest_fecha_volver_llamar:this.Fechas.fechaCorta(item.Gestion.gest_fecha_volver_llamar)==='31-12-1969' ? ' ' :this.Fechas.fechaCorta(item.Gestion.gest_fecha_volver_llamar),
         gest_hora_volver_llamar:item.Gestion.gest_hora_volver_llamar,
@@ -982,7 +1637,6 @@ export class GeneralComponent implements OnInit {
         GestorAsignado:item.GestorAsignado
       }));
     }
-    
   }
 
 

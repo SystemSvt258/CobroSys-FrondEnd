@@ -190,6 +190,7 @@ export class CargarComponent implements OnInit {
     {id:24,name:'PAGOS',value:'24'}
   ];
   TipoElementoOrdenado = this.TipoElemento.slice().sort((a:any, b:any) => a.name.localeCompare(b.name));
+  
 
   itemFiles = new FormControl('', [Validators.required]);
   hojaFile = new FormControl('', [Validators.required]);
@@ -486,6 +487,7 @@ export class CargarComponent implements OnInit {
           }
           if (valor === '19') {
             this.entidad = new GestorClass();
+            console.log(this.entidad);
           }
           if (valor === '20') {
             this.entidad = new AsignacionClass();
@@ -2171,6 +2173,7 @@ descargarArchivoExcelTrabajo() {
   clearFileInput(input: HTMLInputElement) {
     this.banderaGuardar=false;
     this.banderaCartera =false;
+    this.banderaMenajeError=false;
     input.value = '';
     //window.location.reload();
     this.archivo = null;
@@ -2554,7 +2557,7 @@ descargarArchivoExcelTrabajo() {
     }
     if (this.itemFiles.value === '6') {
       for (const [indiceInf, objeto] of row.entries()) {
-        if ([0, 1, 5, 6, 7].includes(indiceInf)) {
+        if ([0, 5, 6, 7].includes(indiceInf)) {
           const esNumero = this.contieneSoloNumeros(objeto);
           resultado[indiceInf] = esNumero;
         }
@@ -2562,6 +2565,11 @@ descargarArchivoExcelTrabajo() {
           const esLetras = this.contieneSoloLetras(objeto);
           resultado[indiceInf] = esLetras;
         }
+        if ([1].includes(indiceInf)) {
+          const estlef = this.contieneSoloCelularesCorreo(objeto);
+          resultado[indiceInf] = estlef;
+        }
+        //contieneSoloCelularesCorreo
       }
       let aux = this.todoCorrecto(resultado);
       if (aux === 'Correcto') {
@@ -2882,11 +2890,11 @@ descargarArchivoExcelTrabajo() {
     }
     if (this.itemFiles.value === '15') {
       for (const [indiceInf, objeto] of row.entries()) {
-        if ([2].includes(indiceInf)) {
+        if ([0].includes(indiceInf)) {
           const esNumero = this.contieneSoloNumeros(objeto);
           resultado[indiceInf] = esNumero;
         }
-        if ([0, 1].includes(indiceInf)) {
+        if ([1, 2].includes(indiceInf)) {
           const esLetras = this.contieneSoloLetras(objeto);
           resultado[indiceInf] = esLetras;
         }
@@ -3170,25 +3178,29 @@ descargarArchivoExcelTrabajo() {
     }
     if (this.itemFiles.value === '23') {
       for (const [indiceInf, objeto] of row.entries()) {
-        if ([0,1,3,4,5,6,7,8,13,14,15,16,17,18,19,23,24,27].includes(indiceInf)) {
+        if ([0,2,3,4,5,6,12,13,14,15,16,17,24,25,28].includes(indiceInf)) {
           const esNumero = this.contieneSoloNumeros(objeto);
           resultado[indiceInf] = esNumero;
         }
-        if ([9,12,22].includes(indiceInf)) {
+        if ([8,11,23].includes(indiceInf)) {
           const esLetras = this.contieneSoloLetras(objeto);
           resultado[indiceInf] = esLetras;
         }
-        if ([10,11,20,21,25].includes(indiceInf)) {
+        if ([9,10,18,19,20,21,26].includes(indiceInf)) {
           const esFechas = this.contieneSoloFecha(objeto);
           resultado[indiceInf] = esFechas;
         }
-        if ([26].includes(indiceInf)) {
+        if ([22,27].includes(indiceInf)) {
           const esHoras = this.contieneSoloHora(objeto);
           resultado[indiceInf] = esHoras;
         }
-        if ([2].includes(indiceInf)) {
+        if ([1].includes(indiceInf)) {
           const esCodigo = this.contieneSoloCodigo(objeto);
           resultado[indiceInf] = esCodigo;
+        }
+        if ([7].includes(indiceInf)) {
+          const esContacto = this.contieneSoloCelularesCorreo(objeto);
+          resultado[indiceInf] = esContacto;
         }
       }
       let aux = this.todoCorrecto(resultado);
@@ -3471,13 +3483,17 @@ descargarArchivoExcelTrabajo() {
     }
     if (this.itemFiles.value === '6') {
       for (const [indiceInf, objeto] of row.entries()) {
-        if ([0, 1, 5, 6, 7].includes(indiceInf)) {
+        if ([0,5, 6, 7].includes(indiceInf)) {
           const esNumero = this.contieneSoloNumeros(objeto);
           resultado[indiceInf] = esNumero;
         }
         if ([2, 3, 4].includes(indiceInf)) {
           const esLetras = this.contieneSoloLetras(objeto);
           resultado[indiceInf] = esLetras;
+        }
+        if ([1].includes(indiceInf)) {
+          const estelf = this.contieneSoloCelularesCorreo(objeto);
+          resultado[indiceInf] = estelf;
         }
       }
       let aux = this.todoCorrecto(resultado);
@@ -3637,11 +3653,11 @@ descargarArchivoExcelTrabajo() {
     }
     if (this.itemFiles.value === '15') {
       for (const [indiceInf, objeto] of row.entries()) {
-        if ([2].includes(indiceInf)) {
+        if ([0].includes(indiceInf)) {
           const esNumero = this.contieneSoloNumeros(objeto);
           resultado[indiceInf] = esNumero;
         }
-        if ([0, 1].includes(indiceInf)) {
+        if ([1, 2].includes(indiceInf)) {
           const esLetras = this.contieneSoloLetras(objeto);
           resultado[indiceInf] = esLetras;
         }
@@ -3781,25 +3797,29 @@ descargarArchivoExcelTrabajo() {
     }//
     if (this.itemFiles.value === '23') {
       for (const [indiceInf, objeto] of row.entries()) {
-        if ([0,1,3,4,5,6,7,8,13,14,15,16,17,18,19,23,24,27].includes(indiceInf)) {
+        if ([0,2,3,4,5,6,12,13,14,15,16,17,24,25,28].includes(indiceInf)) {
           const esNumero = this.contieneSoloNumeros(objeto);
           resultado[indiceInf] = esNumero;
         }
-        if ([9,12,22].includes(indiceInf)) {
+        if ([8,11,23].includes(indiceInf)) {
           const esLetras = this.contieneSoloLetras(objeto);
           resultado[indiceInf] = esLetras;
         }
-        if ([10,11,20,21,25].includes(indiceInf)) {
+        if ([9,10,18,19,20,21,26].includes(indiceInf)) {
           const esFechas = this.contieneSoloFecha(objeto);
           resultado[indiceInf] = esFechas;
         }
-        if ([26].includes(indiceInf)) {
+        if ([22,27].includes(indiceInf)) {
           const esHoras = this.contieneSoloHora(objeto);
           resultado[indiceInf] = esHoras;
         }
-        if ([2].includes(indiceInf)) {
+        if ([1].includes(indiceInf)) {
           const esCodigo = this.contieneSoloCodigo(objeto);
           resultado[indiceInf] = esCodigo;
+        }
+        if ([7].includes(indiceInf)) {
+          const esContacto = this.contieneSoloCelularesCorreo(objeto);
+          resultado[indiceInf] = esContacto;
         }
       }
       let aux = this.todoCorrecto(resultado);
@@ -3852,9 +3872,31 @@ descargarArchivoExcelTrabajo() {
       //console.log("entro letras ........");
       return true;
     }
-    const expresionRegular =
-      /^([A-Za-z .,\/:\-áéíóúÁÉÍÓÚñÑ_]+[A-Za-z .,\/:\-áéíóúÁÉÍÓÚñÑ0-9_]*)?$/;
-    return expresionRegular.test(valor);
+    //const expresionRegular =/^([A-Za-z .,\/:\-áéíóúÁÉÍÓÚñÑ_]+[A-Za-z .,\/:\-áéíóúÁÉÍÓÚñÑ0-9_]*)?$/;
+    //const expresionRegular =/^[A-Za-z0-9 .,\/:\-áéíóúÁÉÍÓÚñÑ$]+$/;
+    //const expresionRegular =/^[\p{L}0-9 .,\/:\-áéíóúÁÉÍÓÚñÑ$]+$/u;
+    //const expresionRegular =/^[A-Za-z0-9 .,\/:\-áéíóúÁÉÍÓÚñÑ/$]+$/;
+    //const expresionRegular = /^[A-Za-z0-9 .,;()*:/\/:\-áéíóúÁÉÍÓÚñÑ,:;()./\$]+$/;
+    //const textoLimpio = valor.replace(/[\u200E\u200F\u202A-\u202E]/g, '').trim();
+    //const expresionRegular = /^[A-Za-z0-9 áéíóúÁÉÍÓÚñÑ.,:\/$\-\*\(\)\n\r]+$/;
+    //const expresionRegular = /^[A-Za-z0-9 áéíóúÁÉÍÓÚñÑ.,:;\/$\-\*\(\)\n\r]+$/;
+    //const expresionRegular = /^[A-Za-z0-9 áéíóúÁÉÍÓÚñÑ.,;:/\-$*()@\n\r]+$/;
+    const textoLimpio = valor
+    ?.replace(/[\u200E\u200F\u202A-\u202E]/g, '') // Elimina caracteres invisibles Unicode
+    .replace(/\s+/g, ' ') // Reemplaza múltiples espacios por un único espacio
+    .trim();
+    //const expresionRegular = /^[A-Za-z0-9 áéíóúÁÉÍÓÚñÑ.,;:/\-$*()@\/\n\r]+$/;
+    //const expresionRegular = /^[A-Za-z0-9 áéíóúÁÉÍÓÚñÑ.,;:/\-$*()@\/º\n\r]+$/u;
+    //const expresionRegular = /^[A-Za-z0-9 áéíóúÁÉÍÓÚñÑ.,;:/\-$*()@_\/º\n\r]+$/u;
+    //const expresionRegular = /^[A-Za-z0-9 áéíóúÁÉÍÓÚñÑ.,;:/\-$*()@_°#\/º\n\r]+$/u;
+    //const expresionRegular = /^[A-Za-z0-9 áéíóúÁÉÍÓÚñÑ.,;:/\-$*()@_°#~\/º\n\r?&=]+$/u;
+    //const expresionRegular = /^[A-Za-z0-9 áéíóúÁÉÍÓÚñÑ.,;:/\-$*()@_°#~\/º\n\r?&= %]+$/u;
+    //const expresionRegular = /^[\p{L}0-9 áéíóúÁÉÍÓÚñÑ.,;:/\-$*()@_°#~¿¡!%\/º×\n\r?&=]+$/u;
+    //const expresionRegular = /^[\p{L}0-9 áéíóúÁÉÍÓÚñÑ.,;:/\-$*()@_°#~¿¡!%\/º×\n\r?&=–$]+$/u;
+    //const expresionRegular = /^[\p{L}0-9 áéíóúÁÉÍÓÚñÑ.,;:/\-$*()@_°#~¿¡!%\/º×\n\r?&=–$´'+]+$/u;
+    const expresionRegular = /^[\p{L}0-9 áéíóúÁÉÍÓÚñÑ.,;:/\-$*()@_°#~¿¡!%\/º×\n\r?&=–$´'\[\]+]+$/u;
+    //const expresionRegular = /^[A-Za-z0-9 áéíóúÁÉÍÓÚñÑ.,;:/\-$*()@_°#~¿¡!%\/º×\n\r?&=]*$/u;
+    return expresionRegular.test(textoLimpio);
   }
   contieneSoloNumeros(valor: string | null): boolean {
     if (
@@ -3866,7 +3908,8 @@ descargarArchivoExcelTrabajo() {
       console.log('entroVacio' + ' ' + valor);
       return true;
     }
-    const expresionRegular = /^(?:[0-9]+(\.[0-9]+)?)?$|^VACIO$|^ $|^$/;
+    const expresionRegular = /^(?:[0-9]+([.,][0-9]+)?)?$|^VACIO$|^ $|^$/;
+    //const expresionRegular = /^(?:[0-9]+(\.,[0-9]+)?)?$|^VACIO$|^ $|^$/;
     return expresionRegular.test(valor);
   }
   contieneSoloCodigo(valor:string|null):boolean
@@ -3880,7 +3923,8 @@ descargarArchivoExcelTrabajo() {
       console.log('entroVacio' + ' ' + valor);
       return true;
     }
-    const expresionRegular = /^(?:[0-9]+|[a-zA-Z]*[0-9]+)?$|^VACIO$|^ $|^$/;
+    //const expresionRegular = /^(?:[0-9]+|[a-zA-Z]*[0-9]+)?$|^VACIO$|^ $|^$/;
+    const expresionRegular = /^[a-zA-Z0-9]*$|^VACIO$|^ $|^$/;
     return expresionRegular.test(valor);
   }
   contieneSoloFecha(valor: string | null): boolean {
@@ -3938,6 +3982,32 @@ descargarArchivoExcelTrabajo() {
 
     return expresionRegular.test(valor);
   }
+  contieneAmbos(valor: string | null): boolean {
+    if (
+        valor === 'NULL' ||
+        valor === 'null' ||
+        valor === null ||
+        valor === ''
+    ) {
+        // Si el valor es nulo o vacío, se considera válido (true)
+        return true;
+    }
+    // Expresión regular para validar números de celular o correos electrónicos
+    //const expresionRegular = /^(0\d{8,9}|[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})$/;
+    const expresionRegular = /^(0\d{9}|[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})$/;
+    return expresionRegular.test(valor);
+}
+contieneSoloCelularesCorreo(valor: string | null): boolean {
+  if (!valor || valor.trim() === '' || valor.toUpperCase().trim() === 'NULL') {
+    console.log('entroVacio: ' + valor);
+    return true;
+  }
+  // Elimina espacios y evalúa solo la parte limpia
+  const valorLimpio = valor.trim();
+  //const expresionRegular = /^(?:[0-9]+)$|^VACIO$/;
+  const expresionRegular = /^(?:[0-9]+)$|^VACIO$|^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+  return expresionRegular.test(valorLimpio);
+}
   /***************************************************************************** */
   todoCorrecto(param: any): string {
     const valores = Object.values(param);
@@ -4013,12 +4083,16 @@ descargarArchivoExcelTrabajo() {
       }
     } //garante
     if (this.itemFiles.value === '6') {
-      if ([0, 1, 5, 6, 7].includes(posicion)) {
+      if ([0,5, 6, 7].includes(posicion)) {
         res = this.contieneSoloNumeros(valor);
       }
       if ([2, 3, 4].includes(posicion)) {
         res = this.contieneSoloLetras(valor);
       }
+      if ([1].includes(posicion)) {
+        res = this.contieneSoloCelularesCorreo(valor);
+      }
+      //contieneSoloCelularesCorreo
     } //telefono
     if (this.itemFiles.value === '7') {
       if ([0, 1, 4, 7].includes(posicion)) {
@@ -4088,10 +4162,10 @@ descargarArchivoExcelTrabajo() {
       }
     } //tipoCorreo
     if (this.itemFiles.value === '15') {
-      if ([2].includes(posicion)) {
+      if ([0].includes(posicion)) {
         res = this.contieneSoloNumeros(valor);
       }
-      if ([0, 1].includes(posicion)) {
+      if ([1, 2].includes(posicion)) {
         res = this.contieneSoloLetras(valor);
       }
     } //Cuenta
@@ -4152,20 +4226,23 @@ descargarArchivoExcelTrabajo() {
       }
     } //TipoGestionConectividadContactavilidad
     if (this.itemFiles.value === '23') {
-      if ([0,1,3,4,5,6,7,8,13,14,15,16,17,18,19,23,24,27].includes(posicion)) {
+      if ([0,2,3,4,5,6,12,13,14,15,16,17,24,25,28].includes(posicion)) {
         res = this.contieneSoloNumeros(valor);
       }
-      if ([9,12,22].includes(posicion)) {
+      if ([8,11,23].includes(posicion)) {
         res = this.contieneSoloLetras(valor);
       }
-      if ([10,11,20,21,25].includes(posicion)) {
+      if ([9,10,18,19,20,21,26].includes(posicion)) {
         res = this.contieneSoloFecha(valor);
       }
-      if ([26].includes(posicion)) {
+      if ([22,27].includes(posicion)) {
         res = this.contieneSoloHora(valor);
       }
-      if ([2].includes(posicion)) {
+      if ([1].includes(posicion)) {
         res = this.contieneSoloCodigo(valor);
+      }
+      if ([7].includes(posicion)) {
+        res = this.contieneSoloCelularesCorreo(valor);
       }
     } //Gestiones
     if (this.itemFiles.value === '24') {
@@ -11968,40 +12045,44 @@ guardarMasiva()
   if (this.valorSelecEntidad === '23') {
     for (const rowf of this.data) {
       const minDate = new Date('1969-12-31').toISOString().split('T')[0];
-      const minDate1 = new Date(rowf[10]).toISOString().split('T')[0];
-      const minDate2 = new Date(rowf[11]).toISOString().split('T')[0];
-      const minDate3 = new Date(rowf[12]).toISOString().split('T')[0];
-      const minDate4 = new Date(rowf[21]).toISOString().split('T')[0];
-      const minDate5 = new Date(rowf[22]).toISOString().split('T')[0];
+      const minDate1 = new Date(rowf[9]).toISOString().split('T')[0];
+      const minDate2 = new Date(rowf[10]).toISOString().split('T')[0];
+      const minDate3 = new Date(rowf[18]).toISOString().split('T')[0];
+      const minDate4 = new Date(rowf[19]).toISOString().split('T')[0];
+      const minDate5 = new Date(rowf[20]).toISOString().split('T')[0];
+      const minDate6 = new Date(rowf[21]).toISOString().split('T')[0];
+      const minDate7 = new Date(rowf[26]).toISOString().split('T')[0];
+
       let ocD: any = {
-        id_gestor: (rowf[0] === '' || rowf[0] === 'VACIO'||rowf[0] === 'vacio'||rowf[0] === ' ') ? null : Number(rowf[0]),
-        cli_identificacion: (rowf[1] === '' || rowf[1] === 'VACIO'||rowf[1] === 'vacio'||rowf[1] === ' ') ? null : rowf[1].toUpperCase(),
-        ope_cod_credito: (rowf[2].toString() === '' || rowf[2].toString() === 'VACIO'||rowf[2].toString() === 'vacio'||rowf[2].toString() === ' '||rowf[2].toString() === '0') ? null : rowf[2].toString(),
+        id_gestor: (rowf[2] === '' || rowf[2] === 'VACIO'||rowf[2] === 'vacio'||rowf[2] === ' ') ? null : Number(rowf[2]),
+        cli_identificacion: (rowf[0] === '' || rowf[0] === 'VACIO'||rowf[0] === 'vacio'||rowf[0] === ' ') ? null : rowf[0].toString(),
+        ope_cod_credito: (rowf[1].toString() === '' || rowf[1].toString() === 'VACIO'||rowf[1].toString() === 'vacio'||rowf[1].toString() === ' '||rowf[1].toString() === '0') ? null : rowf[1].toString(),
         gest_id_gestor_asign:(rowf[3] === '' || rowf[3] === 'VACIO'||rowf[3] === 'vacio'||rowf[3] === ' ') ? null : rowf[3],
         gest_id_tipo_gestion:(rowf[4] === '' || rowf[4] === 'VACIO'||rowf[4] === 'vacio'||rowf[4] === ' ') ? null : rowf[4],
         gest_id_contactabilidad:(rowf[5] === '' || rowf[5] === 'VACIO'||rowf[5] === 'vacio'||rowf[5] === ' ') ? null : rowf[5],
         gest_id_conectividad:(rowf[6] === '' || rowf[6] === 'VACIO'||rowf[6] === 'vacio'||rowf[6] === ' ') ? null : rowf[6],
-        gest_id_contacto:(rowf[7] === '' || rowf[7] === 'VACIO'||rowf[7] === 'vacio'||rowf[7] === ' ') ? null : rowf[7],
-        gest_num_contacto:(rowf[8] === '' || rowf[8] === 'VACIO'||rowf[8] === 'vacio'||rowf[8] === ' ') ? null : rowf[8].toString(),
-        gest_gestion_mediante:(rowf[9] === '' || rowf[9] === 'VACIO'||rowf[9] === 'vacio'||rowf[9] === ' ') ? null : rowf[9].toUpperCase(),
-        gest_fecha_compromiso:this.solucionarFecha(rowf[10]) === '' ? minDate : minDate1,
-        gest_fecha_incumplido:this.solucionarFecha(rowf[11]) === '' ? minDate : minDate2,
-        gest_descripcion:(rowf[12] === '' || rowf[12] === 'VACIO'||rowf[12] === 'vacio'||rowf[12] === ' ') ? null : rowf[12].toUpperCase(),
-        gest_valor_comp:(rowf[13] === '' || rowf[13] === 'VACIO'||rowf[13] === 'vacio'||rowf[13] === ' ') ? null : rowf[13].toString(),
-        gest_abonos:(rowf[14] === '' || rowf[14] === 'VACIO'||rowf[14] === 'vacio'||rowf[14] === ' ') ? null : rowf[14].toString(),
-        gest_num_coutas:(rowf[14] === '' || rowf[15] === 'VACIO'||rowf[15] === 'vacio'||rowf[15] === ' ') ? null : rowf[15].toString(),
-        gest_num_coutas_res:(rowf[16] === '' || rowf[16] === 'VACIO'||rowf[16] === 'vacio'||rowf[16] === ' ') ? null : rowf[16].toString(),
-        gest_couta:(rowf[17] === '' || rowf[17] === 'VACIO'||rowf[17] === 'vacio'||rowf[17] === ' ') ? null : rowf[17].toString(),
-        gest_valor_a_cobrar:(rowf[18] === '' || rowf[18] === 'VACIO'||rowf[18] === 'vacio'||rowf[18] === ' ') ? null : rowf[18].toString(),
-        gest_valor_incumplido:(rowf[19] === '' || rowf[19] === 'VACIO'||rowf[19] === 'vacio'||rowf[19] === ' ') ? null : rowf[19].toString(),
-        gest_fecha_prox_pago:this.solucionarFecha(rowf[20]) === '' ? minDate : minDate3,
-        gest_fecha_conv:this.solucionarFecha(rowf[21]) === '' ? minDate : minDate4,
-        gest_observacion:(rowf[22] === '' || rowf[22] === 'VACIO'||rowf[22] === 'vacio'||rowf[22] === ' ') ? null : rowf[22].toUpperCase(),
-        gest_certificado:(rowf[23] === '' || rowf[23] === 'VACIO'||rowf[23] === 'vacio'||rowf[23] === ' ') ? null : rowf[23].toString(),
-        gest_volver_llamar:(rowf[24] === '' || rowf[24] === 'VACIO'||rowf[24] === 'vacio'||rowf[24] === ' ') ? null : rowf[24].toString(),
-        gest_fecha_volver_llamar:this.solucionarFecha(rowf[25]) === '' ? minDate : minDate5,
-        gest_hora_volver_llamar:(rowf[26] === '' || rowf[26] === 'VACIO'||rowf[26] === 'vacio'||rowf[26] === ' ') ? null : rowf[26].toString(),
-        gest_perdio_contacto:(rowf[27] === '' || rowf[27] === 'VACIO'||rowf[27] === 'vacio'||rowf[27] === ' ') ? null : rowf[27].toString(),
+        gest_num_contacto:(rowf[7] === '' || rowf[7] === 'VACIO'||rowf[7] === 'vacio'||rowf[7] === ' ') ? null : rowf[7].toString(),
+        gest_gestion_mediante:(rowf[8] === '' || rowf[8] === 'VACIO'||rowf[8] === 'vacio'||rowf[8] === ' ') ? null : rowf[8].toUpperCase(),
+        gest_fecha_compromiso:this.solucionarFecha(rowf[9]) === '' ? minDate : minDate1,
+        gest_fecha_incumplido:this.solucionarFecha(rowf[10]) === '' ? minDate : minDate2,
+        gest_descripcion:(rowf[11] === '' || rowf[11] === 'VACIO'||rowf[11] === 'vacio'||rowf[11] === ' ') ? null : rowf[11].toUpperCase(),
+        gest_valor_comp:(rowf[12] === '' || rowf[12] === 'VACIO'||rowf[12] === 'vacio'||rowf[12] === ' ') ? null : rowf[12].toString(),
+        gest_abonos:(rowf[13] === '' || rowf[13] === 'VACIO'||rowf[13] === 'vacio'||rowf[13] === ' ') ? null : rowf[13].toString(),
+        gest_num_coutas:(rowf[14] === '' || rowf[14] === 'VACIO'||rowf[14] === 'vacio'||rowf[14] === ' ') ? null : rowf[14].toString(),
+        gest_num_coutas_res:(rowf[15] === '' || rowf[15] === 'VACIO'||rowf[15] === 'vacio'||rowf[15] === ' ') ? null : rowf[15].toString(),
+        gest_couta:(rowf[16] === '' || rowf[16] === 'VACIO'||rowf[16] === 'vacio'||rowf[16] === ' ') ? null : rowf[16].toString(),
+        gest_valor_incumplido:(rowf[17] === '' || rowf[17] === 'VACIO'||rowf[17] === 'vacio'||rowf[17] === ' ') ? null : rowf[17].toString(),
+        gest_fecha_prox_pago:this.solucionarFecha(rowf[18]) === '' ? minDate : minDate3,
+        gest_fecha_conv:this.solucionarFecha(rowf[19]) === '' ? minDate : minDate4,
+        gest_fecha_in:this.solucionarFecha(rowf[20]) === '' ? minDate : minDate5,
+        gest_fecha_gestion:this.solucionarFecha(rowf[21]) === '' ? minDate : minDate6,
+        gest_hora_gestion:(rowf[22] === '' || rowf[22] === 'VACIO'||rowf[22] === 'vacio'||rowf[22] === ' ') ? null : rowf[22].toString(),
+        gest_observacion:(rowf[23] === '' || rowf[23] === 'VACIO'||rowf[23] === 'vacio'||rowf[23] === ' ') ? null : rowf[23].toUpperCase(),
+        gest_certificado:(rowf[24] === '' || rowf[24] === 'VACIO'||rowf[24] === 'vacio'||rowf[24] === ' ') ? null : rowf[24].toString(),
+        gest_volver_llamar:(rowf[25] === '' || rowf[25] === 'VACIO'||rowf[25] === 'vacio'||rowf[25] === ' ') ? null : rowf[25].toString(),
+        gest_fecha_volver_llamar:this.solucionarFecha(rowf[26]) === '' ? minDate : minDate7,
+        gest_hora_volver_llamar:(rowf[27] === '' || rowf[27] === 'VACIO'||rowf[27] === 'vacio'||rowf[27] === ' ') ? null : rowf[27].toString(),
+        gest_perdio_contacto:(rowf[28] === '' || rowf[28] === 'VACIO'||rowf[28] === 'vacio'||rowf[28] === ' ') ? null : rowf[28].toString(),
         gest_id_cartera:Number(this.filtroCartera.value)
       };
       this.CargaMasivaPost.push(ocD);
@@ -12080,8 +12161,8 @@ guardarMasiva()
       const minDaten = new Date(rowf[14]).toISOString().split('T')[0];
       const minDatesa = new Date(rowf[15]).toISOString().split('T')[0];
       let ocD: any = {
-        cli_identificacion: (rowf[0] === '' || rowf[0] === 'VACIO'||rowf[0] === 'vacio'||rowf[0] === ' ') ? null : rowf[0],
-        id_gestor: (rowf[1] === '' || rowf[1] === 'VACIO'||rowf[1] === 'vacio'||rowf[1] === ' ') ? null : rowf[1],
+        cli_identificacion: (rowf[1] === '' || rowf[1] === 'VACIO'||rowf[1] === 'vacio'||rowf[1] === ' ') ? null : rowf[1],
+        id_gestor: (rowf[0] === '' || rowf[0] === 'VACIO'||rowf[0] === 'vacio'||rowf[0] === ' ') ? null : rowf[0],
         ope_cod_credito: (rowf[2].toString() === '' || rowf[2].toString() === 'VACIO'||rowf[2].toString() === 'vacio'||rowf[2].toString() === ' '||rowf[2].toString() === '0') ? null : rowf[2].toString(),
         id_cuenta:(rowf[3] === '' || rowf[3] === 'VACIO'||rowf[3] === 'vacio'||rowf[3] === ' ') ? null : rowf[3],
         pag_pago:(rowf[4] === '' || rowf[4] === 'VACIO'||rowf[4] === 'vacio'||rowf[4] === ' ') ? null : rowf[4].toString(),

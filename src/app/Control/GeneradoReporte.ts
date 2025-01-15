@@ -39,7 +39,7 @@ generarPDF(objeto:generarPDF) {
       theme: 'grid',
       tableWidth:'auto',
       styles: {
-        fontSize:7,
+        fontSize:7.5,
         fontStyle: 'normal',
         textColor: 'black',
         cellPadding: 3,
@@ -367,23 +367,40 @@ generarPDF(objeto:generarPDF) {
             gestion.gest_fecha_gestion,
             gestion.gest_fecha_compromiso,
             gestion.gest_valor_a_cobrar,gestion.gest_couta,gestion.gest_fecha_prox_pago,
-            gestion.gest_fecha_incumplido,
-            gestion.gest_valor_incumplido,gestion.Gestionado,gestion.gest_fecha_volver_llamar,
+            gestion.Gestionado,gestion.gest_fecha_volver_llamar,
             gestion.gest_hora_volver_llamar,gestion.volver_llamar,gestion.contac_descripcion,gestion.GestorAsignado
           ]
         );
       }
       if (objeto.entidad === 'ReporteGeneralFiltro') {
         array = objeto.listado.map(gestion =>
-          [  gestion.cartera,gestion.cedula,gestion.ope_cod_credito,gestion.ope_descripcion,
-            gestion.ope_producto,gestion.cli_nombres,gestion.tipo_gestion,gestion.cli_estado_contacta,gestion.Conectividad,gestion.gest_num_contacto,gestion.ope_saldo_cxc_actual,
-            gestion.ope_dias_mora,gestion.ope_gastos_cobranzas,gestion.ope_interes_mora,gestion.ope_liquidar,
+          [ 
+            gestion.cartera,
+            gestion.cedula,
+            gestion.ope_cod_credito,
+            gestion.ope_descripcion,
+            gestion.ope_producto,
+            gestion.cli_nombres,
+            gestion.tipo_gestion,
+            gestion.cli_estado_contacta,
+            gestion.Conectividad,
+            gestion.gest_num_contacto,
+            gestion.ope_saldo_cxc_actual,
+            gestion.ope_dias_mora,
+            gestion.ope_gastos_cobranzas,
+            gestion.ope_interes_mora,
+            gestion.ope_liquidar,
             gestion.gest_fecha_gestion,
             gestion.gest_fecha_compromiso,
-            gestion.gest_valor_a_cobrar,gestion.gest_couta,gestion.gest_fecha_prox_pago,
-            gestion.gest_fecha_incumplido,
-            gestion.gest_valor_incumplido,gestion.Gestionado,gestion.gest_fecha_volver_llamar,
-            gestion.gest_hora_volver_llamar,gestion.volver_llamar,gestion.contac_descripcion,gestion.GestorAsignado
+            gestion.gest_valor_a_cobrar,
+            gestion.gest_couta,
+            gestion.gest_fecha_prox_pago,
+            gestion.Gestionado,
+            gestion.gest_fecha_volver_llamar,
+            gestion.gest_hora_volver_llamar,
+            gestion.volver_llamar,
+            gestion.contac_descripcion,
+            gestion.GestorAsignado
           ]
         );
       }

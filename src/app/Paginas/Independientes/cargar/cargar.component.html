@@ -154,7 +154,10 @@
                     </div>
                     <div class="col-md-7  col-sm-12  col-12">
                         <div class="form-group">
-                            <span title="Cantidad de meses sin gestión"><strong>Lista de Errores:</strong></span>
+                            <div class="table-container">
+                                <span title="Cantidad de meses sin gestión"><strong>Lista de Errores:</strong></span>
+                                <span title="Cantidad de meses sin gestión"><strong>{{ListaErroresXRow.length}}</strong></span>
+                            </div>
                             <div class="table-container">
                                 <div class="table-responsive" *ngIf="banderaMenajeError">
                                     <table class="table">

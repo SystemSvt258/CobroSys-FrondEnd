@@ -529,10 +529,10 @@ ResetTipoRecargoForms() {
        const o=resultado.map(tipoT=>
         {
           return {
-      idTipo:tipoT.id_tipo_recargo,
-            Descripcion:tipoT.rec_tip_descripcion,
-            FIngreso:tipoT.rec_tip_fecha_in ===null?null:this.Fechas.fechaCortaAbt(tipoT.rec_tip_fecha_in.toString()),
-            Estado:tipoT.rec_tip_esactivo==='1'?'ACTIVO':'INACTIVO'
+                  idTipo:tipoT.id_tipo_recargo,
+                  Descripcion:tipoT.rec_tip_descripcion,
+                  FIngreso:tipoT.rec_tip_fecha_in ===null?null:this.Fechas.fechaCortaAbt(tipoT.rec_tip_fecha_in.toString()),
+                  Estado:tipoT.rec_tip_esactivo==='1'?'ACTIVO':'INACTIVO'
           };
       });
       let om: generarPDF = {

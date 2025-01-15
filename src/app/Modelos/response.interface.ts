@@ -1059,7 +1059,6 @@ export interface GestionICC
     gest_id_tipo_gestion:number,
     gest_id_contactabilidad:number,	
     gest_id_conectividad:	number,
-    gest_id_contacto:	number,
     gest_num_contacto:	string,
     gest_gestion_mediante:	string,
     gest_fecha_compromiso:	string,
@@ -1070,7 +1069,7 @@ export interface GestionICC
     gest_num_coutas:	string,
     gest_num_coutas_res:	string,
     gest_couta:	string,
-    gest_valor_a_cobrar:	string,
+    //gest_valor_a_cobrar:	string,
     gest_valor_incumplido:	string,
     gest_fecha_prox_pago:	string,
     gest_fecha_conv:string,
@@ -1079,7 +1078,10 @@ export interface GestionICC
     gest_volver_llamar:	string,
     gest_fecha_volver_llamar:string,
     gest_hora_volver_llamar:string,
-    gest_perdio_contacto:string
+    gest_perdio_contacto:string,
+    gest_fecha_in:string,
+    gest_fecha_gestion:string,
+    gest_hora_gestion:string
 }
 export interface PagosICU
 {
