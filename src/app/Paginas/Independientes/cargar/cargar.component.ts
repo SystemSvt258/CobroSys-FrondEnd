@@ -2894,11 +2894,11 @@ descargarArchivoExcelTrabajo() {
     }
     if (this.itemFiles.value === '15') {
       for (const [indiceInf, objeto] of row.entries()) {
-        if ([0].includes(indiceInf)) {
-          const esNumero = this.contieneSoloNumeros(objeto);
-          resultado[indiceInf] = esNumero;
-        }
-        if ([1, 2].includes(indiceInf)) {
+        // if ([0].includes(indiceInf)) {
+        //   const esNumero = this.contieneSoloNumeros(objeto);
+        //   resultado[indiceInf] = esNumero;
+        // }
+        if ([0, 1,2].includes(indiceInf)) {
           const esLetras = this.contieneSoloLetras(objeto);
           resultado[indiceInf] = esLetras;
         }
@@ -3661,11 +3661,11 @@ descargarArchivoExcelTrabajo() {
     }
     if (this.itemFiles.value === '15') {
       for (const [indiceInf, objeto] of row.entries()) {
-        if ([0].includes(indiceInf)) {
-          const esNumero = this.contieneSoloNumeros(objeto);
-          resultado[indiceInf] = esNumero;
-        }
-        if ([1, 2].includes(indiceInf)) {
+        // if ([0].includes(indiceInf)) {
+        //   const esNumero = this.contieneSoloNumeros(objeto);
+        //   resultado[indiceInf] = esNumero;
+        // }
+        if ([0,1, 2].includes(indiceInf)) {
           const esLetras = this.contieneSoloLetras(objeto);
           resultado[indiceInf] = esLetras;
         }
@@ -4190,10 +4190,10 @@ contieneSoloCelularesCorreo(valor: string | null): boolean {
       }
     } //tipoCorreo
     if (this.itemFiles.value === '15') {
-      if ([0].includes(posicion)) {
-        res = this.contieneSoloNumeros(valor);
-      }
-      if ([1, 2].includes(posicion)) {
+      // if ([0].includes(posicion)) {
+      //   res = this.contieneSoloNumeros(valor);
+      // }
+      if ([0,1, 2].includes(posicion)) {
         res = this.contieneSoloLetras(valor);
       }
     } //Cuenta

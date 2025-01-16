@@ -78,7 +78,7 @@ export class ApiService {
 
   // url: string = 'http://192.168.0.83:9094/api/';
   // url: string = 'https://cobranzaapi.cobrosystem.com/api/';
-  url: string = 'https://localhost:7232/api/';
+  url: string = 'https://localhost/api/';
 
   /********************** INICIAR Y CERRAR SESION *************************** */
 
