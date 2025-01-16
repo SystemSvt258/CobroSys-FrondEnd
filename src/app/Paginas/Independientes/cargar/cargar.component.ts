@@ -2327,10 +2327,10 @@ descargarArchivoExcelTrabajo() {
     var entidadCoincide = false;
     const cantidadAtributos = Object.keys(entidad).length;
     const tamHeaders = this.headers.length;
-    // console.log(cantidadAtributos);
-    // console.log(tamHeaders);
-    // console.log(this.headers);
-    // console.log(Object.keys(entidad));
+    console.log(cantidadAtributos);
+    console.log(tamHeaders);
+    console.log(this.headers);
+    console.log(Object.keys(entidad));
     for (var i = 0; i < this.headers.length; i++) {
       var objeto = this.headers[i];
       // Comparar propiedades
@@ -2489,9 +2489,13 @@ descargarArchivoExcelTrabajo() {
           const esNumero = this.contieneSoloNumeros(objeto);
           resultado[indiceInf] = esNumero;
         }
-        if ([2, 3, 4, 6, 7, 8, 9].includes(indiceInf)) {
+        if ([3, 4, 6, 7, 8, 9].includes(indiceInf)) {
           const esLetras = this.contieneSoloLetras(objeto);
           resultado[indiceInf] = esLetras;
+        }
+        if ([2].includes(indiceInf)) {
+          const esDireccion = this.contieneSoloDireccion(objeto);
+          resultado[indiceInf] = esDireccion;
         }
       }
       let aux = this.todoCorrecto(resultado);
@@ -3451,9 +3455,13 @@ descargarArchivoExcelTrabajo() {
           const esNumero = this.contieneSoloNumeros(objeto);
           resultado[indiceInf] = esNumero;
         }
-        if ([2, 3, 4, 6, 7, 8, 9].includes(indiceInf)) {
+        if ([3, 4, 6, 7, 8, 9].includes(indiceInf)) {
           const esLetras = this.contieneSoloLetras(objeto);
           resultado[indiceInf] = esLetras;
+        }
+        if ([2].includes(indiceInf)) {
+          const esDireccion = this.contieneSoloDireccion(objeto);
+          resultado[indiceInf] = esDireccion;
         }
       }
       let aux = this.todoCorrecto(resultado);
@@ -3898,6 +3906,23 @@ descargarArchivoExcelTrabajo() {
     //const expresionRegular = /^[A-Za-z0-9 áéíóúÁÉÍÓÚñÑ.,;:/\-$*()@_°#~¿¡!%\/º×\n\r?&=]*$/u;
     return expresionRegular.test(textoLimpio);
   }
+contieneSoloDireccion(valor: string | null): boolean {
+  if (valor === 'NULL' || valor === 'null' || valor === null || valor === '') {
+    return true; // Permite valores vacíos o nulos
+  }
+
+  const textoLimpio = valor
+    ?.replace(/[\u200E\u200F\u202A-\u202E]/g, '') // Elimina caracteres invisibles Unicode
+    .replace(/\s+/g, ' ') // Reemplaza múltiples espacios por uno
+    .trim(); // Elimina espacios iniciales y finales
+
+  const expresionRegular = /^[\p{L}0-9 áéíóúÁÉÍÓÚñÑ.,;:/\-$*()@_°#~¿¡!%"'¨\/º×\n\r?&=–$´' \[\]+]+$/u;
+
+  return expresionRegular.test(textoLimpio);
+  
+}
+
+
   contieneSoloNumeros(valor: string | null): boolean {
     if (
       valor === 'NULL' ||
@@ -3951,9 +3976,9 @@ descargarArchivoExcelTrabajo() {
       // Si el valor es nulo o vacío, se considera válido (true)
       return true;
     }
-
+    const v= valor.trim()
     const expresionRegular = /^(?:[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}|VACIO)?$/;
-    return expresionRegular.test(valor);
+    return expresionRegular.test(v);
   }
   contieneSoloHora(valor: string | null): boolean {
     if (
@@ -4070,8 +4095,11 @@ contieneSoloCelularesCorreo(valor: string | null): boolean {
       if ([0, 1, 4, 5].includes(posicion)) {
         res = this.contieneSoloNumeros(valor);
       }
-      if ([2, 3, 4, 6, 7, 8, 9].includes(posicion)) {
+      if ([ 3, 4, 6, 7, 8, 9].includes(posicion)) {
         res = this.contieneSoloLetras(valor);
+      }
+      if ([2].includes(posicion)) {
+        res = this.contieneSoloDireccion(valor);
       }
     } //Direccion
     if (this.itemFiles.value === '5') {
