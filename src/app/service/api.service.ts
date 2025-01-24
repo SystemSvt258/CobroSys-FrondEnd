@@ -76,7 +76,7 @@ export class ApiService {
   ) {}
   objeto = new Encriptacion();
 
-  // url: string = 'http://192.168.0.83:9094/api/';
+  // url: string = 'http://192.168.0.86:8094/api/';
   // url: string = 'https://cobranzaapi.cobrosystem.com/api/';
   url: string = 'https://localhost/api/';
 
