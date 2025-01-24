@@ -168,7 +168,7 @@ export class Alertas {
   PeticionModificada() {
     Swal.fire(
       'Oops....!',
-      'La Peticion ha sido modificada en algun punto',
+      'La Petición ha sido modificada en algún punto',
       'error'
     );
   }
@@ -232,7 +232,7 @@ export class Alertas {
 // ////////////////////////////////// MENSAJES DE CONFIRMACION ///////////////////////////////////////////////////////////
 ExitoEnLaPeticion(mensaje: string) {
   Swal.fire({
-      title: "Exito!",
+      title: "Éxito!",
       text: mensaje,
       icon: "success",
       confirmButtonColor: "var(--color-terciario)",
@@ -296,7 +296,7 @@ NotificacionEnviada() {
 
   alerta.fire({
     icon: 'success',
-    title: 'Notificacion enviada',
+    title: 'Notificación enviada',
   });
 }
 // ////////////////////////////////// MENSAJES DE ALERTA ///////////////////////////////////////////////////////////
@@ -347,7 +347,7 @@ PagoVerificado() {
 
     alerta.fire({
       icon: 'success',
-      title: 'Se inicio sesión en Servidata',
+      title: 'Se inicio sesión en ServiData',
     });
   }
   SesionRechazadaSD() {
@@ -365,7 +365,7 @@ PagoVerificado() {
 
     alerta.fire({
       icon: 'error',
-      title: 'No se inicio sesión en Servidata',
+      title: 'No se inicio sesión en ServiData',
     });
   }
 
@@ -460,61 +460,61 @@ AlertaConfirmacion(titulo:string,mensaje:string): Promise<boolean> {
       respuestaMensaje = 'ope_dias_mora,ope_interes_mora,ope_gastos_cobranzas,ope_saldo_cxc_actual,ope_saldo_cuota_actual,ope_saldo_capital_venc,ope_poner_aldia,ope_liquidar,ope_plazo,ope_liquidado,ope_deuda_pagada,ope_tiene_garante,ope_abono_realizado,ope_valor_total_pag,ope_total_vencido,ope_promo_cuotas_gratis,ope_deuda_actual,ope_saldo_interes,ope_saldo_amortizacion,ope_int_cobra,ope_saldo_cobra_mora,ope_descu_campa_saldo_capit,ope_valor_descu_saldo_capit,ope_id_ultima_gestion,id_cartera' + ' ' + 'deben estar con valor 0 o VACIO en el documento excel';
     }
     if (message === 'Correo') {
-      respuestaMensaje = 'Guiarce como esta en el modelo para la insercion de datos,si los valores son nulos colocar con la palabra VACIO' + ' ' + 'en el documento excel';
+      respuestaMensaje = 'Guiarse como esta en el modelo para la inserción de datos,si los valores son nulos colocar con la palabra VACIÓ' + ' ' + 'en el documento excel';
     }
     if (message === 'Direccion') {
-      respuestaMensaje = 'Guiarce como esta en el modelo para la insercion de datos,si los valores son nulos colocar con la palabra VACIO' + ' ' + 'en el documento excel';
+      respuestaMensaje = 'Guiarse como esta en el modelo para la inserción de datos,si los valores son nulos colocar con la palabra VACIÓ' + ' ' + 'en el documento excel';
     }
     if (message === 'Garante') {
-      respuestaMensaje = 'Guiarce como esta en el modelo para la insercion de datos,si los valores son nulos colocar con la palabra VACIO' + ' ' + 'en el documento excel';
+      respuestaMensaje = 'Guiarse como esta en el modelo para la inserción de datos,si los valores son nulos colocar con la palabra VACIÓ' + ' ' + 'en el documento excel';
     }
     if (message === 'Telefono') {
-      respuestaMensaje = 'Guiarce como esta en el modelo para la insercion de datos,si los valores son nulos colocar con la palabra VACIO' + ' ' + 'en el documento excel';
+      respuestaMensaje = 'Guiarse como esta en el modelo para la inserción de datos,si los valores son nulos colocar con la palabra VACIÓ' + ' ' + 'en el documento excel';
     }
     if (message === 'Trabajo') {
-      respuestaMensaje = 'Guiarce como esta en el modelo para la insercion de datos,si los valores son nulos colocar con la palabra VACIO' + ' ' + 'en el documento excel';
+      respuestaMensaje = 'Guiarse como esta en el modelo para la inserción de datos,si los valores son nulos colocar con la palabra VACIÓ' + ' ' + 'en el documento excel';
     }
     if (message === 'tipoTrabajo') {
-      respuestaMensaje = 'Guiarce como esta en el modelo para la insercion de datos,si los valores son nulos colocar con la palabra VACIO' + ' ' + 'en el documento excel';
+      respuestaMensaje = 'Guiarse como esta en el modelo para la inserción de datos,si los valores son nulos colocar con la palabra VACIÓ' + ' ' + 'en el documento excel';
     }
     if (message === 'tipoTelefono') {
-      respuestaMensaje = 'Guiarce como esta en el modelo para la insercion de datos,si los valores son nulos colocar con la palabra VACIO' + ' ' + 'en el documento excel';
+      respuestaMensaje = 'Guiarse como esta en el modelo para la inserción de datos,si los valores son nulos colocar con la palabra VACIÓ' + ' ' + 'en el documento excel';
     }
     if (message === 'tipoDireccion') {
-      respuestaMensaje = 'Guiarce como esta en el modelo para la insercion de datos,si los valores son nulos colocar con la palabra VACIO' + ' ' + 'en el documento excel';
+      respuestaMensaje = 'Guiarse como esta en el modelo para la inserción de datos,si los valores son nulos colocar con la palabra VACIÓ' + ' ' + 'en el documento excel';
     }
     if (message === 'detallesTelefono') {
-      respuestaMensaje = 'Guiarce como esta en el modelo para la insercion de datos,si los valores son nulos colocar con la palabra VACIO' + ' ' + 'en el documento excel';
+      respuestaMensaje = 'Guiarse como esta en el modelo para la inserción de datos,si los valores son nulos colocar con la palabra VACIÓ' + ' ' + 'en el documento excel';
     }
     if (message === 'tipoTrabajo') {
-      respuestaMensaje = 'Guiarce como esta en el modelo para la insercion de datos,si los valores son nulos colocar con la palabra VACIO' + ' ' + 'en el documento excel';
+      respuestaMensaje = 'Guiarse como esta en el modelo para la inserción de datos,si los valores son nulos colocar con la palabra VACIÓ' + ' ' + 'en el documento excel';
     }
     if (message === 'Contactabilidad') {
-      respuestaMensaje = 'Guiarce como esta en el modelo para la insercion de datos,si los valores son nulos colocar con la palabra VACIO' + ' ' + 'en el documento excel';
+      respuestaMensaje = 'Guiarse como esta en el modelo para la inserción de datos,si los valores son nulos colocar con la palabra VACIÓ' + ' ' + 'en el documento excel';
     }
     if (message === 'Conectivilidad') {
-      respuestaMensaje = 'Guiarce como esta en el modelo para la insercion de datos,si los valores son nulos colocar con la palabra VACIO' + ' ' + 'en el documento excel';
+      respuestaMensaje = 'Guiarse como esta en el modelo para la inserción de datos,si los valores son nulos colocar con la palabra VACIÓ' + ' ' + 'en el documento excel';
     }
     if (message === 'tipoGestion') {
-      respuestaMensaje = 'Guiarce como esta en el modelo para la insercion de datos,si los valores son nulos colocar con la palabra VACIO' + ' ' + 'en el documento excel';
+      respuestaMensaje = 'Guiarse como esta en el modelo para la inserción de datos,si los valores son nulos colocar con la palabra VACIÓ' + ' ' + 'en el documento excel';
     }
     if (message === 'Cartera') {
-      respuestaMensaje = 'Guiarce como esta en el modelo para la insercion de datos,si los valores son nulos colocar con la palabra VACIO' + ' ' + 'en el documento excel';
+      respuestaMensaje = 'Guiarse como esta en el modelo para la inserción de datos,si los valores son nulos colocar con la palabra VACIÓ' + ' ' + 'en el documento excel';
     }
     if (message === 'Gestor') {
-      respuestaMensaje = 'Guiarce como esta en el modelo para la insercion de datos,si los valores son nulos colocar con la palabra VACIO' + ' ' + 'en el documento excel';
+      respuestaMensaje = 'Guiarse como esta en el modelo para la inserción de datos,si los valores son nulos colocar con la palabra VACIÓ' + ' ' + 'en el documento excel';
     }
     if (message === 'tipoCartera') {
-      respuestaMensaje = 'Guiarce como esta en el modelo para la insercion de datos,si los valores son nulos colocar con la palabra VACIO' + ' ' + 'en el documento excel';
+      respuestaMensaje = 'Guiarse como esta en el modelo para la inserción de datos,si los valores son nulos colocar con la palabra VACIÓ' + ' ' + 'en el documento excel';
     }
     if (message === 'Asignacion') {
-      respuestaMensaje = 'Guiarce como esta en el modelo para la insercion de datos,si los valores son nulos colocar con la palabra VACIO' + ' ' + 'en el documento excel';
+      respuestaMensaje = 'Guiarse como esta en el modelo para la inserción de datos,si los valores son nulos colocar con la palabra VACIÓ' + ' ' + 'en el documento excel';
     }
     if (message === 'cuentaCartera') {
-      respuestaMensaje = 'Guiarce como esta en el modelo para la insercion de datos,si los valores son nulos colocar con la palabra VACIO' + ' ' + 'en el documento excel';
+      respuestaMensaje = 'Guiarse como esta en el modelo para la inserción de datos,si los valores son nulos colocar con la palabra VACIÓ' + ' ' + 'en el documento excel';
     }
     if (message === 'tipoGCC') {
-      respuestaMensaje = 'Guiarce como esta en el modelo para la insercion de datos,si los valores son nulos colocar con la palabra VACIO' + ' ' + 'en el documento excel';
+      respuestaMensaje = 'Guiarse como esta en el modelo para la inserción de datos,si los valores son nulos colocar con la palabra VACIÓ' + ' ' + 'en el documento excel';
     }
     const alerta = Swal.mixin({
       customClass: {

@@ -31,14 +31,14 @@
                                             <button type="button" class="btnLimpiar ml-2"
                                                 (click)="ResetClienteForms()"><i
                                                     class="fa-solid fa-trash-can"></i></button>
-                                                        <button *ngIf="this.ListaGestionar.length>0" class="btnImprimir ml-2" data-toggle="dropdown" ><i
-                                                            class="bi bi-printer"></i></button>
-                                                        <div class="dropdown-menu" role="menu1">
-                                                            <a class="dropdown-item col-md-4" (click)="GetDescargaPor(d)"
-                                                                *ngFor="let d of ParametrosDeDescarga">{{d}}</a>
-                                                        </div>
-                                            
-                                            
+                                            <button *ngIf="this.ListaGestionar.length>0" class="btnImprimir ml-2"
+                                                data-toggle="dropdown"><i class="bi bi-printer"></i></button>
+                                            <div class="dropdown-menu" role="menu1">
+                                                <a class="dropdown-item col-md-4" (click)="GetDescargaPor(d)"
+                                                    *ngFor="let d of ParametrosDeDescarga">{{d}}</a>
+                                            </div>
+
+
                                         </div>
                                         <div class="col">
                                             <div class="row  justify-content-end">
@@ -309,7 +309,7 @@
                                                         </div>
                                                         <div class="row">
                                                             <div class="col-6">
-                                                                <h6>Genero:
+                                                                <h6>Género:
                                                                     <small>
                                                                         {{cli.cli_genero ==
                                                                         'M'?'Masculino':cli.cli_genero ==
@@ -391,7 +391,7 @@
                                                                 </div>
                                                             </div>
                                                             <div class="col-sm-4 invoice-col">
-                                                                <div *ngIf="cli.cli_certificado != '0'">
+                                                                <div *ngIf="cli.cli_certificado == '1'">
                                                                     <strong>* Solic. Certificado</strong>
                                                                 </div>
                                                                 <div *ngIf="ListaTrabajos.length > 0">
@@ -399,7 +399,7 @@
                                                                 </div>
 
                                                                 <div *ngIf="cli.cli_fecha_ultima_gest">
-                                                                    <strong>Ultima gestion</strong><br>
+                                                                    <strong>Ultima gestión</strong><br>
                                                                     <div class="text-muted">
                                                                         {{fechas.fechaCortaAbt(cli.cli_fecha_ultima_gest)}}
                                                                     </div>
@@ -581,7 +581,7 @@
                                                                                 <th style="width: 10px">#
                                                                                 </th>
                                                                                 <th *ngIf="TipoVistaInfCliente == 0">
-                                                                                    Accion</th>
+                                                                                    Acción</th>
                                                                                 <th>Identificación</th>
                                                                                 <th>Dirección</th>
                                                                                 <th>Tipo</th>
@@ -632,7 +632,7 @@
                                                                                 <th style="width: 10px">#
                                                                                 </th>
                                                                                 <th *ngIf="TipoVistaInfCliente == 0">
-                                                                                    Accion</th>
+                                                                                    Acción</th>
                                                                                 <th>Identificación</th>
                                                                                 <th>Nombres</th>
                                                                                 <th>Dir. Domicilio</th>
@@ -748,7 +748,7 @@
                                                                                 <th style="width: 10px">#
                                                                                 </th>
                                                                                 <th *ngIf="TipoVistaInfCliente == 0">
-                                                                                    Accion</th>
+                                                                                    Acción</th>
                                                                                 <th>Ruc</th>
                                                                                 <th>Descripción</th>
                                                                                 <th>Dirección</th>
@@ -1097,7 +1097,7 @@
                                                                         <th>Linea</th>
                                                                         <th>D. mora</th>
                                                                         <th>Int. mora</th>
-                                                                        <th>Interes</th>
+                                                                        <th>Interés</th>
                                                                         <th>Gts. cobranza</th>
                                                                         <th>Saldo Act.</th>
                                                                         <th>F. compra</th>
@@ -1139,23 +1139,24 @@
                                                             <i class="fa-solid fa-arrows-rotate"></i>
                                                             <span>&nbsp;Actualizaciones&nbsp;</span>
                                                         </a>
-                                                        <!-- <a class="btn btn-sm btn-info ml-2"
-                                                            (click)="AbrirModalDocumentos()">
-                                                            <i class="fa-regular fa-folder-open"></i>
-                                                            <span>&nbsp;Documentos&nbsp;</span>
-                                                        </a>-->
                                                         <a class="btn btn-sm btn-info ml-2"
                                                             (click)="AbrirModalValorOriginal()">
                                                             <i class="fa-solid fa-lock"></i>
                                                             <span>&nbsp;Valor Original&nbsp;</span>
                                                         </a>
+
+
                                                         <a class="btn btn-sm btn-info float-right"
                                                             *ngIf="TipoVistaInfCliente == 0"
                                                             (click)="AbrirModalAgregarPagos(1)">
                                                             <i class="fa-solid fa-sack-dollar"></i>
                                                             <span>&nbsp;Agregar Pago&nbsp;</span>
                                                         </a>
-
+                                                        <!-- <a class="btn btn-sm btn-info float-right mr-2"
+                                                            (click)="AbrirModalDocumentos()">
+                                                            <i class="fa-regular fa-folder-open"></i>
+                                                            <span>&nbsp;Documentos&nbsp;</span>
+                                                        </a> -->
                                                     </div>
 
                                                 </div>
@@ -3309,21 +3310,12 @@
         </div>
         <div class="card-body" style="width: 100%;">
             <section class="row">
-                <div class="col-md-3 col-sm-6 col-12" style="cursor: pointer;">
+                <div class="col-md-3 col-sm-6 col-12" style="cursor: pointer;" *ngFor="let datos of DocumentosItem" >
                     <div class="info-box  bg-info">
-                        <span class="info-box-icon"><i class="fa-solid fa-envelopes-bulk"></i></span>
+                        <span class="info-box-icon"><i class="{{datos.icon1}}"></i></span>
                         <div class="info-box-content">
-                            <span class="info-box-text">ARCHIVOS</span>
-                            <span class="fa-solid fa-upload"></span>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-3 col-sm-6 col-12" style="cursor: pointer;">
-                    <div class="info-box  bg-info">
-                        <span class="info-box-icon"><i class="fa-solid fa-file-lines"></i></span>
-                        <div class="info-box-content">
-                            <span class="info-box-text">DESCARGAR</span>
-                            <span class="fa-solid fa-download"></span>
+                            <span class="info-box-text">{{datos.label}}</span>
+                            <span class="{{datos.icon2}}"></span>
                         </div>
                     </div>
                 </div>

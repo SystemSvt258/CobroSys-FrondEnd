@@ -49,10 +49,10 @@ export class AuthInterceptorService implements HttpInterceptor {
           this.router.navigate(['login']);
         }
         if ([500].indexOf(err.status) !== -1) {
-          this.alerta.ErrorAlRecuperarElementosError(err.status,'No se Encuentra Informacion Relacionada');
+          this.alerta.ErrorAlRecuperarElementosError(err.status,'No se Encuentra Información Relacionada');
         }
         if ([0].indexOf(err.status) !== -1) {
-          this.alerta.ErrorAlRecuperarElementosError(err.status,'No es Posible Acceder a la Informacion del Servidor');
+          this.alerta.ErrorAlRecuperarElementosError(err.status,'No es Posible Acceder a la Información del Servidor');
         }
         const error = err.error.message || err.statusText;
         return throwError(() => err);

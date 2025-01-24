@@ -827,7 +827,7 @@ export class InicioComponent implements OnInit {
         },
       },
       title: {
-        text: 'Recuperación por dia comparacion',
+        text: 'Recuperación por dia comparación',
         align: 'left',
       },
       plotOptions: {

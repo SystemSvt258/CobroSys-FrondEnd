@@ -20,7 +20,7 @@ export class SignalRService {
     this.hubConnection
       .start()
       .then(() => console.log('Conectado'))      
-      .catch(err => console.log('Sin Coneccion'));
+      .catch(err => console.log('Sin Conexión'));
   }
  
   EnvioMensaje = async (message: string) => {

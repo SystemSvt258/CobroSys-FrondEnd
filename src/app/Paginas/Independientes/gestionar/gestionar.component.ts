@@ -59,6 +59,41 @@ import Swal from 'sweetalert2';
   styleUrls: ['./gestionar.component.css'],
 })
 export class GestionarComponent implements OnInit {
+
+
+  // ============================================================ DOCUMENTOS  ============================================================================
+
+  DocumentosItem = [
+    { id: 1, name: 'Cargar', label: 'CARGAR', icon1:'fa-solid fa-envelopes-bulk', icon2:'fa-solid fa-upload', type: 'number', required: true },
+    { id: 2, name: 'Descargar', label: 'DESCARGAR', icon1:'fa-solid fa-file-lines', icon2:'fa-solid fa-download', type: 'text', required: true },
+  ];
+
+  form: FormGroup;
+
+  onFormReady(form: FormGroup) {
+    this.form = form; // Recibir el formulario dinámico
+  }
+
+  onSubmit() {
+    if (this.form.valid) {
+      console.log('Formulario válido:', this.form.value);
+    } else {
+      console.log('Formulario inválido');
+    }
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+
   constructor(
     private api: ApiService,
     private alerta: Alertas,
@@ -3532,4 +3567,8 @@ export class GestionarComponent implements OnInit {
       }
     });
   }
+
+
+
+
 }

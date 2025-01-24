@@ -2,16 +2,18 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { CookieService } from 'ngx-cookie-service';
 import { catchError, map } from 'rxjs';
+import { Cartera } from 'src/app/Clases/Cartera';
+import { Gestor } from 'src/app/Clases/Gestor';
 import { Alertas } from 'src/app/Control/Alerts';
 import { Fechas } from 'src/app/Control/Fechas';
-import { GeneradorReporte } from 'src/app/Control/GeneradoReporte';
+import { PermisosAcceso } from 'src/app/Control/Permisos';
 import { TipoDeTexto } from 'src/app/Control/TipoDeTexto';
 import {
   ResultadoGestorI,
   ResultadoMenuI,
   ResultadoPermisosI,
 } from 'src/app/Modelos/login.interface';
-import { generarPDF, GestorI } from 'src/app/Modelos/response.interface';
+import { GestorI } from 'src/app/Modelos/response.interface';
 import { ApiService } from 'src/app/service/api.service';
 
 @Component({
@@ -21,28 +23,32 @@ import { ApiService } from 'src/app/service/api.service';
 })
 export class GestoresComponent implements OnInit {
   constructor(
+    private P_Acceso: PermisosAcceso,
     private api: ApiService,
+    private GestorM: Gestor,
+    private CarteraM: Cartera,
     private alerta: Alertas,
     public Fechas: Fechas,
     private cookeService: CookieService,
-    public validar: TipoDeTexto,public reporte:GeneradorReporte
+    public validar: TipoDeTexto
   ) {}
-
+  PaginaActual: any;
   ngOnInit(): void {
+    this.PaginaActual = this.P_Acceso.checkLocal('gestores');
     this.ListarElementos(1);
   }
 
-  permisos: ResultadoPermisosI = JSON.parse(localStorage.getItem('usuario')!);
-  Usuario: ResultadoGestorI = this.permisos.gestor;
-  Menu: ResultadoMenuI[] = this.permisos.menu;
-  PaginaActual: ResultadoMenuI = this.Menu.find((elemento) => {
-    return elemento.men_url === 'gestores';
-  }) as ResultadoMenuI;
-  ConstanteFraccion: number = Number(this.Usuario.usr_fraccion_datos);
-  RangoDatos: number = Number(this.Usuario.usr_rango_datos);
-  LecturaEscritura: number = Number(this.PaginaActual.men_lectura);
-  PaginaNombre: string = this.PaginaActual.men_descripcion;
-  loading: boolean = false;
+  // permisos: ResultadoPermisosI = JSON.parse(localStorage.getItem('usuario')!);
+  // Usuario: ResultadoGestorI = this.permisos.gestor;
+  // Menu: ResultadoMenuI[] = this.permisos.menu;
+  // // PaginaActual: ResultadoMenuI = this.Menu.find((elemento) => {
+  // //   return elemento.men_url === 'gestores';
+  // // }) as ResultadoMenuI;
+  // ConstanteFraccion: number = Number(this.Usuario.usr_fraccion_datos);
+  // RangoDatos: number = Number(this.Usuario.usr_rango_datos);
+  // LecturaEscritura: number = Number(this.PaginaActual.men_lectura);
+  // PaginaNombre: string = this.PaginaActual.men_descripcion;
+  // loading: boolean = false;
 
   // ****************************************** CONTROLES DE BUSQUEDA *****************************************************************
   ParametrosDeBusqueda: Array<string> = [
@@ -59,8 +65,6 @@ export class GestoresComponent implements OnInit {
 
   itemBusqueda = new FormControl('', [Validators.required]);
   txtBusqueda = new FormControl('', [Validators.required]);
-  ParametrosDeDescarga: Array<string> = ['PDF', 'EXCEL', 'CSV'];
-  gGestor!:generarPDF;
 
   GetBusquedaPor(item: string) {
     this.itemBusqueda.patchValue(item);
@@ -78,118 +82,87 @@ export class GestoresComponent implements OnInit {
     this.txtBusqueda.patchValue(this.txtBusqueda.value!.toUpperCase());
   }
   // ****************************************** LISTAR ELEMENTOS *****************************************************************
-  ListaGestores: any[] = [];
+  ListaGestores: GestorI[] = [];
   FraccionDatos: number = 0;
   ContadorDatosGeneral: number = 0;
-
   ListarElementos(num: number) {
+    const CargandoLoad = document.getElementById(
+      'Cargando'
+    ) as HTMLInputElement;
+    CargandoLoad.classList.add('modal--show');
     this.GetBusquedaPor('');
     if (num === 1) {
-      this.ListaGestores = [];
       this.FraccionDatos = 0;
     }
-
     this.ListaGestores = [];
-    this.loading = true;
-    let listadoObjeto:any[] = [];
-    this.api
-      .GetGestoresFracionado(this.FraccionDatos, this.RangoDatos)
+    this.GestorM.ListarElementos(
+      this.FraccionDatos,
+      Number(this.PaginaActual.Usuario.usr_rango_datos),
+      3
+    )
       .pipe(
-        map((tracks) => {
-          this.ListaGestores = tracks['data'];
-          this.DatosTemporalesBusqueda = tracks['data'];
-          for (const g of this.ListaGestores)
-            {
-              let ocD: any = {
-                Nombre:g.ges_nombres,
-                Apellido:g.ges_apellidos,
-                Meta:g.ges_meta,
-                Fecha:g.ges_fecha_in===null?null:this.Fechas.fechaCortaAbt(g.ges_fecha_in),
-                Estado:g.ges_esactivo==='1'?'ACTIVO':'INACTIVO'
-              };
-              listadoObjeto.push(ocD);
+        map((datos) => {
+          CargandoLoad.classList.remove('modal--show');
+          if (datos!) {
+            this.ListaGestores = datos;
+            this.DatosTemporalesBusqueda = datos;
+            if (this.ListaGestores.length > 0) {
+              this.ContadorDatosGeneral = this.ListaGestores.length;
+              this.FraccionarValores(
+                this.ListaGestores,
+                Number(this.PaginaActual.Usuario.usr_fraccion_datos)
+              );
             }
-            let om: generarPDF = {
-              entidad: 'Gestor', listado: listadoObjeto
-            };
-            this.gGestor=om;
-          if (this.ListaGestores.length === 0) {
-            this.loading = false;
-            this.alerta.NoExistenDatos();
-          } else {
-            this.loading = false;
-            this.ContadorDatosGeneral = this.ListaGestores.length;
-            this.FraccionarValores(this.ListaGestores, this.ConstanteFraccion);
           }
-        }),
-        catchError((error) => {
-          this.loading = false;
-          this.alerta.ErrorAlRecuperarElementos();
-          throw new Error(error);
         })
       )
       .subscribe();
   }
 
   FiltrarElemento() {
-    const valor: any = this.txtBusqueda.value?.toString();
-    let tipo: number;
-    if (this.itemBusqueda.value === 'Estado') {
-      tipo = 0;
-      this.GetFiltrarElemento(valor, tipo);
-    }
-    if (this.itemBusqueda.value === 'Descripción') {
-      tipo = 1;
-      this.GetFiltrarElemento(valor, tipo);
-    }
-    if (this.itemBusqueda.value === 'Descripción Incompleta') {
-      tipo = 3;
-      this.GetFiltrarElemento(valor, tipo);
-    }
+    //   const valor: any = this.txtBusqueda.value?.toString();
+    //   let tipo: number;
+    //   if (this.itemBusqueda.value === 'Estado') {
+    //     tipo = 0;
+    //     this.GetFiltrarElemento(valor, tipo);
+    //   }
+    //   if (this.itemBusqueda.value === 'Descripción') {
+    //     tipo = 1;
+    //     this.GetFiltrarElemento(valor, tipo);
+    //   }
+    //   if (this.itemBusqueda.value === 'Descripción Incompleta') {
+    //     tipo = 3;
+    //     this.GetFiltrarElemento(valor, tipo);
+    //   }
   }
 
-  GetFiltrarElemento(valor: string, tipo: number) {
-    this.ListaGestores = [];
-    this.loading = true;
-    let listadoObjeto:any[] = [];
-    this.api
-      .GetGestoresFracionadoFiltro(valor, tipo)
-      .pipe(
-        map((tracks) => {
-          this.ListaGestores = tracks['data'];
-          this.DatosTemporalesBusqueda = tracks['data'];
-          for (const g of this.ListaGestores)
-            {
-              let ocD: any = {
-                Nombre:g.ges_nombres,
-                Apellido:g.ges_apellidos,
-                Meta:g.ges_meta,
-                Fecha:g.ges_fecha_in===null?null:this.Fechas.fechaCortaAbt(g.ges_fecha_in),
-                Estado:g.ges_esactivo==='1'?'ACTIVO':'INACTIVO'
-              };
-              listadoObjeto.push(ocD);
-            }
-            let om: generarPDF = {
-              entidad: 'Gestor', listado: listadoObjeto
-            };
-            this.gGestor=om;
-          if (this.ListaGestores.length === 0) {
-            this.loading = false;
-            this.alerta.NoExistenDatos();
-          } else {
-            this.loading = false;
-            this.ContadorDatosGeneral = this.ListaGestores.length;
-            this.FraccionarValores(this.ListaGestores, this.ConstanteFraccion);
-          }
-        }),
-        catchError((error) => {
-          this.loading = false;
-          this.alerta.ErrorAlRecuperarElementos();
-          throw new Error(error);
-        })
-      )
-      .subscribe();
-  }
+  // GetFiltrarElemento(valor: string, tipo: number) {
+  //   this.ListaGestores = [];
+  //   this.loading = true;
+
+  //   this.api
+  //     .GetGestoresFracionadoFiltro(valor, tipo)
+  //     .pipe(
+  //       map((tracks) => {
+  //         this.ListaGestores = tracks['data'];
+  //         this.DatosTemporalesBusqueda = tracks['data'];
+  //         if (this.ListaGestores.length === 0) {
+  //           this.loading = false;
+  //           this.alerta.NoExistenDatos();
+  //         } else {
+  //           this.loading = false;
+  //           this.ContadorDatosGeneral = this.ListaGestores.length;
+  //           this.FraccionarValores(this.ListaGestores, this.ConstanteFraccion);
+  //         }
+  //       }),
+  //       catchError((error) => {
+  //         this.loading = false;
+  //         this.alerta.ErrorAlRecuperarElementos();
+  //         throw new Error(error);
+  //       })
+  //     )
+  //     .subscribe();
+  // }
   /************************************** AGREGAR ELEMENTO  ******************************************************** */
   TituloFormulario = '';
   GestorForms = new FormGroup({
@@ -198,7 +171,7 @@ export class GestoresComponent implements OnInit {
     ges_apellidos: new FormControl('', Validators.required),
     ges_esgestor: new FormControl(true),
     ges_observacion: new FormControl(''),
-    ges_meta: new FormControl('',this.validar.VFN_NumerosDesimales()),
+    ges_meta: new FormControl(''),
     ges_fecha_entrada: new FormControl(
       this.Fechas.fechaActualCorta(),
       Validators.required
@@ -276,6 +249,7 @@ export class GestoresComponent implements OnInit {
   }
 
   AgregarEditarElemento(num: number) {
+    this.ListarCarteras();
     if (num === 1) {
       this.ActDesControles(0);
       this.TituloFormulario = 'Agregar';
@@ -292,7 +266,7 @@ export class GestoresComponent implements OnInit {
       this.ActDesControles(0);
     }
     if (num === 4) {
-      this.TituloFormulario = 'CONFIGURACION';
+      this.TituloFormulario = 'CONFIGURACIÓN';
     }
   }
 
@@ -301,6 +275,21 @@ export class GestoresComponent implements OnInit {
   }
 
   GuardarObjeto(datos: any) {
+    let carteras: any[] = [];
+    let suma: number = 0;
+    for (let dt of this.CarterasSelect) {
+      let menu: any = {
+        id_cartera: Number(dt.id_cartera),
+        met_ges_car_meta:
+          dt.met_ges_car_meta.trim().length == 0
+            ? '0'
+            : dt.met_ges_car_meta.trim(),
+        met_ges_car_esactivo: dt.met_ges_car_esactivo,
+      };
+      suma = suma + Number(menu.met_ges_car_meta);
+      carteras.push(menu);
+    }
+
     const minDate = new Date('1969-12-31').toISOString().split('T')[0];
     datos.id_gestor = Number(datos.id_gestor);
     datos.ges_fecha_entrada =
@@ -309,59 +298,81 @@ export class GestoresComponent implements OnInit {
       datos.ges_fecha_salida == '' ? minDate : datos.ges_fecha_salida;
     datos.ges_esactivo = datos.ges_esactivo.toString() === 'true' ? '1' : '0';
     datos.ges_esgestor = datos.ges_esgestor.toString() === 'true' ? '1' : '0';
-    if (this.TituloFormulario === 'Editar') {
-      this.api
-        .PutGestores(datos)
-        .pipe(
-          map((tracks) => {
-            const exito = tracks['exito'];
-            if (exito == 1) {
-              this.ListarElementos(1);
-              this.CerrarAgregarEditarElemento();
-              this.EncerarComponentes();
-              this.TextoFiltro.patchValue('');
+    datos.ges_meta = suma.toString();
+    datos.detalle = carteras;
+    this.GestorM.GuardarElemento(datos)
+      .pipe(
+        map((x) => {
+          if (x == 1) {
+            this.ListarElementos(1);
+            this.CerrarAgregarEditarElemento();
+            this.EncerarComponentes();
+            this.TextoFiltro.patchValue('');
+            if (datos.id_cuenta_tipo_cartera != 0) {
               this.alerta.RegistroActualizado();
             } else {
-              this.alerta.ErrorEnLaPeticion(tracks['mensaje']);
-              this.ActDesControles(0);
-              this.ActDesControles(2);
-            }
-          }),
-          catchError((error) => {
-            this.alerta.ErrorEnLaOperacion();
-            this.ActDesControles(0);
-            this.ActDesControles(2);
-            throw new Error(error);
-          })
-        )
-        .subscribe();
-    } else {
-      this.api
-        .PostGestores(datos)
-        .pipe(
-          map((tracks) => {
-            const exito = tracks['exito'];
-            if (exito == 1) {
-              this.ListarElementos(1);
-              this.CerrarAgregarEditarElemento();
-              this.EncerarComponentes();
-              this.TextoFiltro.patchValue('');
               this.alerta.RegistroAgregado();
-            } else {
-              this.alerta.ErrorEnLaPeticion(tracks['mensaje']);
-              this.ActDesControles(0);
-              this.ActDesControles(2);
             }
-          }),
-          catchError((error) => {
-            this.alerta.ErrorEnLaOperacion();
+          } else {
             this.ActDesControles(0);
             this.ActDesControles(2);
-            throw new Error(error);
-          })
-        )
-        .subscribe();
-    }
+          }
+        })
+      )
+      .subscribe();
+    // if (this.TituloFormulario === 'Editar') {
+    //   this.api
+    //     .PutGestores(datos)
+    //     .pipe(
+    //       map((tracks) => {
+    //         const exito = tracks['exito'];
+    //         if (exito == 1) {
+    //           this.ListarElementos(1);
+    //           this.CerrarAgregarEditarElemento();
+    //           this.EncerarComponentes();
+    //           this.TextoFiltro.patchValue('');
+    //           this.alerta.RegistroActualizado();
+    //         } else {
+    //           this.alerta.ErrorEnLaPeticion(tracks['mensaje']);
+    //           this.ActDesControles(0);
+    //           this.ActDesControles(2);
+    //         }
+    //       }),
+    //       catchError((error) => {
+    //         this.alerta.ErrorEnLaOperacion();
+    //         this.ActDesControles(0);
+    //         this.ActDesControles(2);
+    //         throw new Error(error);
+    //       })
+    //     )
+    //     .subscribe();
+    // } else {
+    //   this.api
+    //     .PostGestores(datos)
+    //     .pipe(
+    //       map((tracks) => {
+    //         const exito = tracks['exito'];
+    //         if (exito == 1) {
+    //           this.ListarElementos(1);
+    //           this.CerrarAgregarEditarElemento();
+    //           this.EncerarComponentes();
+    //           this.TextoFiltro.patchValue('');
+    //           this.alerta.RegistroAgregado();
+    //         } else {
+    //           this.alerta.ErrorEnLaPeticion(tracks['mensaje']);
+    //           this.ActDesControles(0);
+    //           this.ActDesControles(2);
+    //         }
+    //       }),
+    //       catchError((error) => {
+    //         this.alerta.ErrorEnLaOperacion();
+    //         this.ActDesControles(0);
+    //         this.ActDesControles(2);
+    //         throw new Error(error);
+    //       })
+    //     )
+    //     .subscribe();
+    // }
   }
 
   /************************************** EDITAR ELEMENTO  ******************************************************** */
@@ -393,20 +404,86 @@ export class GestoresComponent implements OnInit {
       ges_meta: datos.ges_meta,
       ges_fecha_entrada: this.Fechas.fechaCortaFormato(datos.ges_fecha_entrada),
       ges_fecha_salida: this.Fechas.fechaCortaFormato(datos.ges_fecha_salida),
-      ges_fecha_act: this.Fechas.fechaFormato(datos.ges_fecha_act),
-      ges_fecha_desact: this.Fechas.fechaFormato(datos.ges_fecha_desact),
-      ges_fecha_in: this.Fechas.fechaFormato(datos.ges_fecha_in),
-      ges_fecha_up: this.Fechas.fechaFormato(datos.ges_fecha_up),
+      ges_fecha_act: datos.ges_fecha_act,
+      ges_fecha_desact: datos.ges_fecha_desact,
+      ges_fecha_in: datos.ges_fecha_in,
+      ges_fecha_up: datos.ges_fecha_up,
       ges_esactivo: datos.ges_esactivo === '1' ? true : false,
     });
+
+    if (datos.detalle.length > 0) {
+      for (let dt of datos.detalle) {
+        let MetaGesCart: any = {
+          id_cartera: dt.id_cartera,
+          met_ges_car_meta: dt.met_ges_car_meta,
+          met_ges_car_esactivo: '1',
+        };
+        this.CarterasSelect.push(MetaGesCart);
+      }
+    }
 
     this.AgregarEditarElemento(num);
   }
 
   // ****************************************** OTROS COMPONENTES *****************************************************************
+
+  CarterasList: any[] = [];
+  ListarCarteras() {
+    this.CarteraM.ListarElementos(0, 0)
+      .pipe(
+        map((datos) => {
+          this.CarterasList = datos;
+        })
+      )
+      .subscribe();
+  }
+
+  CarterasSelect: any[] = [];
+  AgregarCartera() {
+    if (this.CarterasSelect.length < this.CarterasList.length) {
+      let menu: any = {
+        id_cartera: '',
+        met_ges_car_meta: '',
+        met_ges_car_esactivo: '1',
+      };
+      this.CarterasSelect.push(menu);
+    } else {
+      this.alerta.AlertaEnLaPeticion('No puede exceder el número de carteras');
+    }
+  }
+
+  ActualizarCartera(index: number, field: string, value: any) {
+    if (field == 'id_cartera') {
+      const existe: any = this.CarterasSelect.filter((elements) => {
+        return elements.id_cartera == value;
+      });
+
+      if (existe.length == 0) {
+        this.CarterasSelect[index][field] = value;
+      } else {
+        this.alerta.AlertaEnLaPeticion(
+          'Ya seleccionó una cartera de este tipo'
+        );
+        this.EliminarCartera(index);
+      }
+    }
+    if (field == 'met_ges_car_meta') {
+      if (this.validar.V_NumerosDesimales(value) == true) {
+        this.CarterasSelect[index][field] = value;
+      } else {
+        this.alerta.AlertaEnLaPeticion('Caracteres no permitidos');
+        this.CarterasSelect[index][field] = '';
+      }
+    }
+  }
+
+  EliminarCartera(index: number) {
+    this.CarterasSelect.splice(index, 1);
+  }
+
   GestorMetaForms = new FormGroup({
     id_cartera: new FormControl(0, [Validators.required]),
-    ges_meta: new FormControl('', [Validators.required]),
+    ges_meta: new FormControl('', [Validators.required,this.validar.VFN_NumerosDesimales()]),
   });
 
   ResetGestorMetaForms() {
@@ -416,61 +493,45 @@ export class GestoresComponent implements OnInit {
     });
   }
 
-  CarterasList: any[] = [];
-
-  ListarCarteras() {
-    this.api
-      .GetCarteraFracionado(0, 0)
-      .pipe(
-        map((tracks) => {
-          console.log(tracks['data'])
-          this.CarterasList = tracks['data'];
-        })
-      )
-      .subscribe();
-  }
-
   GestoresList: any[] = [];
-  ContarGestores(){
+  ContarGestores() {
     let cart_select = this.GestorMetaForms.get('id_cartera')?.value;
-    console.log(cart_select);
-    this.api
-      .GetGestoresFracionadoFiltro(cart_select!.toString(), 9)
+    this.GestorM
+      .FiltrarElementos(cart_select!.toString(), 9)
       .pipe(
-        map((tracks) => {
-          console.log(tracks['data'])
-          this.GestoresList = tracks['data'];
+        map((datos) => {
+          if(datos!){
+            this.GestoresList = datos;
+            if(datos.length == 0){
+              this.alerta.AlertaEnLaPeticion('No hay gestores en esta cartera');
+            }
+          }
         })
       )
       .subscribe();
   }
-  CambiarMetaGlobal(datos: any){
-    console.log(datos)
-    this.api
-      .GetGestoresGlobales(datos.id_cartera,datos.ges_meta)
+  CambiarMetaGlobal(datos: any) {
+    this.GestorM
+      .CambiarMetaGlobal(datos.id_cartera, datos.ges_meta)
       .pipe(
-        map((tracks) => {
-          const exito = tracks['exito'];
-            if (exito == '1') {
-              this.ListarElementos(1);
-              this.CerrarAgregarEditarElemento();
-              this.EncerarComponentes();
-              this.ResetGestorMetaForms();
-              this.alerta.RegistroActualizado();
-            } else {
-              this.alerta.ErrorEnLaPeticion(tracks['mensaje']);
-            }
+        map((exito) => {
+          if (exito == '1') {
+            this.ListarElementos(1);
+            this.CerrarAgregarEditarElemento();
+            this.EncerarComponentes();
+            this.ResetGestorMetaForms();
+            this.alerta.MensajePersonalizado('Éxito!','Registros actualizados exitosamente!',1);
+          } 
         })
       )
       .subscribe();
-
   }
   // ****************************************** ENCERAR COMPONENTES *****************************************************************
   EncerarComponentes() {
     // this.UsuarioVista = null;
     this.ResetGestorForms();
     /************ variables de Contenido ********** */
-    this.loading = false;
+    // this.loading = false;
     // this.visible = false;
     // this.FraccionDatos = 0;
     // this.DatosBienInmueble = [];
@@ -480,6 +541,8 @@ export class GestoresComponent implements OnInit {
 
     this.TituloFormulario = '';
     this.ActDesControles(0);
+    this.CarterasList = [];
+    this.CarterasSelect = [];
   }
 
   // ****************************************** PAGINACION *****************************************************************
@@ -511,7 +574,8 @@ export class GestoresComponent implements OnInit {
 
   BtnNextUser(rango?: number) {
     if (rango != null) {
-      this.FraccionDatos = this.FraccionDatos + this.RangoDatos;
+      this.FraccionDatos =
+        this.FraccionDatos + Number(this.PaginaActual.Usuario.usr_rango_datos);
       this.ListarElementos(2);
     }
     this.InicioPaginacion = this.InicioPaginacion + this.RangoPaginacion;
@@ -521,7 +585,8 @@ export class GestoresComponent implements OnInit {
 
   BtnPreviousUser(rango?: number) {
     if (rango != null) {
-      this.FraccionDatos = this.FraccionDatos - this.RangoDatos;
+      this.FraccionDatos =
+        this.FraccionDatos - Number(this.PaginaActual.Usuario.usr_rango_datos);
       this.ListarElementos(2);
     }
 
@@ -531,6 +596,7 @@ export class GestoresComponent implements OnInit {
       this.FraccionarValores();
     }
   }
+
   EncerarVariablesPaginacion() {
     this.ContadorDatos = 0;
     this.RangoPaginacion = 0;
@@ -580,21 +646,10 @@ export class GestoresComponent implements OnInit {
         const resultado = this.ListaGestores.filter((elemento) => {
           return elemento.ges_nombres.includes(nombre.toUpperCase());
         });
-        this.FraccionarValores(resultado, this.ConstanteFraccion);
-        const o=resultado.map(g=>
-          {
-            return {
-				  Nombre:g.ges_nombres,
-                Apellido:g.ges_apellidos,
-                Meta:g.ges_meta,
-                Fecha:g.ges_fecha_in===null?null:this.Fechas.fechaCortaAbt(g.ges_fecha_in),
-                Estado:g.ges_esactivo==='1'?'ACTIVO':'INACTIVO'
-            };
-        });
-        let om: generarPDF = {
-          entidad: 'Gestor', listado:o
-        };
-        this.gGestor=om;
+        this.FraccionarValores(
+          resultado,
+          Number(this.PaginaActual.Usuario.usr_fraccion_datos)
+        );
       }
 
       if (contador != 0) {
@@ -609,21 +664,10 @@ export class GestoresComponent implements OnInit {
         const resultado = this.ListaGestores.filter((elemento) => {
           return elemento.ges_apellidos.includes(nombre.toUpperCase());
         });
-        this.FraccionarValores(resultado, this.ConstanteFraccion);
-        const o=resultado.map(g=>
-          {
-            return {
-				  Nombre:g.ges_nombres,
-                Apellido:g.ges_apellidos,
-                Meta:g.ges_meta,
-                Fecha:g.ges_fecha_in===null?null:this.Fechas.fechaCortaAbt(g.ges_fecha_in),
-                Estado:g.ges_esactivo==='1'?'ACTIVO':'INACTIVO'
-            };
-        });
-        let om: generarPDF = {
-          entidad: 'Gestor', listado:o
-        };
-        this.gGestor=om;
+        this.FraccionarValores(
+          resultado,
+          Number(this.PaginaActual.Usuario.usr_fraccion_datos)
+        );
       }
 
       if (contador != 0) {
@@ -651,22 +695,7 @@ export class GestoresComponent implements OnInit {
     this.TextoFiltro.patchValue('');
     this.FraccionarValores(
       this.DatosTemporalesBusqueda,
-      this.ConstanteFraccion
+      Number(this.PaginaActual.Usuario.usr_fraccion_datos)
     );
-  }
-  GetDescargaPor(val:string)
-  {
-    if(val==='PDF')
-    {
-      this.reporte.generarPDF(this.gGestor);
-    }
-    if(val==='EXCEL')
-    {
-      this.reporte.generarExcel(this.gGestor);
-    }
-    if(val==='CSV')
-    {
-      this.reporte.generarCSV(this.gGestor);
-    }
   }
 }

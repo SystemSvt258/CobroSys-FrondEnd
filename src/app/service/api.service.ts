@@ -80,7 +80,7 @@ export class ApiService {
   // url: string = 'https://cobranzaapi.cobrosystem.com/api/';
   url: string = 'https://localhost/api/';
 
-  /********************** INICIAR Y CERRAR SESION *************************** */
+  /********************** INICIAR Y CERRAR SESIÓN *************************** */
 
   PostIniciarSesion(loginData: LoginI): Observable<ResponseI> {
     let Encryptado: EntidadEncriptado = {
@@ -94,7 +94,7 @@ export class ApiService {
       catchError((error) => {
         if ([undefined].indexOf(error.status) !== -1) {
           this.alerta.ErrorAlRecuperarElementosError(
-            'EncriptarAES',
+            'Encriptar-ES8',
             'Error al desencriptar los datos'
           );
         }
@@ -113,7 +113,7 @@ export class ApiService {
       catchError((error) => {
         if ([undefined].indexOf(error.status) !== -1) {
           this.alerta.ErrorAlRecuperarElementosError(
-            'EncriptarAES',
+            'Encriptar-ES8',
             'Error al desencriptar los datos'
           );
         }
@@ -149,7 +149,7 @@ export class ApiService {
       catchError((error) => {
         if ([undefined].indexOf(error.status) !== -1) {
           this.alerta.ErrorAlRecuperarElementosError(
-            'EncriptarAES',
+            'Encriptar-ES8',
             'Error al desencriptar los datos'
           );
         }
@@ -177,7 +177,7 @@ export class ApiService {
       catchError((error) => {
         if ([undefined].indexOf(error.status) !== -1) {
           this.alerta.ErrorAlRecuperarElementosError(
-            'EncriptarAES',
+            'Encriptar-ES8',
             'Error al desencriptar los datos'
           );
         }
@@ -197,7 +197,7 @@ export class ApiService {
       catchError((error) => {
         if ([undefined].indexOf(error.status) !== -1) {
           this.alerta.ErrorAlRecuperarElementosError(
-            'EncriptarAES',
+            'Encriptar-ES8',
             'Error al desencriptar los datos'
           );
         }
@@ -218,7 +218,7 @@ export class ApiService {
       catchError((error) => {
         if ([undefined].indexOf(error.status) !== -1) {
           this.alerta.ErrorAlRecuperarElementosError(
-            'EncriptarAES',
+            'Encriptar-ES8',
             'Error al desencriptar los datos'
           );
         }
@@ -240,7 +240,7 @@ export class ApiService {
       catchError((error) => {
         if ([undefined].indexOf(error.status) !== -1) {
           this.alerta.ErrorAlRecuperarElementosError(
-            'EncriptarAES',
+            'Encriptar-ES8',
             'Error al desencriptar los datos'
           );
         }
@@ -261,7 +261,7 @@ export class ApiService {
       catchError((error) => {
         if ([undefined].indexOf(error.status) !== -1) {
           this.alerta.ErrorAlRecuperarElementosError(
-            'EncriptarAES',
+            'Encriptar-ES8',
             'Error al desencriptar los datos'
           );
         }
@@ -282,7 +282,7 @@ export class ApiService {
       catchError((error) => {
         if ([undefined].indexOf(error.status) !== -1) {
           this.alerta.ErrorAlRecuperarElementosError(
-            'EncriptarAES',
+            'Encriptar-ES8',
             'Error al desencriptar los datos'
           );
         }
@@ -301,7 +301,7 @@ export class ApiService {
       catchError((error) => {
         if ([undefined].indexOf(error.status) !== -1) {
           this.alerta.ErrorAlRecuperarElementosError(
-            'EncriptarAES',
+            'Encriptar-ES8',
             'Error al desencriptar los datos'
           );
         }
@@ -324,7 +324,7 @@ export class ApiService {
       catchError((error) => {
         if ([undefined].indexOf(error.status) !== -1) {
           this.alerta.ErrorAlRecuperarElementosError(
-            'EncriptarAES',
+            'Encriptar-ES8',
             'Error al desencriptar los datos'
           );
         }
@@ -346,7 +346,7 @@ export class ApiService {
       catchError((error) => {
         if ([undefined].indexOf(error.status) !== -1) {
           this.alerta.ErrorAlRecuperarElementosError(
-            'EncriptarAES',
+            'Encriptar-ES8',
             'Error al desencriptar los datos'
           );
         }
@@ -367,7 +367,7 @@ export class ApiService {
       catchError((error) => {
         if ([undefined].indexOf(error.status) !== -1) {
           this.alerta.ErrorAlRecuperarElementosError(
-            'EncriptarAES',
+            'Encriptar-ES8',
             'Error al desencriptar los datos'
           );
         }
@@ -388,7 +388,7 @@ export class ApiService {
       catchError((error) => {
         if ([undefined].indexOf(error.status) !== -1) {
           this.alerta.ErrorAlRecuperarElementosError(
-            'EncriptarAES',
+            'Encriptar-ES8',
             'Error al desencriptar los datos'
           );
         }
@@ -410,7 +410,7 @@ export class ApiService {
       catchError((error) => {
         if ([undefined].indexOf(error.status) !== -1) {
           this.alerta.ErrorAlRecuperarElementosError(
-            'EncriptarAES',
+            'Encriptar-ES8',
             'Error al desencriptar los datos'
           );
         }
@@ -432,7 +432,7 @@ export class ApiService {
       catchError((error) => {
         if ([undefined].indexOf(error.status) !== -1) {
           this.alerta.ErrorAlRecuperarElementosError(
-            'EncriptarAES',
+            'Encriptar-ES8',
             'Error al desencriptar los datos'
           );
         }
@@ -453,7 +453,7 @@ export class ApiService {
       catchError((error) => {
         if ([undefined].indexOf(error.status) !== -1) {
           this.alerta.ErrorAlRecuperarElementosError(
-            'EncriptarAES',
+            'Encriptar-ES8',
             'Error al desencriptar los datos'
           );
         }
@@ -474,7 +474,7 @@ export class ApiService {
       catchError((error) => {
         if ([undefined].indexOf(error.status) !== -1) {
           this.alerta.ErrorAlRecuperarElementosError(
-            'EncriptarAES',
+            'Encriptar-ES8',
             'Error al desencriptar los datos'
           );
         }
@@ -497,7 +497,7 @@ export class ApiService {
       catchError((error) => {
         if ([undefined].indexOf(error.status) !== -1) {
           this.alerta.ErrorAlRecuperarElementosError(
-            'EncriptarAES',
+            'Encriptar-ES8',
             'Error al desencriptar los datos'
           );
         }
@@ -519,7 +519,7 @@ export class ApiService {
       catchError((error) => {
         if ([undefined].indexOf(error.status) !== -1) {
           this.alerta.ErrorAlRecuperarElementosError(
-            'EncriptarAES',
+            'Encriptar-ES8',
             'Error al desencriptar los datos'
           );
         }
@@ -541,7 +541,7 @@ export class ApiService {
       catchError((error) => {
         if ([undefined].indexOf(error.status) !== -1) {
           this.alerta.ErrorAlRecuperarElementosError(
-            'EncriptarAES',
+            'Encriptar-ES8',
             'Error al desencriptar los datos'
           );
         }
@@ -562,7 +562,7 @@ export class ApiService {
       catchError((error) => {
         if ([undefined].indexOf(error.status) !== -1) {
           this.alerta.ErrorAlRecuperarElementosError(
-            'EncriptarAES',
+            'Encriptar-ES8',
             'Error al desencriptar los datos'
           );
         }
@@ -583,7 +583,7 @@ export class ApiService {
       catchError((error) => {
         if ([undefined].indexOf(error.status) !== -1) {
           this.alerta.ErrorAlRecuperarElementosError(
-            'EncriptarAES',
+            'Encriptar-ES8',
             'Error al desencriptar los datos'
           );
         }
@@ -606,7 +606,7 @@ export class ApiService {
       catchError((error) => {
         if ([undefined].indexOf(error.status) !== -1) {
           this.alerta.ErrorAlRecuperarElementosError(
-            'EncriptarAES',
+            'Encriptar-ES8',
             'Error al desencriptar los datos'
           );
         }
@@ -625,7 +625,7 @@ export class ApiService {
       catchError((error) => {
         if ([undefined].indexOf(error.status) !== -1) {
           this.alerta.ErrorAlRecuperarElementosError(
-            'EncriptarAES',
+            'Encriptar-ES8',
             'Error al desencriptar los datos'
           );
         }
@@ -646,7 +646,7 @@ export class ApiService {
       catchError((error) => {
         if ([undefined].indexOf(error.status) !== -1) {
           this.alerta.ErrorAlRecuperarElementosError(
-            'EncriptarAES',
+            'Encriptar-ES8',
             'Error al desencriptar los datos'
           );
         }
@@ -668,7 +668,7 @@ export class ApiService {
       catchError((error) => {
         if ([undefined].indexOf(error.status) !== -1) {
           this.alerta.ErrorAlRecuperarElementosError(
-            'EncriptarAES',
+            'Encriptar-ES8',
             'Error al desencriptar los datos'
           );
         }
@@ -689,7 +689,7 @@ export class ApiService {
       catchError((error) => {
         if ([undefined].indexOf(error.status) !== -1) {
           this.alerta.ErrorAlRecuperarElementosError(
-            'EncriptarAES',
+            'Encriptar-ES8',
             'Error al desencriptar los datos'
           );
         }
@@ -710,7 +710,7 @@ export class ApiService {
       catchError((error) => {
         if ([undefined].indexOf(error.status) !== -1) {
           this.alerta.ErrorAlRecuperarElementosError(
-            'EncriptarAES',
+            'Encriptar-ES8',
             'Error al desencriptar los datos'
           );
         }
@@ -729,7 +729,7 @@ export class ApiService {
       catchError((error) => {
         if ([undefined].indexOf(error.status) !== -1) {
           this.alerta.ErrorAlRecuperarElementosError(
-            'EncriptarAES',
+            'Encriptar-ES8',
             'Error al desencriptar los datos'
           );
         }
@@ -751,7 +751,7 @@ export class ApiService {
       catchError((error) => {
         if ([undefined].indexOf(error.status) !== -1) {
           this.alerta.ErrorAlRecuperarElementosError(
-            'EncriptarAES',
+            'Encriptar-ES8',
             'Error al desencriptar los datos'
           );
         }
@@ -772,7 +772,7 @@ export class ApiService {
       catchError((error) => {
         if ([undefined].indexOf(error.status) !== -1) {
           this.alerta.ErrorAlRecuperarElementosError(
-            'EncriptarAES',
+            'Encriptar-ES8',
             'Error al desencriptar los datos'
           );
         }
@@ -793,7 +793,7 @@ export class ApiService {
       catchError((error) => {
         if ([undefined].indexOf(error.status) !== -1) {
           this.alerta.ErrorAlRecuperarElementosError(
-            'EncriptarAES',
+            'Encriptar-ES8',
             'Error al desencriptar los datos'
           );
         }
@@ -817,7 +817,7 @@ export class ApiService {
         console.log(error.status);
         if ([undefined].indexOf(error.status) !== -1) {
           this.alerta.ErrorAlRecuperarElementosError(
-            'EncriptarAES',
+            'Encriptar-ES8',
             'Error al desencriptar los datos'
           );
         }
@@ -845,7 +845,7 @@ export class ApiService {
       catchError((error) => {
         if ([undefined].indexOf(error.status) !== -1) {
           this.alerta.ErrorAlRecuperarElementosError(
-            'EncriptarAES',
+            'Encriptar-ES8',
             'Error al desencriptar los datos'
           );
         }
@@ -864,7 +864,7 @@ export class ApiService {
       catchError((error) => {
         if ([undefined].indexOf(error.status) !== -1) {
           this.alerta.ErrorAlRecuperarElementosError(
-            'EncriptarAES',
+            'Encriptar-ES8',
             'Error al desencriptar los datos'
           );
         }
@@ -886,7 +886,7 @@ export class ApiService {
       catchError((error) => {
         if ([undefined].indexOf(error.status) !== -1) {
           this.alerta.ErrorAlRecuperarElementosError(
-            'EncriptarAES',
+            'Encriptar-ES8',
             'Error al desencriptar los datos'
           );
         }
@@ -907,7 +907,7 @@ export class ApiService {
       catchError((error) => {
         if ([undefined].indexOf(error.status) !== -1) {
           this.alerta.ErrorAlRecuperarElementosError(
-            'EncriptarAES',
+            'Encriptar-ES8',
             'Error al desencriptar los datos'
           );
         }
@@ -928,7 +928,7 @@ export class ApiService {
       catchError((error) => {
         if ([undefined].indexOf(error.status) !== -1) {
           this.alerta.ErrorAlRecuperarElementosError(
-            'EncriptarAES',
+            'Encriptar-ES8',
             'Error al desencriptar los datos'
           );
         }
@@ -951,7 +951,7 @@ export class ApiService {
       catchError((error) => {
         if ([undefined].indexOf(error.status) !== -1) {
           this.alerta.ErrorAlRecuperarElementosError(
-            'EncriptarAES',
+            'Encriptar-ES8',
             'Error al desencriptar los datos'
           );
         }
@@ -973,7 +973,7 @@ export class ApiService {
       catchError((error) => {
         if ([undefined].indexOf(error.status) !== -1) {
           this.alerta.ErrorAlRecuperarElementosError(
-            'EncriptarAES',
+            'Encriptar-ES8',
             'Error al desencriptar los datos'
           );
         }
@@ -1002,7 +1002,7 @@ export class ApiService {
       catchError((error) => {
         if ([undefined].indexOf(error.status) !== -1) {
           this.alerta.ErrorAlRecuperarElementosError(
-            'EncriptarAES',
+            'Encriptar-ES8',
             'Error al desencriptar los datos'
           );
         }
@@ -1024,7 +1024,7 @@ export class ApiService {
       catchError((error) => {
         if ([undefined].indexOf(error.status) !== -1) {
           this.alerta.ErrorAlRecuperarElementosError(
-            'EncriptarAES',
+            'Encriptar-ES8',
             'Error al desencriptar los datos'
           );
         }
@@ -1045,7 +1045,7 @@ export class ApiService {
       catchError((error) => {
         if ([undefined].indexOf(error.status) !== -1) {
           this.alerta.ErrorAlRecuperarElementosError(
-            'EncriptarAES',
+            'Encriptar-ES8',
             'Error al desencriptar los datos'
           );
         }
@@ -1066,7 +1066,7 @@ export class ApiService {
       catchError((error) => {
         if ([undefined].indexOf(error.status) !== -1) {
           this.alerta.ErrorAlRecuperarElementosError(
-            'EncriptarAES',
+            'Encriptar-ES8',
             'Error al desencriptar los datos'
           );
         }
@@ -1088,7 +1088,7 @@ export class ApiService {
       catchError((error) => {
         if ([undefined].indexOf(error.status) !== -1) {
           this.alerta.ErrorAlRecuperarElementosError(
-            'EncriptarAES',
+            'Encriptar-ES8',
             'Error al desencriptar los datos'
           );
         }
@@ -1110,7 +1110,7 @@ export class ApiService {
       catchError((error) => {
         if ([undefined].indexOf(error.status) !== -1) {
           this.alerta.ErrorAlRecuperarElementosError(
-            'EncriptarAES',
+            'Encriptar-ES8',
             'Error al desencriptar los datos'
           );
         }
@@ -1132,7 +1132,7 @@ export class ApiService {
       catchError((error) => {
         if ([undefined].indexOf(error.status) !== -1) {
           this.alerta.ErrorAlRecuperarElementosError(
-            'EncriptarAES',
+            'Encriptar-ES8',
             'Error al desencriptar los datos'
           );
         }
@@ -1153,7 +1153,7 @@ export class ApiService {
       catchError((error) => {
         if ([undefined].indexOf(error.status) !== -1) {
           this.alerta.ErrorAlRecuperarElementosError(
-            'EncriptarAES',
+            'Encriptar-ES8',
             'Error al desencriptar los datos'
           );
         }
@@ -1174,7 +1174,7 @@ export class ApiService {
       catchError((error) => {
         if ([undefined].indexOf(error.status) !== -1) {
           this.alerta.ErrorAlRecuperarElementosError(
-            'EncriptarAES',
+            'Encriptar-ES8',
             'Error al desencriptar los datos'
           );
         }
@@ -1196,7 +1196,7 @@ export class ApiService {
       catchError((error) => {
         if ([undefined].indexOf(error.status) !== -1) {
           this.alerta.ErrorAlRecuperarElementosError(
-            'EncriptarAES',
+            'Encriptar-ES8',
             'Error al desencriptar los datos'
           );
         }
@@ -1217,7 +1217,7 @@ export class ApiService {
       catchError((error) => {
         if ([undefined].indexOf(error.status) !== -1) {
           this.alerta.ErrorAlRecuperarElementosError(
-            'EncriptarAES',
+            'Encriptar-ES8',
             'Error al desencriptar los datos'
           );
         }
@@ -1239,7 +1239,7 @@ export class ApiService {
       catchError((error) => {
         if ([undefined].indexOf(error.status) !== -1) {
           this.alerta.ErrorAlRecuperarElementosError(
-            'EncriptarAES',
+            'Encriptar-ES8',
             'Error al desencriptar los datos'
           );
         }
@@ -1260,7 +1260,7 @@ export class ApiService {
       catchError((error) => {
         if ([undefined].indexOf(error.status) !== -1) {
           this.alerta.ErrorAlRecuperarElementosError(
-            'EncriptarAES',
+            'Encriptar-ES8',
             'Error al desencriptar los datos'
           );
         }
@@ -1281,7 +1281,7 @@ export class ApiService {
       catchError((error) => {
         if ([undefined].indexOf(error.status) !== -1) {
           this.alerta.ErrorAlRecuperarElementosError(
-            'EncriptarAES',
+            'Encriptar-ES8',
             'Error al desencriptar los datos'
           );
         }
@@ -1300,7 +1300,7 @@ export class ApiService {
       catchError((error) => {
         if ([undefined].indexOf(error.status) !== -1) {
           this.alerta.ErrorAlRecuperarElementosError(
-            'EncriptarAES',
+            'Encriptar-ES8',
             'Error al desencriptar los datos'
           );
         }
@@ -1321,7 +1321,7 @@ export class ApiService {
       catchError((error) => {
         if ([undefined].indexOf(error.status) !== -1) {
           this.alerta.ErrorAlRecuperarElementosError(
-            'EncriptarAES',
+            'Encriptar-ES8',
             'Error al desencriptar los datos'
           );
         }
@@ -1343,7 +1343,7 @@ export class ApiService {
       catchError((error) => {
         if ([undefined].indexOf(error.status) !== -1) {
           this.alerta.ErrorAlRecuperarElementosError(
-            'EncriptarAES',
+            'Encriptar-ES8',
             'Error al desencriptar los datos'
           );
         }
@@ -1364,7 +1364,7 @@ export class ApiService {
       catchError((error) => {
         if ([undefined].indexOf(error.status) !== -1) {
           this.alerta.ErrorAlRecuperarElementosError(
-            'EncriptarAES',
+            'Encriptar-ES8',
             'Error al desencriptar los datos'
           );
         }
@@ -1385,7 +1385,7 @@ export class ApiService {
       catchError((error) => {
         if ([undefined].indexOf(error.status) !== -1) {
           this.alerta.ErrorAlRecuperarElementosError(
-            'EncriptarAES',
+            'Encriptar-ES8',
             'Error al desencriptar los datos'
           );
         }
@@ -1404,7 +1404,7 @@ export class ApiService {
       catchError((error) => {
         if ([undefined].indexOf(error.status) !== -1) {
           this.alerta.ErrorAlRecuperarElementosError(
-            'EncriptarAES',
+            'Encriptar-ES8',
             'Error al desencriptar los datos'
           );
         }
@@ -1426,7 +1426,7 @@ export class ApiService {
       catchError((error) => {
         if ([undefined].indexOf(error.status) !== -1) {
           this.alerta.ErrorAlRecuperarElementosError(
-            'EncriptarAES',
+            'Encriptar-ES8',
             'Error al desencriptar los datos'
           );
         }
@@ -1447,7 +1447,7 @@ export class ApiService {
       catchError((error) => {
         if ([undefined].indexOf(error.status) !== -1) {
           this.alerta.ErrorAlRecuperarElementosError(
-            'EncriptarAES',
+            'Encriptar-ES8',
             'Error al desencriptar los datos'
           );
         }
@@ -1468,7 +1468,7 @@ export class ApiService {
       catchError((error) => {
         if ([undefined].indexOf(error.status) !== -1) {
           this.alerta.ErrorAlRecuperarElementosError(
-            'EncriptarAES',
+            'Encriptar-ES8',
             'Error al desencriptar los datos'
           );
         }
@@ -1487,7 +1487,7 @@ export class ApiService {
       catchError((error) => {
         if ([undefined].indexOf(error.status) !== -1) {
           this.alerta.ErrorAlRecuperarElementosError(
-            'EncriptarAES',
+            'Encriptar-ES8',
             'Error al desencriptar los datos'
           );
         }
@@ -1509,7 +1509,7 @@ export class ApiService {
       catchError((error) => {
         if ([undefined].indexOf(error.status) !== -1) {
           this.alerta.ErrorAlRecuperarElementosError(
-            'EncriptarAES',
+            'Encriptar-ES8',
             'Error al desencriptar los datos'
           );
         }
@@ -1530,7 +1530,7 @@ export class ApiService {
       catchError((error) => {
         if ([undefined].indexOf(error.status) !== -1) {
           this.alerta.ErrorAlRecuperarElementosError(
-            'EncriptarAES',
+            'Encriptar-ES8',
             'Error al desencriptar los datos'
           );
         }
@@ -1551,7 +1551,7 @@ export class ApiService {
       catchError((error) => {
         if ([undefined].indexOf(error.status) !== -1) {
           this.alerta.ErrorAlRecuperarElementosError(
-            'EncriptarAES',
+            'Encriptar-ES8',
             'Error al desencriptar los datos'
           );
         }
@@ -1570,7 +1570,7 @@ export class ApiService {
       catchError((error) => {
         if ([undefined].indexOf(error.status) !== -1) {
           this.alerta.ErrorAlRecuperarElementosError(
-            'EncriptarAES',
+            'Encriptar-ES8',
             'Error al desencriptar los datos'
           );
         }
@@ -1592,7 +1592,7 @@ export class ApiService {
       catchError((error) => {
         if ([undefined].indexOf(error.status) !== -1) {
           this.alerta.ErrorAlRecuperarElementosError(
-            'EncriptarAES',
+            'Encriptar-ES8',
             'Error al desencriptar los datos'
           );
         }
@@ -1613,7 +1613,7 @@ export class ApiService {
       catchError((error) => {
         if ([undefined].indexOf(error.status) !== -1) {
           this.alerta.ErrorAlRecuperarElementosError(
-            'EncriptarAES',
+            'Encriptar-ES8',
             'Error al desencriptar los datos'
           );
         }
@@ -1634,7 +1634,7 @@ export class ApiService {
       catchError((error) => {
         if ([undefined].indexOf(error.status) !== -1) {
           this.alerta.ErrorAlRecuperarElementosError(
-            'EncriptarAES',
+            'Encriptar-ES8',
             'Error al desencriptar los datos'
           );
         }
@@ -1653,7 +1653,7 @@ export class ApiService {
       catchError((error) => {
         if ([undefined].indexOf(error.status) !== -1) {
           this.alerta.ErrorAlRecuperarElementosError(
-            'EncriptarAES',
+            'Encriptar-ES8',
             'Error al desencriptar los datos'
           );
         }
@@ -1675,7 +1675,7 @@ export class ApiService {
       catchError((error) => {
         if ([undefined].indexOf(error.status) !== -1) {
           this.alerta.ErrorAlRecuperarElementosError(
-            'EncriptarAES',
+            'Encriptar-ES8',
             'Error al desencriptar los datos'
           );
         }
@@ -1696,7 +1696,7 @@ export class ApiService {
       catchError((error) => {
         if ([undefined].indexOf(error.status) !== -1) {
           this.alerta.ErrorAlRecuperarElementosError(
-            'EncriptarAES',
+            'Encriptar-ES8',
             'Error al desencriptar los datos'
           );
         }
@@ -1717,7 +1717,7 @@ export class ApiService {
       catchError((error) => {
         if ([undefined].indexOf(error.status) !== -1) {
           this.alerta.ErrorAlRecuperarElementosError(
-            'EncriptarAES',
+            'Encriptar-ES8',
             'Error al desencriptar los datos'
           );
         }
@@ -1736,7 +1736,7 @@ export class ApiService {
       catchError((error) => {
         if ([undefined].indexOf(error.status) !== -1) {
           this.alerta.ErrorAlRecuperarElementosError(
-            'EncriptarAES',
+            'Encriptar-ES8',
             'Error al desencriptar los datos'
           );
         }
@@ -1757,7 +1757,7 @@ export class ApiService {
       catchError((error) => {
         if ([undefined].indexOf(error.status) !== -1) {
           this.alerta.ErrorAlRecuperarElementosError(
-            'EncriptarAES',
+            'Encriptar-ES8',
             'Error al desencriptar los datos'
           );
         }
@@ -1779,7 +1779,7 @@ export class ApiService {
       catchError((error) => {
         if ([undefined].indexOf(error.status) !== -1) {
           this.alerta.ErrorAlRecuperarElementosError(
-            'EncriptarAES',
+            'Encriptar-ES8',
             'Error al desencriptar los datos'
           );
         }
@@ -1800,7 +1800,7 @@ export class ApiService {
       catchError((error) => {
         if ([undefined].indexOf(error.status) !== -1) {
           this.alerta.ErrorAlRecuperarElementosError(
-            'EncriptarAES',
+            'Encriptar-ES8',
             'Error al desencriptar los datos'
           );
         }
@@ -1821,7 +1821,7 @@ export class ApiService {
       catchError((error) => {
         if ([undefined].indexOf(error.status) !== -1) {
           this.alerta.ErrorAlRecuperarElementosError(
-            'EncriptarAES',
+            'Encriptar-ES8',
             'Error al desencriptar los datos'
           );
         }
@@ -1840,7 +1840,7 @@ export class ApiService {
       catchError((error) => {
         if ([undefined].indexOf(error.status) !== -1) {
           this.alerta.ErrorAlRecuperarElementosError(
-            'EncriptarAES',
+            'Encriptar-ES8',
             'Error al desencriptar los datos'
           );
         }
@@ -1861,7 +1861,7 @@ export class ApiService {
       catchError((error) => {
         if ([undefined].indexOf(error.status) !== -1) {
           this.alerta.ErrorAlRecuperarElementosError(
-            'EncriptarAES',
+            'Encriptar-ES8',
             'Error al desencriptar los datos'
           );
         }
@@ -1883,7 +1883,7 @@ export class ApiService {
       catchError((error) => {
         if ([undefined].indexOf(error.status) !== -1) {
           this.alerta.ErrorAlRecuperarElementosError(
-            'EncriptarAES',
+            'Encriptar-ES8',
             'Error al desencriptar los datos'
           );
         }
@@ -1904,7 +1904,7 @@ export class ApiService {
       catchError((error) => {
         if ([undefined].indexOf(error.status) !== -1) {
           this.alerta.ErrorAlRecuperarElementosError(
-            'EncriptarAES',
+            'Encriptar-ES8',
             'Error al desencriptar los datos'
           );
         }
@@ -1925,7 +1925,7 @@ export class ApiService {
       catchError((error) => {
         if ([undefined].indexOf(error.status) !== -1) {
           this.alerta.ErrorAlRecuperarElementosError(
-            'EncriptarAES',
+            'Encriptar-ES8',
             'Error al desencriptar los datos'
           );
         }
@@ -1944,7 +1944,7 @@ export class ApiService {
       catchError((error) => {
         if ([undefined].indexOf(error.status) !== -1) {
           this.alerta.ErrorAlRecuperarElementosError(
-            'EncriptarAES',
+            'Encriptar-ES8',
             'Error al desencriptar los datos'
           );
         }
@@ -1966,7 +1966,7 @@ export class ApiService {
       catchError((error) => {
         if ([undefined].indexOf(error.status) !== -1) {
           this.alerta.ErrorAlRecuperarElementosError(
-            'EncriptarAES',
+            'Encriptar-ES8',
             'Error al desencriptar los datos'
           );
         }
@@ -1987,7 +1987,7 @@ export class ApiService {
       catchError((error) => {
         if ([undefined].indexOf(error.status) !== -1) {
           this.alerta.ErrorAlRecuperarElementosError(
-            'EncriptarAES',
+            'Encriptar-ES8',
             'Error al desencriptar los datos'
           );
         }
@@ -2008,7 +2008,7 @@ export class ApiService {
       catchError((error) => {
         if ([undefined].indexOf(error.status) !== -1) {
           this.alerta.ErrorAlRecuperarElementosError(
-            'EncriptarAES',
+            'Encriptar-ES8',
             'Error al desencriptar los datos'
           );
         }
@@ -2029,7 +2029,7 @@ export class ApiService {
       catchError((error) => {
         if ([undefined].indexOf(error.status) !== -1) {
           this.alerta.ErrorAlRecuperarElementosError(
-            'EncriptarAES',
+            'Encriptar-ES8',
             'Error al desencriptar los datos'
           );
         }
@@ -2052,7 +2052,7 @@ export class ApiService {
       catchError((error) => {
         if ([undefined].indexOf(error.status) !== -1) {
           this.alerta.ErrorAlRecuperarElementosError(
-            'EncriptarAES',
+            'Encriptar-ES8',
             'Error al desencriptar los datos'
           );
         }
@@ -2070,7 +2070,7 @@ export class ApiService {
       catchError((error) => {
         if ([undefined].indexOf(error.status) !== -1) {
           this.alerta.ErrorAlRecuperarElementosError(
-            'EncriptarAES',
+            'Encriptar-ES8',
             'Error al desencriptar los datos'
           );
         }
@@ -2091,7 +2091,7 @@ export class ApiService {
       catchError((error) => {
         if ([undefined].indexOf(error.status) !== -1) {
           this.alerta.ErrorAlRecuperarElementosError(
-            'EncriptarAES',
+            'Encriptar-ES8',
             'Error al desencriptar los datos'
           );
         }
@@ -2113,7 +2113,7 @@ export class ApiService {
       catchError((error) => {
         if ([undefined].indexOf(error.status) !== -1) {
           this.alerta.ErrorAlRecuperarElementosError(
-            'EncriptarAES',
+            'Encriptar-ES8',
             'Error al desencriptar los datos'
           );
         }
@@ -2137,7 +2137,7 @@ export class ApiService {
       catchError((error) => {
         if ([undefined].indexOf(error.status) !== -1) {
           this.alerta.ErrorAlRecuperarElementosError(
-            'EncriptarAES',
+            'Encriptar-ES8',
             'Error al desencriptar los datos'
           );
         }
@@ -2158,7 +2158,7 @@ export class ApiService {
       catchError((error) => {
         if ([undefined].indexOf(error.status) !== -1) {
           this.alerta.ErrorAlRecuperarElementosError(
-            'EncriptarAES',
+            'Encriptar-ES8',
             'Error al desencriptar los datos'
           );
         }
@@ -2179,7 +2179,7 @@ export class ApiService {
       catchError((error) => {
         if ([undefined].indexOf(error.status) !== -1) {
           this.alerta.ErrorAlRecuperarElementosError(
-            'EncriptarAES',
+            'Encriptar-ES8',
             'Error al desencriptar los datos'
           );
         }
@@ -2198,7 +2198,7 @@ export class ApiService {
       catchError((error) => {
         if ([undefined].indexOf(error.status) !== -1) {
           this.alerta.ErrorAlRecuperarElementosError(
-            'EncriptarAES',
+            'Encriptar-ES8',
             'Error al desencriptar los datos'
           );
         }
@@ -2216,7 +2216,7 @@ export class ApiService {
       catchError((error) => {
         if ([undefined].indexOf(error.status) !== -1) {
           this.alerta.ErrorAlRecuperarElementosError(
-            'EncriptarAES',
+            'Encriptar-ES8',
             'Error al desencriptar los datos'
           );
         }
@@ -2235,7 +2235,7 @@ export class ApiService {
       catchError((error) => {
         if ([undefined].indexOf(error.status) !== -1) {
           this.alerta.ErrorAlRecuperarElementosError(
-            'EncriptarAES',
+            'Encriptar-ES8',
             'Error al desencriptar los datos'
           );
         }
@@ -2256,7 +2256,7 @@ export class ApiService {
       catchError((error) => {
         if ([undefined].indexOf(error.status) !== -1) {
           this.alerta.ErrorAlRecuperarElementosError(
-            'EncriptarAES',
+            'Encriptar-ES8',
             'Error al desencriptar los datos'
           );
         }
@@ -2277,7 +2277,7 @@ export class ApiService {
       catchError((error) => {
         if ([undefined].indexOf(error.status) !== -1) {
           this.alerta.ErrorAlRecuperarElementosError(
-            'EncriptarAES',
+            'Encriptar-ES8',
             'Error al desencriptar los datos'
           );
         }
@@ -2296,7 +2296,7 @@ export class ApiService {
       catchError((error) => {
         if ([undefined].indexOf(error.status) !== -1) {
           this.alerta.ErrorAlRecuperarElementosError(
-            'EncriptarAES',
+            'Encriptar-ES8',
             'Error al desencriptar los datos'
           );
         }
@@ -2317,7 +2317,7 @@ export class ApiService {
       catchError((error) => {
         if ([undefined].indexOf(error.status) !== -1) {
           this.alerta.ErrorAlRecuperarElementosError(
-            'EncriptarAES',
+            'Encriptar-ES8',
             'Error al desencriptar los datos'
           );
         }
@@ -2338,7 +2338,7 @@ export class ApiService {
       catchError((error) => {
         if ([undefined].indexOf(error.status) !== -1) {
           this.alerta.ErrorAlRecuperarElementosError(
-            'EncriptarAES',
+            'Encriptar-ES8',
             'Error al desencriptar los datos'
           );
         }
@@ -2364,7 +2364,7 @@ export class ApiService {
       catchError((error) => {
         if ([undefined].indexOf(error.status) !== -1) {
           this.alerta.ErrorAlRecuperarElementosError(
-            'EncriptarAES',
+            'Encriptar-ES8',
             'Error al desencriptar los datos'
           );
         }
@@ -2387,7 +2387,7 @@ export class ApiService {
       catchError((error) => {
         if ([undefined].indexOf(error.status) !== -1) {
           this.alerta.ErrorAlRecuperarElementosError(
-            'EncriptarAES',
+            'Encriptar-ES8',
             'Error al desencriptar los datos'
           );
         }
@@ -2409,7 +2409,7 @@ export class ApiService {
       catchError((error) => {
         if ([undefined].indexOf(error.status) !== -1) {
           this.alerta.ErrorAlRecuperarElementosError(
-            'EncriptarAES',
+            'Encriptar-ES8',
             'Error al desencriptar los datos'
           );
         }
@@ -2430,7 +2430,7 @@ export class ApiService {
       catchError((error) => {
         if ([undefined].indexOf(error.status) !== -1) {
           this.alerta.ErrorAlRecuperarElementosError(
-            'EncriptarAES',
+            'Encriptar-ES8',
             'Error al desencriptar los datos'
           );
         }
@@ -2451,7 +2451,7 @@ export class ApiService {
       catchError((error) => {
         if ([undefined].indexOf(error.status) !== -1) {
           this.alerta.ErrorAlRecuperarElementosError(
-            'EncriptarAES',
+            'Encriptar-ES8',
             'Error al desencriptar los datos'
           );
         }
@@ -2472,7 +2472,7 @@ export class ApiService {
       catchError((error) => {
         if ([undefined].indexOf(error.status) !== -1) {
           this.alerta.ErrorAlRecuperarElementosError(
-            'EncriptarAES',
+            'Encriptar-ES8',
             'Error al desencriptar los datos'
           );
         }
@@ -2495,7 +2495,7 @@ export class ApiService {
       catchError((error) => {
         if ([undefined].indexOf(error.status) !== -1) {
           this.alerta.ErrorAlRecuperarElementosError(
-            'EncriptarAES',
+            'Encriptar-ES8',
             'Error al desencriptar los datos'
           );
         }
@@ -2518,7 +2518,7 @@ export class ApiService {
       catchError((error) => {
         if ([undefined].indexOf(error.status) !== -1) {
           this.alerta.ErrorAlRecuperarElementosError(
-            'EncriptarAES',
+            'Encriptar-ES8',
             'Error al desencriptar los datos'
           );
         }
@@ -2540,7 +2540,7 @@ export class ApiService {
       catchError((error) => {
         if ([undefined].indexOf(error.status) !== -1) {
           this.alerta.ErrorAlRecuperarElementosError(
-            'EncriptarAES',
+            'Encriptar-ES8',
             'Error al desencriptar los datos'
           );
         }
@@ -2562,7 +2562,7 @@ export class ApiService {
       catchError((error) => {
         if ([undefined].indexOf(error.status) !== -1) {
           this.alerta.ErrorAlRecuperarElementosError(
-            'EncriptarAES',
+            'Encriptar-ES8',
             'Error al desencriptar los datos'
           );
         }
@@ -2585,7 +2585,7 @@ export class ApiService {
       catchError((error) => {
         if ([undefined].indexOf(error.status) !== -1) {
           this.alerta.ErrorAlRecuperarElementosError(
-            'EncriptarAES',
+            'Encriptar-ES8',
             'Error al desencriptar los datos'
           );
         }
@@ -2607,7 +2607,7 @@ export class ApiService {
       catchError((error) => {
         if ([undefined].indexOf(error.status) !== -1) {
           this.alerta.ErrorAlRecuperarElementosError(
-            'EncriptarAES',
+            'Encriptar-ES8',
             'Error al desencriptar los datos'
           );
         }
@@ -2629,7 +2629,7 @@ export class ApiService {
       catchError((error) => {
         if ([undefined].indexOf(error.status) !== -1) {
           this.alerta.ErrorAlRecuperarElementosError(
-            'EncriptarAES',
+            'Encriptar-ES8',
             'Error al desencriptar los datos'
           );
         }
@@ -2649,7 +2649,7 @@ export class ApiService {
       catchError((error) => {
         if ([undefined].indexOf(error.status) !== -1) {
           this.alerta.ErrorAlRecuperarElementosError(
-            'EncriptarAES',
+            'Encriptar-ES8',
             'Error al desencriptar los datos'
           );
         }
@@ -2668,7 +2668,7 @@ export class ApiService {
       catchError((error) => {
         if ([undefined].indexOf(error.status) !== -1) {
           this.alerta.ErrorAlRecuperarElementosError(
-            'EncriptarAES',
+            'Encriptar-ES8',
             'Error al desencriptar los datos'
           );
         }
@@ -2689,7 +2689,7 @@ export class ApiService {
       catchError((error) => {
         if ([undefined].indexOf(error.status) !== -1) {
           this.alerta.ErrorAlRecuperarElementosError(
-            'EncriptarAES',
+            'Encriptar-ES8',
             'Error al desencriptar los datos'
           );
         }
@@ -2710,7 +2710,7 @@ export class ApiService {
       catchError((error) => {
         if ([undefined].indexOf(error.status) !== -1) {
           this.alerta.ErrorAlRecuperarElementosError(
-            'EncriptarAES',
+            'Encriptar-ES8',
             'Error al desencriptar los datos'
           );
         }
@@ -2732,7 +2732,7 @@ export class ApiService {
       catchError((error) => {
         if ([undefined].indexOf(error.status) !== -1) {
           this.alerta.ErrorAlRecuperarElementosError(
-            'EncriptarAES',
+            'Encriptar-ES8',
             'Error al desencriptar los datos'
           );
         }
@@ -2754,7 +2754,7 @@ export class ApiService {
       catchError((error) => {
         if ([undefined].indexOf(error.status) !== -1) {
           this.alerta.ErrorAlRecuperarElementosError(
-            'EncriptarAES',
+            'Encriptar-ES8',
             'Error al desencriptar los datos'
           );
         }
@@ -2776,7 +2776,7 @@ export class ApiService {
       catchError((error) => {
         if ([undefined].indexOf(error.status) !== -1) {
           this.alerta.ErrorAlRecuperarElementosError(
-            'EncriptarAES',
+            'Encriptar-ES8',
             'Error al desencriptar los datos'
           );
         }
@@ -2797,7 +2797,7 @@ export class ApiService {
       catchError((error) => {
         if ([undefined].indexOf(error.status) !== -1) {
           this.alerta.ErrorAlRecuperarElementosError(
-            'EncriptarAES',
+            'Encriptar-ES8',
             'Error al desencriptar los datos'
           );
         }
@@ -2818,7 +2818,7 @@ export class ApiService {
       catchError((error) => {
         if ([undefined].indexOf(error.status) !== -1) {
           this.alerta.ErrorAlRecuperarElementosError(
-            'EncriptarAES',
+            'Encriptar-ES8',
             'Error al desencriptar los datos'
           );
         }
@@ -2842,7 +2842,7 @@ export class ApiService {
       catchError((error) => {
         if ([undefined].indexOf(error.status) !== -1) {
           this.alerta.ErrorAlRecuperarElementosError(
-            'EncriptarAES',
+            'Encriptar-ES8',
             'Error al desencriptar los datos'
           );
         }
@@ -2863,7 +2863,7 @@ export class ApiService {
       catchError((error) => {
         if ([undefined].indexOf(error.status) !== -1) {
           this.alerta.ErrorAlRecuperarElementosError(
-            'EncriptarAES',
+            'Encriptar-ES8',
             'Error al desencriptar los datos'
           );
         }
@@ -2885,7 +2885,7 @@ export class ApiService {
       catchError((error) => {
         if ([undefined].indexOf(error.status) !== -1) {
           this.alerta.ErrorAlRecuperarElementosError(
-            'EncriptarAES',
+            'Encriptar-ES8',
             'Error al desencriptar los datos'
           );
         }
@@ -2906,7 +2906,7 @@ export class ApiService {
       catchError((error) => {
         if ([undefined].indexOf(error.status) !== -1) {
           this.alerta.ErrorAlRecuperarElementosError(
-            'EncriptarAES',
+            'Encriptar-ES8',
             'Error al desencriptar los datos'
           );
         }
@@ -2927,7 +2927,7 @@ export class ApiService {
       catchError((error) => {
         if ([undefined].indexOf(error.status) !== -1) {
           this.alerta.ErrorAlRecuperarElementosError(
-            'EncriptarAES',
+            'Encriptar-ES8',
             'Error al desencriptar los datos'
           );
         }
@@ -2949,7 +2949,7 @@ export class ApiService {
       catchError((error) => {
         if ([undefined].indexOf(error.status) !== -1) {
           this.alerta.ErrorAlRecuperarElementosError(
-            'EncriptarAES',
+            'Encriptar-ES8',
             'Error al desencriptar los datos'
           );
         }
@@ -2971,7 +2971,7 @@ export class ApiService {
       catchError((error) => {
         if ([undefined].indexOf(error.status) !== -1) {
           this.alerta.ErrorAlRecuperarElementosError(
-            'EncriptarAES',
+            'Encriptar-ES8',
             'Error al desencriptar los datos'
           );
         }
@@ -2993,7 +2993,7 @@ export class ApiService {
       catchError((error) => {
         if ([undefined].indexOf(error.status) !== -1) {
           this.alerta.ErrorAlRecuperarElementosError(
-            'EncriptarAES',
+            'Encriptar-ES8',
             'Error al desencriptar los datos'
           );
         }
@@ -3014,7 +3014,7 @@ export class ApiService {
       catchError((error) => {
         if ([undefined].indexOf(error.status) !== -1) {
           this.alerta.ErrorAlRecuperarElementosError(
-            'EncriptarAES',
+            'Encriptar-ES8',
             'Error al desencriptar los datos'
           );
         }
@@ -3035,7 +3035,7 @@ export class ApiService {
       catchError((error) => {
         if ([undefined].indexOf(error.status) !== -1) {
           this.alerta.ErrorAlRecuperarElementosError(
-            'EncriptarAES',
+            'Encriptar-ES8',
             'Error al desencriptar los datos'
           );
         }
@@ -3058,7 +3058,7 @@ export class ApiService {
       catchError((error) => {
         if ([undefined].indexOf(error.status) !== -1) {
           this.alerta.ErrorAlRecuperarElementosError(
-            'EncriptarAES',
+            'Encriptar-ES8',
             'Error al desencriptar los datos'
           );
         }
@@ -3080,7 +3080,7 @@ export class ApiService {
       catchError((error) => {
         if ([undefined].indexOf(error.status) !== -1) {
           this.alerta.ErrorAlRecuperarElementosError(
-            'EncriptarAES',
+            'Encriptar-ES8',
             'Error al desencriptar los datos'
           );
         }
@@ -3101,7 +3101,7 @@ export class ApiService {
       catchError((error) => {
         if ([undefined].indexOf(error.status) !== -1) {
           this.alerta.ErrorAlRecuperarElementosError(
-            'EncriptarAES',
+            'Encriptar-ES8',
             'Error al desencriptar los datos'
           );
         }
@@ -3122,7 +3122,7 @@ export class ApiService {
       catchError((error) => {
         if ([undefined].indexOf(error.status) !== -1) {
           this.alerta.ErrorAlRecuperarElementosError(
-            'EncriptarAES',
+            'Encriptar-ES8',
             'Error al desencriptar los datos'
           );
         }
@@ -3144,7 +3144,7 @@ export class ApiService {
       catchError((error) => {
         if ([undefined].indexOf(error.status) !== -1) {
           this.alerta.ErrorAlRecuperarElementosError(
-            'EncriptarAES',
+            'Encriptar-ES8',
             'Error al desencriptar los datos'
           );
         }
@@ -3166,7 +3166,7 @@ export class ApiService {
       catchError((error) => {
         if ([undefined].indexOf(error.status) !== -1) {
           this.alerta.ErrorAlRecuperarElementosError(
-            'EncriptarAES',
+            'Encriptar-ES8',
             'Error al desencriptar los datos'
           );
         }
@@ -3188,7 +3188,7 @@ export class ApiService {
       catchError((error) => {
         if ([undefined].indexOf(error.status) !== -1) {
           this.alerta.ErrorAlRecuperarElementosError(
-            'EncriptarAES',
+            'Encriptar-ES8',
             'Error al desencriptar los datos'
           );
         }
@@ -3209,7 +3209,7 @@ export class ApiService {
       catchError((error) => {
         if ([undefined].indexOf(error.status) !== -1) {
           this.alerta.ErrorAlRecuperarElementosError(
-            'EncriptarAES',
+            'Encriptar-ES8',
             'Error al desencriptar los datos'
           );
         }
@@ -3230,7 +3230,7 @@ export class ApiService {
       catchError((error) => {
         if ([undefined].indexOf(error.status) !== -1) {
           this.alerta.ErrorAlRecuperarElementosError(
-            'EncriptarAES',
+            'Encriptar-ES8',
             'Error al desencriptar los datos'
           );
         }
@@ -3252,7 +3252,7 @@ export class ApiService {
       catchError((error) => {
         if ([undefined].indexOf(error.status) !== -1) {
           this.alerta.ErrorAlRecuperarElementosError(
-            'EncriptarAES',
+            'Encriptar-ES8',
             'Error al desencriptar los datos'
           );
         }
@@ -3274,7 +3274,7 @@ export class ApiService {
       catchError((error) => {
         if ([undefined].indexOf(error.status) !== -1) {
           this.alerta.ErrorAlRecuperarElementosError(
-            'EncriptarAES',
+            'Encriptar-ES8',
             'Error al desencriptar los datos'
           );
         }
@@ -3296,7 +3296,7 @@ export class ApiService {
       catchError((error) => {
         if ([undefined].indexOf(error.status) !== -1) {
           this.alerta.ErrorAlRecuperarElementosError(
-            'EncriptarAES',
+            'Encriptar-ES8',
             'Error al desencriptar los datos'
           );
         }
@@ -3317,7 +3317,7 @@ export class ApiService {
       catchError((error) => {
         if ([undefined].indexOf(error.status) !== -1) {
           this.alerta.ErrorAlRecuperarElementosError(
-            'EncriptarAES',
+            'Encriptar-ES8',
             'Error al desencriptar los datos'
           );
         }
@@ -3338,7 +3338,7 @@ export class ApiService {
       catchError((error) => {
         if ([undefined].indexOf(error.status) !== -1) {
           this.alerta.ErrorAlRecuperarElementosError(
-            'EncriptarAES',
+            'Encriptar-ES8',
             'Error al desencriptar los datos'
           );
         }
@@ -3360,7 +3360,7 @@ export class ApiService {
       catchError((error) => {
         if ([undefined].indexOf(error.status) !== -1) {
           this.alerta.ErrorAlRecuperarElementosError(
-            'EncriptarAES',
+            'Encriptar-ES8',
             'Error al desencriptar los datos'
           );
         }
@@ -3382,7 +3382,7 @@ export class ApiService {
       catchError((error) => {
         if ([undefined].indexOf(error.status) !== -1) {
           this.alerta.ErrorAlRecuperarElementosError(
-            'EncriptarAES',
+            'Encriptar-ES8',
             'Error al desencriptar los datos'
           );
         }
@@ -3404,7 +3404,7 @@ export class ApiService {
       catchError((error) => {
         if ([undefined].indexOf(error.status) !== -1) {
           this.alerta.ErrorAlRecuperarElementosError(
-            'EncriptarAES',
+            'Encriptar-ES8',
             'Error al desencriptar los datos'
           );
         }
@@ -3425,7 +3425,7 @@ export class ApiService {
       catchError((error) => {
         if ([undefined].indexOf(error.status) !== -1) {
           this.alerta.ErrorAlRecuperarElementosError(
-            'EncriptarAES',
+            'Encriptar-ES8',
             'Error al desencriptar los datos'
           );
         }
@@ -3446,7 +3446,7 @@ export class ApiService {
       catchError((error) => {
         if ([undefined].indexOf(error.status) !== -1) {
           this.alerta.ErrorAlRecuperarElementosError(
-            'EncriptarAES',
+            'Encriptar-ES8',
             'Error al desencriptar los datos'
           );
         }
@@ -3465,7 +3465,7 @@ export class ApiService {
       catchError((error) => {
         if ([undefined].indexOf(error.status) !== -1) {
           this.alerta.ErrorAlRecuperarElementosError(
-            'EncriptarAES',
+            'Encriptar-ES8',
             'Error al desencriptar los datos'
           );
         }
@@ -3484,7 +3484,7 @@ export class ApiService {
       catchError((error) => {
         if ([undefined].indexOf(error.status) !== -1) {
           this.alerta.ErrorAlRecuperarElementosError(
-            'EncriptarAES',
+            'Encriptar-ES8',
             'Error al desencriptar los datos'
           );
         }
@@ -3505,7 +3505,7 @@ export class ApiService {
       catchError((error) => {
         if ([undefined].indexOf(error.status) !== -1) {
           this.alerta.ErrorAlRecuperarElementosError(
-            'EncriptarAES',
+            'Encriptar-ES8',
             'Error al desencriptar los datos'
           );
         }
@@ -3526,7 +3526,7 @@ export class ApiService {
       catchError((error) => {
         if ([undefined].indexOf(error.status) !== -1) {
           this.alerta.ErrorAlRecuperarElementosError(
-            'EncriptarAES',
+            'Encriptar-ES8',
             'Error al desencriptar los datos'
           );
         }
@@ -3551,7 +3551,7 @@ export class ApiService {
       catchError((error) => {
         if ([undefined].indexOf(error.status) !== -1) {
           this.alerta.ErrorAlRecuperarElementosError(
-            'EncriptarAES',
+            'Encriptar-ES8',
             'Error al desencriptar los datos'
           );
         }
@@ -3570,7 +3570,7 @@ export class ApiService {
       catchError((error) => {
         if ([undefined].indexOf(error.status) !== -1) {
           this.alerta.ErrorAlRecuperarElementosError(
-            'EncriptarAES',
+            'Encriptar-ES8',
             'Error al desencriptar los datos'
           );
         }
@@ -3588,7 +3588,7 @@ export class ApiService {
       catchError((error) => {
         if ([undefined].indexOf(error.status) !== -1) {
           this.alerta.ErrorAlRecuperarElementosError(
-            'EncriptarAES',
+            'Encriptar-ES8',
             'Error al desencriptar los datos'
           );
         }
@@ -3608,7 +3608,7 @@ export class ApiService {
       catchError((error) => {
         if ([undefined].indexOf(error.status) !== -1) {
           this.alerta.ErrorAlRecuperarElementosError(
-            'EncriptarAES',
+            'Encriptar-ES8',
             'Error al desencriptar los datos'
           );
         }
@@ -3632,7 +3632,7 @@ export class ApiService {
       catchError((error) => {
         if ([undefined].indexOf(error.status) !== -1) {
           this.alerta.ErrorAlRecuperarElementosError(
-            'EncriptarAES',
+            'Encriptar-ES8',
             'Error al desencriptar los datos'
           );
         }
@@ -3652,7 +3652,7 @@ export class ApiService {
       catchError((error) => {
         if ([undefined].indexOf(error.status) !== -1) {
           this.alerta.ErrorAlRecuperarElementosError(
-            'EncriptarAES',
+            'Encriptar-ES8',
             'Error al desencriptar los datos'
           );
         }
@@ -3671,7 +3671,7 @@ export class ApiService {
       catchError((error) => {
         if ([undefined].indexOf(error.status) !== -1) {
           this.alerta.ErrorAlRecuperarElementosError(
-            'EncriptarAES',
+            'Encriptar-ES8',
             'Error al desencriptar los datos'
           );
         }
@@ -3693,7 +3693,7 @@ export class ApiService {
       catchError((error) => {
         if ([undefined].indexOf(error.status) !== -1) {
           this.alerta.ErrorAlRecuperarElementosError(
-            'EncriptarAES',
+            'Encriptar-ES8',
             'Error al desencriptar los datos'
           );
         }
@@ -3714,7 +3714,7 @@ export class ApiService {
       catchError((error) => {
         if ([undefined].indexOf(error.status) !== -1) {
           this.alerta.ErrorAlRecuperarElementosError(
-            'EncriptarAES',
+            'Encriptar-ES8',
             'Error al desencriptar los datos'
           );
         }
@@ -3735,7 +3735,7 @@ export class ApiService {
       catchError((error) => {
         if ([undefined].indexOf(error.status) !== -1) {
           this.alerta.ErrorAlRecuperarElementosError(
-            'EncriptarAES',
+            'Encriptar-ES8',
             'Error al desencriptar los datos'
           );
         }
@@ -3757,7 +3757,7 @@ export class ApiService {
       catchError((error) => {
         if ([undefined].indexOf(error.status) !== -1) {
           this.alerta.ErrorAlRecuperarElementosError(
-            'EncriptarAES',
+            'Encriptar-ES8',
             'Error al desencriptar los datos'
           );
         }
@@ -3779,7 +3779,7 @@ export class ApiService {
       catchError((error) => {
         if ([undefined].indexOf(error.status) !== -1) {
           this.alerta.ErrorAlRecuperarElementosError(
-            'EncriptarAES',
+            'Encriptar-ES8',
             'Error al desencriptar los datos'
           );
         }
@@ -3800,7 +3800,7 @@ export class ApiService {
       catchError((error) => {
         if ([undefined].indexOf(error.status) !== -1) {
           this.alerta.ErrorAlRecuperarElementosError(
-            'EncriptarAES',
+            'Encriptar-ES8',
             'Error al desencriptar los datos'
           );
         }
@@ -3821,7 +3821,7 @@ export class ApiService {
       catchError((error) => {
         if ([undefined].indexOf(error.status) !== -1) {
           this.alerta.ErrorAlRecuperarElementosError(
-            'EncriptarAES',
+            'Encriptar-ES8',
             'Error al desencriptar los datos'
           );
         }
@@ -3843,7 +3843,7 @@ export class ApiService {
       catchError((error) => {
         if ([undefined].indexOf(error.status) !== -1) {
           this.alerta.ErrorAlRecuperarElementosError(
-            'EncriptarAES',
+            'Encriptar-ES8',
             'Error al desencriptar los datos'
           );
         }
@@ -3865,7 +3865,7 @@ export class ApiService {
       catchError((error) => {
         if ([undefined].indexOf(error.status) !== -1) {
           this.alerta.ErrorAlRecuperarElementosError(
-            'EncriptarAES',
+            'Encriptar-ES8',
             'Error al desencriptar los datos'
           );
         }
@@ -3886,7 +3886,7 @@ export class ApiService {
       catchError((error) => {
         if ([undefined].indexOf(error.status) !== -1) {
           this.alerta.ErrorAlRecuperarElementosError(
-            'EncriptarAES',
+            'Encriptar-ES8',
             'Error al desencriptar los datos'
           );
         }
@@ -3907,7 +3907,7 @@ export class ApiService {
       catchError((error) => {
         if ([undefined].indexOf(error.status) !== -1) {
           this.alerta.ErrorAlRecuperarElementosError(
-            'EncriptarAES',
+            'Encriptar-ES8',
             'Error al desencriptar los datos'
           );
         }
@@ -3929,7 +3929,7 @@ export class ApiService {
       catchError((error) => {
         if ([undefined].indexOf(error.status) !== -1) {
           this.alerta.ErrorAlRecuperarElementosError(
-            'EncriptarAES',
+            'Encriptar-ES8',
             'Error al desencriptar los datos'
           );
         }
@@ -3950,7 +3950,7 @@ export class ApiService {
       catchError((error) => {
         if ([undefined].indexOf(error.status) !== -1) {
           this.alerta.ErrorAlRecuperarElementosError(
-            'EncriptarAES',
+            'Encriptar-ES8',
             'Error al desencriptar los datos'
           );
         }
@@ -3971,7 +3971,7 @@ export class ApiService {
       catchError((error) => {
         if ([undefined].indexOf(error.status) !== -1) {
           this.alerta.ErrorAlRecuperarElementosError(
-            'EncriptarAES',
+            'Encriptar-ES8',
             'Error al desencriptar los datos'
           );
         }
@@ -3992,7 +3992,7 @@ export class ApiService {
       catchError((error) => {
         if ([undefined].indexOf(error.status) !== -1) {
           this.alerta.ErrorAlRecuperarElementosError(
-            'EncriptarAES',
+            'Encriptar-ES8',
             'Error al desencriptar los datos'
           );
         }
@@ -4015,7 +4015,7 @@ export class ApiService {
       catchError((error) => {
         if ([undefined].indexOf(error.status) !== -1) {
           this.alerta.ErrorAlRecuperarElementosError(
-            'EncriptarAES',
+            'Encriptar-ES8',
             'Error al desencriptar los datos'
           );
         }
@@ -4037,7 +4037,7 @@ export class ApiService {
       catchError((error) => {
         if ([undefined].indexOf(error.status) !== -1) {
           this.alerta.ErrorAlRecuperarElementosError(
-            'EncriptarAES',
+            'Encriptar-ES8',
             'Error al desencriptar los datos'
           );
         }
@@ -4066,7 +4066,7 @@ export class ApiService {
       catchError((error) => {
         if ([undefined].indexOf(error.status) !== -1) {
           this.alerta.ErrorAlRecuperarElementosError(
-            'EncriptarAES',
+            'Encriptar-ES8',
             'Error al desencriptar los datos'
           );
         }
@@ -4095,7 +4095,7 @@ export class ApiService {
       catchError((error) => {
         if ([undefined].indexOf(error.status) !== -1) {
           this.alerta.ErrorAlRecuperarElementosError(
-            'EncriptarAES',
+            'Encriptar-ES8',
             'Error al desencriptar los datos'
           );
         }
@@ -4120,7 +4120,7 @@ export class ApiService {
       catchError((error) => {
         if ([undefined].indexOf(error.status) !== -1) {
           this.alerta.ErrorAlRecuperarElementosError(
-            'EncriptarAES',
+            'Encriptar-ES8',
             'Error al desencriptar los datos'
           );
         }
@@ -4146,7 +4146,7 @@ export class ApiService {
       catchError((error) => {
         if ([undefined].indexOf(error.status) !== -1) {
           this.alerta.ErrorAlRecuperarElementosError(
-            'EncriptarAES',
+            'Encriptar-ES8',
             'Error al desencriptar los datos'
           );
         }
@@ -4173,7 +4173,7 @@ export class ApiService {
       catchError((error) => {
         if ([undefined].indexOf(error.status) !== -1) {
           this.alerta.ErrorAlRecuperarElementosError(
-            'EncriptarAES',
+            'Encriptar-ES8',
             'Error al desencriptar los datos'
           );
         }
@@ -4196,7 +4196,7 @@ export class ApiService {
       catchError((error) => {
         if ([undefined].indexOf(error.status) !== -1) {
           this.alerta.ErrorAlRecuperarElementosError(
-            'EncriptarAES',
+            'Encriptar-ES8',
             'Error al desencriptar los datos'
           );
         }
@@ -4219,7 +4219,7 @@ export class ApiService {
       catchError((error) => {
         if ([undefined].indexOf(error.status) !== -1) {
           this.alerta.ErrorAlRecuperarElementosError(
-            'EncriptarAES',
+            'Encriptar-ES8',
             'Error al desencriptar los datos'
           );
         }
@@ -4240,7 +4240,7 @@ export class ApiService {
       catchError((error) => {
         if ([undefined].indexOf(error.status) !== -1) {
           this.alerta.ErrorAlRecuperarElementosError(
-            'EncriptarAES',
+            'Encriptar-ES8',
             'Error al desencriptar los datos'
           );
         }
@@ -4261,7 +4261,7 @@ export class ApiService {
       catchError((error) => {
         if ([undefined].indexOf(error.status) !== -1) {
           this.alerta.ErrorAlRecuperarElementosError(
-            'EncriptarAES',
+            'Encriptar-ES8',
             'Error al desencriptar los datos'
           );
         }
@@ -4282,7 +4282,7 @@ export class ApiService {
         console.log(error.status);
         if ([undefined].indexOf(error.status) !== -1) {
           this.alerta.ErrorAlRecuperarElementosError(
-            'EncriptarAES',
+            'Encriptar-ES8',
             'Error al desencriptar los datos'
           );
         }
@@ -4300,7 +4300,7 @@ export class ApiService {
         console.log(error.status);
         if ([undefined].indexOf(error.status) !== -1) {
           this.alerta.ErrorAlRecuperarElementosError(
-            'EncriptarAES',
+            'Encriptar-ES8',
             'Error al desencriptar los datos'
           );
         }
@@ -4322,7 +4322,7 @@ export class ApiService {
       catchError((error) => {
         if ([undefined].indexOf(error.status) !== -1) {
           this.alerta.ErrorAlRecuperarElementosError(
-            'EncriptarAES',
+            'Encriptar-ES8',
             'Error al desencriptar los datos'
           );
         }
@@ -4343,7 +4343,7 @@ export class ApiService {
       catchError((error) => {
         if ([undefined].indexOf(error.status) !== -1) {
           this.alerta.ErrorAlRecuperarElementosError(
-            'EncriptarAES',
+            'Encriptar-ES8',
             'Error al desencriptar los datos'
           );
         }
@@ -4364,7 +4364,7 @@ export class ApiService {
       catchError((error) => {
         if ([undefined].indexOf(error.status) !== -1) {
           this.alerta.ErrorAlRecuperarElementosError(
-            'EncriptarAES',
+            'Encriptar-ES8',
             'Error al desencriptar los datos'
           );
         }
@@ -4384,7 +4384,7 @@ export class ApiService {
       catchError((error) => {
         if ([undefined].indexOf(error.status) !== -1) {
           this.alerta.ErrorAlRecuperarElementosError(
-            'EncriptarAES',
+            'Encriptar-ES8',
             'Error al desencriptar los datos'
           );
         }
@@ -4402,7 +4402,7 @@ export class ApiService {
       catchError((error) => {
         if ([undefined].indexOf(error.status) !== -1) {
           this.alerta.ErrorAlRecuperarElementosError(
-             'EncriptarAES',
+             'Encriptar-ES8',
             'Error al desencriptar los datos'
           );
         }
@@ -4419,7 +4419,7 @@ export class ApiService {
       catchError((error) => {
         if ([undefined].indexOf(error.status) !== -1) {
           this.alerta.ErrorAlRecuperarElementosError(
-             'EncriptarAES',
+             'Encriptar-ES8',
             'Error al desencriptar los datos'
           );
         }
