@@ -2239,7 +2239,6 @@ export class ApiService {
             'Error al desencriptar los datos'
           );
         }
-
         throw error;
       })
     );
@@ -4337,6 +4336,24 @@ export class ApiService {
     };
     let direccion = this.url + entidad;
     return this.http.post<any>(direccion, Encryptado).pipe(
+      map((data) => {
+        return JSON.parse(this.objeto.decrypt(data['valor']));
+      }),
+      catchError((error) => {
+        if ([undefined].indexOf(error.status) !== -1) {
+          this.alerta.ErrorAlRecuperarElementosError(
+            'Encriptar-ES8',
+            'Error al desencriptar los datos'
+          );
+        }
+
+        throw error;
+      })
+    );
+  }
+  PostSinIncriptar(entidad: string, elemento: any): Observable<any> {   
+    let direccion = this.url + entidad;
+    return this.http.post<any>(direccion, elemento).pipe(
       map((data) => {
         return JSON.parse(this.objeto.decrypt(data['valor']));
       }),

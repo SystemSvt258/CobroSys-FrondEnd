@@ -11,6 +11,7 @@ import {
 import { ActivatedRoute, Router } from '@angular/router';
 import { CookieService } from 'ngx-cookie-service';
 import { catchError, map } from 'rxjs';
+import { CargaArchivos } from 'src/app/Clases/CargaArchivos';
 import { Alertas } from 'src/app/Control/Alerts';
 import { Encriptacion } from 'src/app/Control/EncryptDescrypt';
 import { Fechas } from 'src/app/Control/Fechas';
@@ -59,41 +60,6 @@ import Swal from 'sweetalert2';
   styleUrls: ['./gestionar.component.css'],
 })
 export class GestionarComponent implements OnInit {
-
-
-  // ============================================================ DOCUMENTOS  ============================================================================
-
-  DocumentosItem = [
-    { id: 1, name: 'Cargar', label: 'CARGAR', icon1:'fa-solid fa-envelopes-bulk', icon2:'fa-solid fa-upload', type: 'number', required: true },
-    { id: 2, name: 'Descargar', label: 'DESCARGAR', icon1:'fa-solid fa-file-lines', icon2:'fa-solid fa-download', type: 'text', required: true },
-  ];
-
-  form: FormGroup;
-
-  onFormReady(form: FormGroup) {
-    this.form = form; // Recibir el formulario dinámico
-  }
-
-  onSubmit() {
-    if (this.form.valid) {
-      console.log('Formulario válido:', this.form.value);
-    } else {
-      console.log('Formulario inválido');
-    }
-  }
-
-
-
-
-
-
-
-
-
-
-
-
-
   constructor(
     private api: ApiService,
     private alerta: Alertas,
@@ -101,12 +67,206 @@ export class GestionarComponent implements OnInit {
     private cookeService: CookieService,
     private route: ActivatedRoute,
     public validar: TipoDeTexto,
-    private router: Router,public reporte:GeneradorReporte
+    private router: Router,
+    private CargarArchivos: CargaArchivos,
+    public reporte: GeneradorReporte
   ) {}
+  // ============================================================ DOCUMENTOS  ============================================================================
+
+  DocumentosItem = [
+    {
+      id: 1,
+      name: 'Cargar',
+      label: 'CARGAR',
+      icon1: 'fa-solid fa-envelopes-bulk',
+      icon2: 'fa-solid fa-upload',
+      type: 'number',
+      required: true,
+    },
+    {
+      id: 2,
+      name: 'Descargar',
+      label: 'DESCARGAR',
+      icon1: 'fa-solid fa-file-lines',
+      icon2: 'fa-solid fa-download',
+      type: 'text',
+      required: true,
+    },
+  ];
+
+  DocumentosPage: number = 0;
+  SeleccionAccion(vista: number) {
+    this.DocumentosPage = vista;
+  }
+  ResetAccion() {
+    this.DocumentosPage = 0;
+  }
+
+  selectedTipoDocumento: number | null = null;
+  TipoArchivoCarga: string = '';
+  selectedArchivo: File | null = null;
+  vistaPreviaUrl: string = '';
+
+  TipoDocumentos = [
+    {
+      id: 1,
+      name: 'Pdf',
+      label: 'PDF',
+      icon: 'fa-solid fa-file-pdf',
+      type: '.pdf',
+    },
+    {
+      id: 2,
+      name: 'Word',
+      label: 'WORD',
+      icon: 'fa-solid fa-file-word',
+      type: '.doc,.docx',
+    },
+    {
+      id: 3,
+      name: 'Excel',
+      label: 'EXCEL',
+      icon: 'fa-solid fa-file-excel',
+      type: '.xls,.xlsx',
+    },
+    {
+      id: 4,
+      name: 'Imagen',
+      label: 'IMAGEN',
+      icon: 'fa-solid fa-file-image',
+      type: 'image/*',
+    },
+  ];
+
+  esImagen: boolean = false;
+  esPdf: boolean = false;
+  esWord: boolean = false;
+  esExcel: boolean = false;
+  urlAbs!: string;
+  url!: string;
+
+  SeleccionTipoDocumento(event: any) {
+    const tipoSeleccionado = this.TipoDocumentos.find(
+      (t) => t.id == event.target.value
+    );
+    if (tipoSeleccionado) {
+      this.TipoArchivoCarga = tipoSeleccionado.type;
+      this.selectedArchivo = null;
+      this.esImagen = false;
+      this.esPdf = false;
+      this.esWord = false;
+      this.esExcel = false;
+      this.vistaPreviaUrl = '';
+      this.urlAbs = '';
+      this.url = '';
+    }
+  }
+
+  ArchivoSeleccionado(event: any) {
+    const file = event.target.files[0];
+    if (file) {
+      this.selectedArchivo = file;
+      this.mostrarVistaPrevia(file);
+    }
+  }
+
+  mostrarVistaPrevia(file: File) {
+    const reader = new FileReader();
+    reader.onload = (e: any) => {
+      const fileType = file.type;
+
+      if (fileType.startsWith('image')) {
+        this.esImagen = true;
+        this.esPdf = false;
+        this.esWord = false;
+        this.esExcel = false;
+        this.urlAbs = e.target.result;
+      } else if (fileType === 'application/pdf') {
+        this.esImagen = false;
+        this.esPdf = true;
+        this.esWord = false;
+        this.esExcel = false;
+        this.url = e.target.result.split(',')[1]; // Extraer base64 para visor PDF
+      } else if (
+        fileType.includes('msword') ||
+        fileType.includes('officedocument.wordprocessingml.document')
+      ) {
+        this.esImagen = false;
+        this.esPdf = false;
+        this.esWord = true;
+        this.esExcel = false;
+        this.vistaPreviaUrl = `https://view.officeapps.live.com/op/embed.aspx?src=${this.subirArchivoTemporal(
+          file
+        )}`;
+      } else if (
+        fileType.includes('excel') ||
+        fileType.includes('spreadsheetml')
+      ) {
+        this.esImagen = false;
+        this.esPdf = false;
+        this.esWord = false;
+        this.esExcel = true;
+        this.vistaPreviaUrl = `https://view.officeapps.live.com/op/embed.aspx?src=${this.subirArchivoTemporal(
+          file
+        )}`;
+      } else {
+        this.esImagen = false;
+        this.esPdf = false;
+        this.esWord = false;
+        this.esExcel = false;
+      }
+    };
+    reader.readAsDataURL(file);
+  }
+
+  pdfUrl: string | null = null;
+  originalUrl: string | null = null; 
+
+  subirArchivoTemporal(file: File){
+    
+    const formData = new FormData();
+    formData.append('file', file);
+
+    this.CargarArchivos.SubirArchivo('upload',file)
+    .subscribe((x) => {
+      if (x.exito === 1) {
+        console.log(x.data)
+        this.pdfUrl = x.data.pdfUrl;  // URL del archivo PDF generado
+        this.originalUrl = x.data.originalUrl;
+        this.esPdf = true; // Marcar que el archivo es un PDF
+        this.url = this.pdfUrl; // Asignar URL para el visor PDF
+      } else {
+        console.error('Error al convertir el archivo:', x.mensaje);
+      }
+    });
+  }
+
+  uploadFile() {
+    if (this.selectedArchivo) {
+      console.log('Archivo seleccionado:', this.selectedArchivo.name);
+      // Lógica para subir el archivo al servidor
+    }
+  }
+
+  cancelUpload() {
+    this.selectedArchivo = null;
+    this.esImagen = false;
+    this.esPdf = false;
+    this.esWord = false;
+    this.esExcel = false;
+    this.vistaPreviaUrl = '';
+    this.urlAbs = '';
+    this.url = '';
+    console.log('Carga cancelada');
+  }
+
+  // ===========================================================================================================================================
+
+ 
 
   PaginaEstilo: string = '';
   ParametrosDeDescarga: Array<string> = ['PDF', 'EXCEL', 'CSV'];
-  gGestion!:generarPDF;
+  gGestion!: generarPDF;
 
   ngOnInit(): void {
     let id = this.route.snapshot.paramMap.get('id');
@@ -164,18 +324,14 @@ export class GestionarComponent implements OnInit {
       }
     }
   }
-  GetDescargaPor(val:string)
-  {
-    if(val==='PDF')
-    {
+  GetDescargaPor(val: string) {
+    if (val === 'PDF') {
       this.reporte.generarPDF(this.gGestion);
     }
-    if(val==='EXCEL')
-    {
+    if (val === 'EXCEL') {
       this.reporte.generarExcel(this.gGestion);
     }
-    if(val==='CSV')
-    {
+    if (val === 'CSV') {
       this.reporte.generarCSV(this.gGestion);
     }
   }
@@ -363,36 +519,42 @@ export class GestionarComponent implements OnInit {
       rango: this.RangoDatos,
     };
     this.loading = true;
-    let listadoObjeto:any[] = [];
+    let listadoObjeto: any[] = [];
     this.ListaGestionar = [];
     this.api
       .GetGestionarFracionado(filtro)
       .pipe(
         map((tracks) => {
           this.ListaGestionar = tracks['data'];
-          for (const objeto of this.ListaGestionar)
-            {
-              let ocD: any = {
-                Cedula:objeto.identificacion,
-                Nombre:objeto.nombres_cli,
-                Estado:objeto.estado_cli,
-                SaldoTC:objeto.saldo_t,
-                SaldoCXC:objeto.saldo_cxc,
-                PagoActual:objeto.pago_actual,
-                Gestor:objeto.gestor,
-                Cartera:objeto.cartera,
-                Provincia:objeto.provincia_cli,
-                Certificado:(objeto.certificado===null||objeto.certificado==='0')?'NO':'SI',
-                Ultimagestion:objeto.ultima_gestion==null?null:this.fechas.fechaCortaAbt(objeto.ultima_gestion),
-                RangoEdad:objeto.edad_cli,
-                Creditos:objeto.creditos
-              };
-              listadoObjeto.push(ocD);
-            }
-            let om: generarPDF = {
-              entidad: 'misClientes', listado: listadoObjeto
+          for (const objeto of this.ListaGestionar) {
+            let ocD: any = {
+              Cedula: objeto.identificacion,
+              Nombre: objeto.nombres_cli,
+              Estado: objeto.estado_cli,
+              SaldoTC: objeto.saldo_t,
+              SaldoCXC: objeto.saldo_cxc,
+              PagoActual: objeto.pago_actual,
+              Gestor: objeto.gestor,
+              Cartera: objeto.cartera,
+              Provincia: objeto.provincia_cli,
+              Certificado:
+                objeto.certificado === null || objeto.certificado === '0'
+                  ? 'NO'
+                  : 'SI',
+              Ultimagestion:
+                objeto.ultima_gestion == null
+                  ? null
+                  : this.fechas.fechaCortaAbt(objeto.ultima_gestion),
+              RangoEdad: objeto.edad_cli,
+              Creditos: objeto.creditos,
             };
-            this.gGestion=om;
+            listadoObjeto.push(ocD);
+          }
+          let om: generarPDF = {
+            entidad: 'misClientes',
+            listado: listadoObjeto,
+          };
+          this.gGestion = om;
           this.DatosTemporalesBusqueda = tracks['data'];
           if (this.ListaGestionar.length === 0) {
             this.loading = false;
@@ -2515,7 +2677,7 @@ export class GestionarComponent implements OnInit {
         .GetCxcOperacionFracionadoFiltro(identificacion!, 10)
         .pipe(
           map((tracks) => {
-            (this.ListaCreditos = tracks['data']);
+            this.ListaCreditos = tracks['data'];
           }),
           catchError((error) => {
             this.loading = false;
@@ -2738,15 +2900,15 @@ export class GestionarComponent implements OnInit {
                   .pipe(
                     map((tracks) => {
                       const exito = tracks['exito'];
-                    if (exito == 1) {
-                      this.CerrarModalAgregarPagos();
-                      this.alerta.RegistroActualizado();
-                    } else {
-                      this.alerta.ErrorEnLaPeticion(tracks['mensaje']);
-                    }
+                      if (exito == 1) {
+                        this.CerrarModalAgregarPagos();
+                        this.alerta.RegistroActualizado();
+                      } else {
+                        this.alerta.ErrorEnLaPeticion(tracks['mensaje']);
+                      }
                     }),
                     catchError((error) => {
-                    this.alerta.ErrorEnLaOperacion();
+                      this.alerta.ErrorEnLaOperacion();
                       throw new Error(error);
                     })
                   )
@@ -3567,8 +3729,4 @@ export class GestionarComponent implements OnInit {
       }
     });
   }
-
-
-
-
 }

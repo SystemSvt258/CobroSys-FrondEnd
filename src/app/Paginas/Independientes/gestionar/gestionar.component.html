@@ -1152,11 +1152,11 @@
                                                             <i class="fa-solid fa-sack-dollar"></i>
                                                             <span>&nbsp;Agregar Pago&nbsp;</span>
                                                         </a>
-                                                        <!-- <a class="btn btn-sm btn-info float-right mr-2"
+                                                        <a class="btn btn-sm btn-info float-right mr-2"
                                                             (click)="AbrirModalDocumentos()">
                                                             <i class="fa-regular fa-folder-open"></i>
                                                             <span>&nbsp;Documentos&nbsp;</span>
-                                                        </a> -->
+                                                        </a>
                                                     </div>
 
                                                 </div>
@@ -3309,9 +3309,9 @@
             </section>
         </div>
         <div class="card-body" style="width: 100%;">
-            <section class="row">
-                <div class="col-md-3 col-sm-6 col-12" style="cursor: pointer;" *ngFor="let datos of DocumentosItem" >
-                    <div class="info-box  bg-info">
+            <section class="row" *ngIf="DocumentosPage === 0">
+                <div class="col-md-3 col-sm-6 col-12" style="cursor: pointer;" *ngFor="let datos of DocumentosItem">
+                    <div class="info-box  bg-info" (click)="SeleccionAccion(datos.id)">
                         <span class="info-box-icon"><i class="{{datos.icon1}}"></i></span>
                         <div class="info-box-content">
                             <span class="info-box-text">{{datos.label}}</span>
@@ -3320,6 +3320,53 @@
                     </div>
                 </div>
             </section>
+            <section class="row" *ngIf="DocumentosPage === 1">
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <span title="Cantidad de meses sin gestión">Tipo de Archivo</span>
+                        <select class="form-select" [(ngModel)]="selectedTipoDocumento"
+                            (change)="SeleccionTipoDocumento($event)">
+                            <option value="" disabled selected>Seleccione ...</option>
+                            <option *ngFor="let s of TipoDocumentos" [value]="s.id">{{ s.label }}</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <input type="file" class="form-control file-input" accept="{{TipoArchivoCarga}}"
+                        [disabled]="!TipoArchivoCarga" (change)="ArchivoSeleccionado($event)" />
+                </div>
+
+                <div class="col-md-1">
+                    <button class="btn btn-success" (click)="uploadFile()" [disabled]="!selectedArchivo">
+                        <i class="fa fa-upload"></i>
+                    </button>
+                </div>
+
+                <div class="col-md-1">
+                    <button class="btn btn-danger" (click)="cancelUpload()" [disabled]="!selectedArchivo">
+                        <i class="fa fa-times"></i>
+                    </button>
+                </div>
+
+                <!-- Vista previa de archivos -->
+                <div class="col-12 d-flex align-items-center justify-content-center mt-3" *ngIf="selectedArchivo">
+
+                    <!-- Vista previa de imágenes -->
+                    <img *ngIf="esImagen" [src]="urlAbs" style="width: 100%; height: auto; max-height: 500px;" />
+
+                    <!-- Vista previa de PDF -->
+                    <ngx-extended-pdf-viewer *ngIf="esPdf" [src]="pdfUrl" backgroundColor="#ffffff"
+                        [useBrowserLocale]="true" [handTool]="false" [showHandToolButton]="true"
+                        [mobileFriendlyZoom]="'zoom'" style="width: 100%; height: 500px;">
+                    </ngx-extended-pdf-viewer>
+
+                </div>
+            </section>
+
+
+
+
         </div>
 
     </div>
